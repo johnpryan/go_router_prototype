@@ -1,7 +1,17 @@
 library tree_router;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
+import 'src/delegate.dart';
+import 'src/parser.dart';
+import 'src/route.dart';
+
+export 'src/route.dart';
+
+class TreeRouter {
+  final TreeRouterDelegate delegate;
+  final TreeRouteInformationParser parser;
+
+  TreeRouter({
+    required List<Route> routes,
+  })  : delegate = TreeRouterDelegate(routes),
+        parser = TreeRouteInformationParser();
 }
