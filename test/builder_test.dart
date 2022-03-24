@@ -17,7 +17,8 @@ void main() {
       await tester.pumpWidget(
         Builder(
           builder: (BuildContext context) {
-            final result = buildNavigator(context,
+            final result = buildNavigator(
+              context,
               RouteMatch(
                 routes: [
                   const Route(path: '/', builder: emptyBuilder),
@@ -25,6 +26,7 @@ void main() {
                 ],
                 parameters: Parameters.empty(),
               ),
+              () {},
             );
 
             expect(result, const TypeMatcher<Navigator>());

@@ -1,10 +1,24 @@
-// Copyright 2022 The Flutter team. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+import 'package:flutter/foundation.dart';
 
-import 'parameters.dart';
+import 'match.dart';
 
-class TreeRouterState {
-  final Parameters parameters;
-  TreeRouterState({required this.parameters});
+class RouteState extends ChangeNotifier {
+  RouteMatch _match;
+
+  RouteState(this._match);
+
+  set match(RouteMatch match) {
+    // Don't notify listeners if the destination is the same
+    if (_match == match) return;
+
+    _match = match;
+    notifyListeners();
+  }
+
+  RouteMatch get match => _match;
+
+  void pop() {
+    _match = match.pop();
+    notifyListeners();
+  }
 }

@@ -3,10 +3,9 @@
 // found in the LICENSE file.
 
 import 'package:flutter/widgets.dart';
-
-import 'state.dart';
+import 'match.dart';
 
 typedef TreeRouterBuilder = Widget Function(
   BuildContext context,
-  TreeRouterState state,
+  RouteMatch routeMatch,
 );
