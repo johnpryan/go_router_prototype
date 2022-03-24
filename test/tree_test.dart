@@ -48,12 +48,16 @@ void main() {
           ],
         ),
       ];
+
       final tree = RouteTree(routes);
 
       var lookup = tree.get('/');
       expect(lookup, isNotNull);
 
-      lookup = tree.get('/book');
+      lookup = tree.get('/books');
+      expect(lookup, isNotNull);
+
+      lookup = tree.get('/profile');
       expect(lookup, isNotNull);
     });
   });

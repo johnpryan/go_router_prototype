@@ -14,12 +14,24 @@ class RouteTree {
     return _getRecursive([], routes, path);
   }
 
-  // Recursively searches for an exact match. [prefix] is a list of the
-  // route path templates that have been matched for any parent Route objects.
-  // This allows both relative and absolute paths to be defined.
-  Route? _getRecursive(List<String> prefix, List<Route> routes, String path) {
-    for (var route in routes) {
+  /// Recursively searches for an exact match. [prefixes] is the list of
+  /// parent routes that have matched so far.
+  ///
+  /// This searches throughout the entire tree so that absolute paths are matched
+  /// regardless of whether the parent Route objects contain a match.
+  Route? _getRecursive(List<Route> prefixes, List<Route> current, String path) {
+    for (var route in current) {
       if (hasExactMatch(route.path, path)) {
+        return route;
+      }
+    }
+    for (var route in current) {
+      if (hasMatch(route.path, path)) {
+        prefixes.add(route);
+        final childMatch = _getRecursive(prefixes, route.children, path);
+        if (childMatch != null) return childMatch;
+        // This is a relative route and no children matched, so return this
+        // as the result.
         return route;
       }
     }
