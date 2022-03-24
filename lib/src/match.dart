@@ -18,6 +18,8 @@ class RouteMatch {
     return RouteMatch(routes: newRoutes, parameters: parameters);
   }
 
+  Route? getTopRoute() => routes.isEmpty ? null : routes.last;
+
   String get currentRoutePath {
     return fillParameters(p.joinAll(routes.map((r) => r.path)), parameters);
   }

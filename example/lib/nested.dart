@@ -6,27 +6,24 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:tree_router/tree_router.dart';
 
 void main() {
-  runApp(TreeRouterDemo());
+  runApp(NestingDemo());
 }
 
-class TreeRouterDemo extends StatelessWidget {
-  TreeRouterDemo({Key? key}) : super(key: key);
+class NestingDemo extends StatelessWidget {
+  NestingDemo({Key? key}) : super(key: key);
 
   final _router = TreeRouter(
     routes: [
       Route(
         path: '/a',
-        builder: (context) => const AScreen(),
+        nestedBuilder: (context, child) => HomeScreen(child: child),
+        type: RouteType.nested,
         children: [
           Route(
             path: '/b',
             builder: (context) => const BScreen(),
           ),
         ],
-      ),
-      Route(
-        path: '/c',
-        builder: (context) => const CScreen(),
       ),
     ],
   );
@@ -42,42 +39,10 @@ class TreeRouterDemo extends StatelessWidget {
   }
 }
 
-class AScreen extends Screen {
-  const AScreen({Key? key})
-      : super(
-          key: key,
-          name: 'Screen A',
-          linkTo: '/b',
-        );
-}
+class HomeScreen extends StatelessWidget {
+  final Widget child;
 
-class BScreen extends Screen {
-  const BScreen({Key? key})
-      : super(
-          key: key,
-          name: 'Screen B',
-          linkTo: '/c',
-        );
-}
-
-class CScreen extends Screen {
-  const CScreen({Key? key})
-      : super(
-          key: key,
-          name: 'Screen C',
-          linkTo: '/a',
-        );
-}
-
-class Screen extends StatelessWidget {
-  final String name;
-  final String linkTo;
-
-  const Screen({
-    required this.name,
-    required this.linkTo,
-    Key? key,
-  }) : super(key: key);
+  const HomeScreen({required this.child, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -88,18 +53,29 @@ class Screen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              name,
+              'Home',
               style: Theme.of(context).textTheme.headline4,
             ),
             TextButton(
-              child: Text('Go to $linkTo'),
+              child: const Text('Go to /b'),
               onPressed: () {
-                RouteState.of(context)!.goTo(linkTo);
+                RouteState.of(context)!.goTo('/b');
               },
             ),
+            child,
           ],
         ),
       ),
     );
   }
 }
+
+class BScreen extends StatelessWidget {
+  const BScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Screen B');
+  }
+}
+

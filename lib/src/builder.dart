@@ -28,7 +28,7 @@ Widget buildNavigator(
   if (nestedParent != null) {
     // this nested doesn't have any children, add it with an empty child.
     pages.add(_nestedPageBuilder(context, nestedParent.nestedBuilder!,
-        routeMatch, (_, __) => const SizedBox.shrink()));
+        routeMatch, (_) => const SizedBox.shrink()));
   }
 
   return Navigator(
@@ -45,11 +45,10 @@ Widget buildNavigator(
 
 Page _pageBuilder(
     BuildContext context, TreeRouterBuilder builder, RouteMatch routeMatch) {
-  return MaterialPage(child: builder(context, routeMatch));
+  return MaterialPage(child: builder(context));
 }
 
 Page _nestedPageBuilder(BuildContext context, NestedTreeRouterBuilder builder,
     RouteMatch routeMatch, TreeRouterBuilder childBuilder) {
-  return MaterialPage(
-      child: builder(context, routeMatch, childBuilder(context, routeMatch)));
+  return MaterialPage(child: builder(context, childBuilder(context)));
 }

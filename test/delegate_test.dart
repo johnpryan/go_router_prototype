@@ -10,7 +10,7 @@ void main() {
       final routes = <Route>[
         Route(
           path: '/',
-          builder: (context, state) => const _HomeScreen(),
+          builder: (context) => const _HomeScreen(),
         ),
       ];
       await tester.pumpWidget(
@@ -28,11 +28,11 @@ void main() {
       final routes = <Route>[
         Route(
           path: '/',
-          builder: (context, state) => const _HomeScreen(),
+          builder: (context) => const _HomeScreen(),
         ),
         Route(
           path: '/a',
-          builder: (context, state) => const _AScreen(),
+          builder: (context) => const _AScreen(),
         ),
       ];
       await tester.pumpWidget(
@@ -55,11 +55,11 @@ void main() {
       final routes = <Route>[
         Route(
           path: '/',
-          builder: (context, state) => const _HomeScreen(),
+          builder: (context) => const _HomeScreen(),
           children: [
             Route(
               path: 'a',
-              builder: (context, state) => const _AScreen(),
+              builder: (context) => const _AScreen(),
             ),
           ],
         ),
@@ -84,13 +84,13 @@ void main() {
       final routes = <Route>[
         Route(
           path: '/',
-          nestedBuilder: (context, state, child) =>
+          nestedBuilder: (context, child) =>
               _NestedParentScreen(child: child),
           type: RouteType.nested,
           children: [
             Route(
               path: 'a',
-              builder: (context, state) => const _AScreen(),
+              builder: (context) => const _AScreen(),
             ),
           ],
         ),
@@ -116,11 +116,11 @@ void main() {
     final routes = <Route>[
       Route(
         path: '/',
-        builder: (context, state) => const _HomeScreen(),
+        builder: (context) => const _HomeScreen(),
       ),
       Route(
         path: '/a',
-        builder: (context, state) => const _AScreen(),
+        builder: (context) => const _AScreen(),
       ),
     ];
 
@@ -142,11 +142,11 @@ void main() {
         final routes = <Route>[
           Route(
             path: '/',
-            builder: (context, state) => const _HomeScreen(),
+            builder: (context) => const _HomeScreen(),
           ),
           Route(
             path: '/user/:id',
-            builder: (context, state) => const _AScreen(),
+            builder: (context) => const _AScreen(),
           ),
         ];
 

@@ -28,10 +28,14 @@ class TreeRouterDelegate extends RouterDelegate<Uri>
   Widget build(BuildContext context) {
     return RouteStateScope(
       routeState: _routeState,
-      child: buildNavigator(
-        context,
-        _routeState.match!,
-        () => _routeState.pop(),
+      child: Builder(
+        builder: (context) {
+          return buildNavigator(
+            context,
+            _routeState.match!,
+            () => _routeState.pop(),
+          );
+        }
       ),
     );
   }

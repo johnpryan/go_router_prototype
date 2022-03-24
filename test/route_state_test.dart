@@ -15,7 +15,7 @@ void main() {
       final routes = [
         Route(
           path: '/',
-          builder: (context, routeMatch) => Builder(
+          builder: (context) => Builder(
             builder: (BuildContext context) {
               childContext = context;
               return const Placeholder();
@@ -33,13 +33,14 @@ void main() {
       expect(RouteState.of(childContext), isNotNull);
     });
   });
+
   group('RouteState.goTo()', () {
     testWidgets('Navigates to the correct screen', (WidgetTester tester) async {
       late final BuildContext childContext;
       final routes = [
         Route(
           path: '/',
-          builder: (context, routeMatch) {
+          builder: (context) {
             return Builder(
               builder: (BuildContext context) {
                 childContext = context;
@@ -50,7 +51,7 @@ void main() {
         ),
         Route(
           path: '/a',
-          builder: (context, routeMatch) {
+          builder: (context) {
             return const Text('Screen A');
           },
         ),

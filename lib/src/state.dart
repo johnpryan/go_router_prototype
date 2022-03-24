@@ -30,6 +30,8 @@ class RouteState extends ChangeNotifier {
     match = _routeTree.get(path);
   }
 
+  Route? getTopRoute() => match?.getTopRoute();
+
   static RouteState? of(BuildContext context) {
     final scope = context.dependOnInheritedWidgetOfExactType<RouteStateScope>();
     if (scope == null) return null;

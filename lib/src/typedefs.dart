@@ -3,15 +3,12 @@
 // found in the LICENSE file.
 
 import 'package:flutter/widgets.dart';
-import 'match.dart';
 
 typedef TreeRouterBuilder = Widget Function(
   BuildContext context,
-  RouteMatch routeMatch,
 );
 
 typedef NestedTreeRouterBuilder = Widget Function(
   BuildContext context,
-  RouteMatch routeMatch,
   Widget child,
 );
