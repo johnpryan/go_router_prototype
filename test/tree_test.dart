@@ -8,16 +8,18 @@ import 'package:tree_router/src/route.dart';
 
 import 'package:tree_router/src/tree.dart';
 
+import 'helpers.dart';
+
 void main() {
   group('RouteTree', () {
     test('Looks up routes', () {
       final routes = <Route>[
         const Route(
-          builder: _emptyBuilder,
+          builder: emptyBuilder,
           path: '/',
         ),
         const Route(
-          builder: _emptyBuilder,
+          builder: emptyBuilder,
           path: '/item/:id',
         ),
       ];
@@ -35,15 +37,15 @@ void main() {
     test('Looks up nested routes', () {
       final routes = [
         const Route(
-          builder: _emptyBuilder,
+          builder: emptyBuilder,
           path: '/',
           children: [
             Route(
-              builder: _emptyBuilder,
+              builder: emptyBuilder,
               path: 'books/:bookId',
             ),
             Route(
-              builder: _emptyBuilder,
+              builder: emptyBuilder,
               path: 'profile',
             ),
           ],
@@ -68,7 +70,6 @@ void main() {
   });
 }
 
-Widget _emptyBuilder(context, state) => const EmptyWidget();
 
 class EmptyWidget extends StatelessWidget {
   const EmptyWidget({Key? key}) : super(key: key);
