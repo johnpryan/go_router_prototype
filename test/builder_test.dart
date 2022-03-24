@@ -21,8 +21,8 @@ void main() {
               context,
               RouteMatch(
                 routes: [
-                  const Route(path: '/', builder: emptyBuilder),
-                  const Route(path: '/foo', builder: emptyBuilder),
+                  Route(path: '/', builder: emptyBuilder),
+                  Route(path: '/foo', builder: emptyBuilder),
                 ],
                 parameters: Parameters.empty(),
               ),

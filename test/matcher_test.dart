@@ -4,6 +4,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tree_router/src/matching.dart';
+import 'package:tree_router/src/parameters.dart';
 
 void main() {
   group('matching helpers', () {
@@ -26,13 +27,16 @@ void main() {
     });
 
     test('extractParameters', () {
-      expect(extractParameters('/', '/'), {});
-      expect(extractParameters('/user/:id', '/user/1'), {'id': '1'});
-      expect(extractParameters('/user/:id', '/user'), {});
-      expect(extractParameters('/user/:id', '/user/1/order/3'), {'id': '1'});
+      expect(extractParameters('/', '/'), Parameters({}, {}));
+      expect(extractParameters('/user/:id', '/user/1'),
+          Parameters({'id': '1'}, {}));
+      expect(extractParameters('/user/:id', '/user'), Parameters({}, {}));
+      expect(extractParameters('/user/:id', '/user/1/order/3'),
+          Parameters({'id': '1'}, {}));
       expect(extractParameters('/user/:id/order/:orderId', '/user/1/order/3'),
-          {'id': '1', 'orderId': '3'});
-      expect(extractParameters('user/:id', 'user/1'), {'id': '1'});
+          Parameters({'id': '1', 'orderId': '3'}, {}));
+      expect(extractParameters(
+          'user/:id', 'user/1'), Parameters({'id': '1'}, {}));
     });
   });
 }

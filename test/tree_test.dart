@@ -14,11 +14,11 @@ void main() {
   group('RouteTree', () {
     test('Looks up routes', () {
       final routes = <Route>[
-        const Route(
+        Route(
           builder: emptyBuilder,
           path: '/',
         ),
-        const Route(
+        Route(
           builder: emptyBuilder,
           path: '/item/:id',
         ),
@@ -36,7 +36,7 @@ void main() {
 
     test('Looks up nested routes', () {
       final routes = [
-        const Route(
+        Route(
           builder: emptyBuilder,
           path: '/',
           children: [
