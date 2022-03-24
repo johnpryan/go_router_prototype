@@ -38,5 +38,58 @@ void main() {
         ),
       );
     });
+
+    testWidgets('Builds a Navigator if when RouteType is nestedNavigator',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        Builder(
+          builder: (context) {
+            late final BuildContext childContext;
+
+            final topNavigator = buildNavigator(
+              context,
+              RouteMatch(
+                routes: [
+                  Route(
+                    path: '/',
+                    nestedBuilder: (context, child) {
+                      return _ParentScreen(child: child);
+                    },
+                    type: RouteType.nested,
+                  ),
+                  Route(
+                    path: 'foo',
+                    builder: (context) {
+                      childContext = context;
+                      return const Placeholder();
+                    },
+                    type: RouteType.nestedNavigator,
+                  ),
+                ],
+                parameters: Parameters.empty(),
+              ),
+              () {},
+            );
+
+            expect(Navigator.of(childContext), isNot(topNavigator));
+            return const Placeholder();
+          },
+        ),
+      );
+    });
   });
+}
+
+class _ParentScreen extends StatelessWidget {
+  final Widget child;
+
+  const _ParentScreen({
+    required this.child,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
 }

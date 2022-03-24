@@ -11,6 +11,7 @@ import 'typedefs.dart';
 enum RouteType {
   stacked,
   nested,
+  nestedNavigator,
 }
 
 class Route {
@@ -35,7 +36,8 @@ class Route {
         assert((builder == null) != (nestedBuilder == null)),
         // The builder should match the route type
         assert(type == RouteType.stacked && builder != null ||
-            type == RouteType.nested && nestedBuilder != null);
+            type == RouteType.nested && nestedBuilder != null ||
+            type == RouteType.nestedNavigator && builder != null);
 
   @override
   bool operator ==(Object other) =>
