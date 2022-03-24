@@ -35,8 +35,14 @@ void main() {
           Parameters({'id': '1'}, {}));
       expect(extractParameters('/user/:id/order/:orderId', '/user/1/order/3'),
           Parameters({'id': '1', 'orderId': '3'}, {}));
-      expect(extractParameters(
-          'user/:id', 'user/1'), Parameters({'id': '1'}, {}));
+      expect(
+          extractParameters('user/:id', 'user/1'), Parameters({'id': '1'}, {}));
+    });
+    test('fillParameters', () {
+      expect(
+          fillParameters('/user/:id', Parameters({'id': '1'}, {})), '/user/1');
+      expect(fillParameters('/search', Parameters({}, {'q': 'dog'})),
+          '/search?q=dog');
     });
   });
 }

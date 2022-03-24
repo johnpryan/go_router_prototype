@@ -19,4 +19,7 @@ class Parameters {
 
   @override
   int get hashCode => hash2(_equality.hash(path), _equality.hash(query));
+
+  @override
+  String toString() => 'Parameters: $path $query';
 }

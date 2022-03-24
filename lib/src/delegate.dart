@@ -14,10 +14,8 @@ class TreeRouterDelegate extends RouterDelegate<Uri>
   final RouteTree _routeTree;
   late final RouteState _routeState;
 
-  TreeRouterDelegate(List<Route> routes, {String initialRoute = '/'})
-      : _routeTree = RouteTree(routes) {
-    _routeState = RouteState(_routeTree.get(initialRoute))
-      ..addListener(notifyListeners);
+  TreeRouterDelegate(List<Route> routes) : _routeTree = RouteTree(routes) {
+    _routeState = RouteState(null)..addListener(notifyListeners);
   }
 
   @override
@@ -30,9 +28,16 @@ class TreeRouterDelegate extends RouterDelegate<Uri>
   Widget build(BuildContext context) {
     return buildNavigator(
       context,
-      _routeState.match,
+      _routeState.match!,
       () => _routeState.pop(),
     );
+  }
+
+  @override
+  Uri get currentConfiguration {
+    final match = _routeState.match;
+    if (match == null) return Uri.parse('/');
+    return Uri.parse(match.currentRoutePath);
   }
 
   @override

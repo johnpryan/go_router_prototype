@@ -109,6 +109,58 @@ void main() {
       expect(find.text('AScreen'), findsOneWidget);
     });
   });
+
+  testWidgets('Displays the initial route immediately',
+      (WidgetTester tester) async {
+    final provider = _TestRouteInformationProvider(initialRoute: '/a');
+    final routes = <Route>[
+      Route(
+        path: '/',
+        builder: (context, state) => const _HomeScreen(),
+      ),
+      Route(
+        path: '/a',
+        builder: (context, state) => const _AScreen(),
+      ),
+    ];
+
+    await tester.pumpWidget(
+      _TestWidget(
+        routes: routes,
+        informationProvider: provider,
+      ),
+    );
+
+    expect(find.text('AScreen'), findsOneWidget);
+    await tester.pumpAndSettle();
+    expect(find.text('AScreen'), findsOneWidget);
+  });
+
+  testWidgets('Reports the correct information back to the Router',
+          (WidgetTester tester) async {
+        final provider = _TestRouteInformationProvider();
+        final routes = <Route>[
+          Route(
+            path: '/',
+            builder: (context, state) => const _HomeScreen(),
+          ),
+          Route(
+            path: '/user/:id',
+            builder: (context, state) => const _AScreen(),
+          ),
+        ];
+
+        final widget = _TestWidget(
+          routes: routes,
+          informationProvider: provider,
+        );
+
+        await tester.pumpWidget(widget);
+        provider.value = const RouteInformation(location: '/user/123');
+        await tester.pumpAndSettle();
+        final path = widget.routerDelegate.currentConfiguration.path;
+        expect(path, '/user/123');
+      });
 }
 
 class _HomeScreen extends StatelessWidget {
@@ -178,9 +230,13 @@ class _TestWidgetState<T> extends State<_TestWidget> {
 
 class _TestRouteInformationProvider extends RouteInformationProvider
     with ChangeNotifier {
+  RouteInformation _value;
+
+  _TestRouteInformationProvider({String initialRoute = '/'})
+      : _value = RouteInformation(location: initialRoute);
+
   @override
   RouteInformation get value => _value;
-  RouteInformation _value = const RouteInformation(location: '/');
 
   set value(RouteInformation value) {
     if (value == _value) {

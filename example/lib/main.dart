@@ -36,6 +36,8 @@ class TreeRouterDemo extends StatelessWidget {
     return MaterialApp.router(
       routerDelegate: _router.delegate,
       routeInformationParser: _router.parser,
+      routeInformationProvider: PlatformRouteInformationProvider(
+          initialRouteInformation: const RouteInformation(location: '/a')),
     );
   }
 }

@@ -3,11 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'match.dart';
 
 class RouteState extends ChangeNotifier {
-  RouteMatch _match;
+  RouteMatch? _match;
 
   RouteState(this._match);
 
-  set match(RouteMatch match) {
+  set match(RouteMatch? match) {
     // Don't notify listeners if the destination is the same
     if (_match == match) return;
 
@@ -15,10 +15,10 @@ class RouteState extends ChangeNotifier {
     notifyListeners();
   }
 
-  RouteMatch get match => _match;
+  RouteMatch? get match => _match;
 
   void pop() {
-    _match = match.pop();
+    _match = match?.pop();
     notifyListeners();
   }
 }
