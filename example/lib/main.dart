@@ -16,26 +16,17 @@ class TreeRouterDemo extends StatelessWidget {
     routes: [
       Route(
         path: '/a',
-        builder: (context, state) => const Screen(
-          name: 'Screen A',
-          linkTo: '/b',
-        ),
+        builder: (context, state) => const AScreen(),
         children: [
           Route(
             path: '/b',
-            builder: (context, state) => const Screen(
-              name: 'Screen B',
-              linkTo: '/c',
-            ),
+            builder: (context, state) => const BScreen(),
           ),
         ],
       ),
       Route(
         path: '/c',
-        builder: (context, state) => const Screen(
-          name: 'Screen C',
-          linkTo: '/a',
-        ),
+        builder: (context, state) => const CScreen(),
       ),
     ],
   );
@@ -47,6 +38,33 @@ class TreeRouterDemo extends StatelessWidget {
       routeInformationParser: _router.parser,
     );
   }
+}
+
+class AScreen extends Screen {
+  const AScreen({Key? key})
+      : super(
+          key: key,
+          name: 'Screen A',
+          linkTo: '/b',
+        );
+}
+
+class BScreen extends Screen {
+  const BScreen({Key? key})
+      : super(
+          key: key,
+          name: 'Screen B',
+          linkTo: '/c',
+        );
+}
+
+class CScreen extends Screen {
+  const CScreen({Key? key})
+      : super(
+          key: key,
+          name: 'Screen C',
+          linkTo: '/a',
+        );
 }
 
 class Screen extends StatelessWidget {
