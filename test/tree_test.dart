@@ -67,6 +67,26 @@ void main() {
       expect(lookup.routes, isNotEmpty);
       expect(lookup.routes, hasLength(2));
     });
+    test('Looks up nested routes with absolute paths', () {
+      final routes = [
+        Route(
+          builder: emptyBuilder,
+          path: '/a',
+          children: [
+            Route(
+              builder: emptyBuilder,
+              path: '/b',
+            ),
+          ],
+        ),
+      ];
+
+      final tree = RouteTree(routes);
+
+      var lookup = tree.get('/b');
+      expect(lookup.routes, isNotEmpty);
+      expect(lookup.routes, hasLength(2));
+    });
   });
 }
 

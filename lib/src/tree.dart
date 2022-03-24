@@ -21,8 +21,8 @@ class RouteTree {
   /// Recursively searches for an exact match. [prefixes] is the list of
   /// parent Routes that have matched so far.
   ///
-  /// This searches throughout the entire tree so that absolute paths are matched
-  /// regardless of whether the parent Route objects contain a match.
+  /// This searches throughout the entire tree so that absolute paths are
+  /// matched regardless of whether the parent Route objects contain a match.
   RouteMatch _getRecursive(
       List<Route> prefixes, List<Route> current, String path) {
     for (var route in current) {
@@ -43,16 +43,30 @@ class RouteTree {
           ? route.path
           : p.joinAll([...prefixStrings, route.path]);
 
-      if (hasMatch(routePathWithPrefixes, path)) {
-        prefixes.add(route);
-        final childMatches = _getRecursive(prefixes, route.children, path);
-        if (childMatches.routes.isNotEmpty) {
-          return childMatches;
+      if (hasMatch(routePathWithPrefixes, path)) { prefixes.add(route);
+        final childMatch = _getRecursive(prefixes, route.children, path);
+        if (childMatch.routes.isNotEmpty) {
+          // More of the route was matched, return that match instead
+          return childMatch;
         }
+
         // This is a relative route and no children matched, so return this
         // as the result.
         final parameters = extractParameters(routePathWithPrefixes, path);
         return RouteMatch(routes: prefixes, parameters: parameters);
+      } else {
+        // Even though this route didn't match, keep searching recursively for
+        // absolute paths
+
+        prefixes.add(route);
+        final childMatch = _getRecursive(prefixes, route.children, path);
+        if (childMatch.routes.isNotEmpty) {
+          return childMatch;
+        }
+
+        // No absolute paths were found, restore the prefixes list to its
+        // previous state.
+        prefixes.removeLast();
       }
     }
     return RouteMatch(routes: [], parameters: Parameters.empty());
