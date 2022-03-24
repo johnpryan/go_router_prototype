@@ -4,6 +4,7 @@
 
 import 'package:path/path.dart' as p;
 
+import 'match.dart';
 import 'route.dart';
 import 'matching.dart';
 
@@ -12,7 +13,7 @@ class RouteTree {
 
   RouteTree(this.routes);
 
-  List<Route> get(String path) {
+  RouteMatch get(String path) {
     return _getRecursive([], routes, path);
   }
 
@@ -21,12 +22,16 @@ class RouteTree {
   ///
   /// This searches throughout the entire tree so that absolute paths are matched
   /// regardless of whether the parent Route objects contain a match.
-  List<Route> _getRecursive(
+  RouteMatch _getRecursive(
       List<Route> prefixes, List<Route> current, String path) {
     for (var route in current) {
       if (hasExactMatch(route.path, path)) {
         prefixes.add(route);
-        return prefixes;
+        final parameters = extractParameters(route.path, path);
+        return RouteMatch(
+            routes: prefixes,
+            pathParameters: parameters.path,
+            queryParameters: parameters.query);
       }
     }
 
@@ -43,14 +48,18 @@ class RouteTree {
       if (hasMatch(routePathWithPrefixes, path)) {
         prefixes.add(route);
         final childMatches = _getRecursive(prefixes, route.children, path);
-        if (childMatches.isNotEmpty) {
+        if (childMatches.routes.isNotEmpty) {
           return childMatches;
         }
         // This is a relative route and no children matched, so return this
         // as the result.
-        return prefixes;
+        final parameters = extractParameters(routePathWithPrefixes, path);
+        return RouteMatch(
+            routes: prefixes,
+            pathParameters: parameters.path,
+            queryParameters: parameters.query);
       }
     }
-    return [];
+    return RouteMatch(routes: [], queryParameters: {}, pathParameters: {});
   }
 }

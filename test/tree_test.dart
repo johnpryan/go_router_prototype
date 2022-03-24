@@ -25,10 +25,11 @@ void main() {
       final tree = RouteTree(routes);
 
       var lookup = tree.get('/');
-      expect(lookup, [routes.first]);
+      expect(lookup.routes, [routes.first]);
 
       lookup = tree.get('/item/1');
-      expect(lookup, [routes[1]]);
+      expect(lookup.routes, [routes[1]]);
+      expect(lookup.pathParameters, {'id': '1'});
     });
 
     test('Looks up nested routes', () {
@@ -39,7 +40,7 @@ void main() {
           children: [
             Route(
               builder: _emptyBuilder,
-              path: 'books',
+              path: 'books/:bookId',
             ),
             Route(
               builder: _emptyBuilder,
@@ -52,16 +53,17 @@ void main() {
       final tree = RouteTree(routes);
 
       var lookup = tree.get('/');
-      expect(lookup, isNotEmpty);
-      expect(lookup, hasLength(1));
+      expect(lookup.routes, isNotEmpty);
+      expect(lookup.routes, hasLength(1));
 
-      lookup = tree.get('/books');
-      expect(lookup, isNotEmpty);
-      expect(lookup, hasLength(2));
+      lookup = tree.get('/books/234');
+      expect(lookup.routes, isNotEmpty);
+      expect(lookup.routes, hasLength(2));
+      expect(lookup.pathParameters['bookId'], '234');
 
       lookup = tree.get('/profile');
-      expect(lookup, isNotEmpty);
-      expect(lookup, hasLength(2));
+      expect(lookup.routes, isNotEmpty);
+      expect(lookup.routes, hasLength(2));
     });
   });
 }
