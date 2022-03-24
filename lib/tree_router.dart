@@ -10,6 +10,7 @@ import 'src/route.dart';
 
 export 'src/route.dart';
 export 'src/typedefs.dart';
+export 'src/state.dart';
 
 class TreeRouter {
   final TreeRouterDelegate delegate;

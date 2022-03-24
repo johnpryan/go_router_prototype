@@ -5,6 +5,7 @@
 import 'package:flutter/widgets.dart' hide Route;
 import 'package:tree_router/src/builder.dart';
 
+import 'inheritance.dart';
 import 'route.dart';
 import 'state.dart';
 import 'tree.dart';
@@ -26,10 +27,13 @@ class TreeRouterDelegate extends RouterDelegate<Uri>
 
   @override
   Widget build(BuildContext context) {
-    return buildNavigator(
-      context,
-      _routeState.match!,
-      () => _routeState.pop(),
+    return RouteStateScope(
+      routeState: _routeState,
+      child: buildNavigator(
+        context,
+        _routeState.match!,
+        () => _routeState.pop(),
+      ),
     );
   }
 
