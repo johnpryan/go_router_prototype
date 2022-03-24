@@ -29,7 +29,7 @@ void main() {
 
       lookup = tree.get('/item/1');
       expect(lookup.routes, [routes[1]]);
-      expect(lookup.pathParameters, {'id': '1'});
+      expect(lookup.parameters.path, {'id': '1'});
     });
 
     test('Looks up nested routes', () {
@@ -59,7 +59,7 @@ void main() {
       lookup = tree.get('/books/234');
       expect(lookup.routes, isNotEmpty);
       expect(lookup.routes, hasLength(2));
-      expect(lookup.pathParameters['bookId'], '234');
+      expect(lookup.parameters.path['bookId'], '234');
 
       lookup = tree.get('/profile');
       expect(lookup.routes, isNotEmpty);

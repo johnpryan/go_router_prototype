@@ -1,7 +1,6 @@
-import 'package:quiver/core.dart';
-import 'package:collection/collection.dart';
-
 import 'package:path_to_regexp/path_to_regexp.dart';
+
+import 'parameters.dart';
 
 bool hasMatch(String template, String path) {
   return _hasMatch(template, path, true);
@@ -28,21 +27,3 @@ Parameters extractParameters(String template, String path) {
   return Parameters(extract(parameters, match), queryParams);
 }
 
-class Parameters {
-  final Map<String, String> path;
-  final Map<String, String> query;
-
-  Parameters(this.path, this.query);
-
-  static const _equality = MapEquality();
-
-  @override
-  bool operator ==(Object other) {
-    return other is Parameters &&
-        _equality.equals(path, other.path) &&
-        _equality.equals(query, other.query);
-  }
-
-  @override
-  int get hashCode => hash2(_equality.hash(path), _equality.hash(query));
-}

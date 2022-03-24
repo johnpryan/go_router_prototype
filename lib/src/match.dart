@@ -1,13 +1,12 @@
+import 'parameters.dart';
 import 'route.dart';
 
 class RouteMatch {
-  List<Route> routes;
-  Map<String, String> pathParameters;
-  Map<String, String> queryParameters;
+  final List<Route> routes;
+  final Parameters parameters;
 
   RouteMatch({
     required this.routes,
-    required this.pathParameters,
-    required this.queryParameters,
+    required this.parameters,
   });
 }

@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:path/path.dart' as p;
+import 'package:tree_router/src/parameters.dart';
 
 import 'match.dart';
 import 'route.dart';
@@ -28,10 +29,7 @@ class RouteTree {
       if (hasExactMatch(route.path, path)) {
         prefixes.add(route);
         final parameters = extractParameters(route.path, path);
-        return RouteMatch(
-            routes: prefixes,
-            pathParameters: parameters.path,
-            queryParameters: parameters.query);
+        return RouteMatch(routes: prefixes, parameters: parameters);
       }
     }
 
@@ -54,12 +52,9 @@ class RouteTree {
         // This is a relative route and no children matched, so return this
         // as the result.
         final parameters = extractParameters(routePathWithPrefixes, path);
-        return RouteMatch(
-            routes: prefixes,
-            pathParameters: parameters.path,
-            queryParameters: parameters.query);
+        return RouteMatch(routes: prefixes, parameters: parameters);
       }
     }
-    return RouteMatch(routes: [], queryParameters: {}, pathParameters: {});
+    return RouteMatch(routes: [], parameters: Parameters.empty());
   }
 }
