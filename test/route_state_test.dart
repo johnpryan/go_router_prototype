@@ -24,11 +24,50 @@ void main() {
         ),
       ];
 
-      await tester.pumpWidget(_TestApp(
-        routes: routes,
-      ));
+      await tester.pumpWidget(
+        _TestApp(
+          routes: routes,
+        ),
+      );
 
       expect(RouteState.of(childContext), isNotNull);
+    });
+  });
+  group('RouteState.goTo()', () {
+    testWidgets('Navigates to the correct screen', (WidgetTester tester) async {
+      late final BuildContext childContext;
+      final routes = [
+        Route(
+          path: '/',
+          builder: (context, routeMatch) {
+            return Builder(
+              builder: (BuildContext context) {
+                childContext = context;
+                return const Text('Home');
+              },
+            );
+          },
+        ),
+        Route(
+          path: '/a',
+          builder: (context, routeMatch) {
+            return const Text('Screen A');
+          },
+        ),
+      ];
+
+      await tester.pumpWidget(
+        _TestApp(
+          routes: routes,
+        ),
+      );
+
+      expect(find.text('Home'), findsOneWidget);
+      final routeState = RouteState.of(childContext);
+      if (routeState == null) fail('RouteState.of() returned null.');
+      routeState.goTo('/a');
+      await tester.pumpAndSettle();
+      expect(find.text('Screen A'), findsOneWidget);
     });
   });
 }

@@ -8,15 +8,14 @@ import 'package:tree_router/src/builder.dart';
 import 'inheritance.dart';
 import 'route.dart';
 import 'state.dart';
-import 'tree.dart';
 
 class TreeRouterDelegate extends RouterDelegate<Uri>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<Uri> {
-  final RouteTree _routeTree;
   late final RouteState _routeState;
 
-  TreeRouterDelegate(List<Route> routes) : _routeTree = RouteTree(routes) {
-    _routeState = RouteState(null)..addListener(notifyListeners);
+  TreeRouterDelegate(List<Route> routes) {
+    _routeState = RouteState(routes)
+      ..addListener(notifyListeners);
   }
 
   @override
@@ -49,7 +48,6 @@ class TreeRouterDelegate extends RouterDelegate<Uri>
 
   @override
   Future<void> setNewRoutePath(Uri configuration) async {
-    final match = _routeTree.get(configuration.path);
-    _routeState.match = match;
+    _routeState.goTo(configuration.path);
   }
 }

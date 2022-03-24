@@ -1,13 +1,15 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/widgets.dart' hide Route;
 import 'package:tree_router/src/inheritance.dart';
 
 import 'match.dart';
+import 'tree.dart';
+import 'route.dart';
 
 class RouteState extends ChangeNotifier {
+  final RouteTree _routeTree;
   RouteMatch? _match;
 
-  RouteState(this._match);
+  RouteState(List<Route> routes) : _routeTree = RouteTree(routes);
 
   set match(RouteMatch? match) {
     // Don't notify listeners if the destination is the same
@@ -22,6 +24,10 @@ class RouteState extends ChangeNotifier {
   void pop() {
     _match = match?.pop();
     notifyListeners();
+  }
+
+  void goTo(String path) {
+    match = _routeTree.get(path);
   }
 
   static RouteState? of(BuildContext context) {

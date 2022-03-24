@@ -94,7 +94,7 @@ class Screen extends StatelessWidget {
             TextButton(
               child: Text('Go to $linkTo'),
               onPressed: () {
-                // todo TreeRouter.of(context).goTo()
+                RouteState.of(context)!.goTo(linkTo);
               },
             ),
           ],
