@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'route.dart';
+import 'matching.dart';
 
 class RouteTree {
   List<Route> routes;
@@ -10,12 +11,15 @@ class RouteTree {
   RouteTree(this.routes);
 
   Route? get(String path) {
-    return _getRecursive(routes, path);
+    return _getRecursive([], routes, path);
   }
 
-  Route? _getRecursive(List<Route> routes, String path) {
+  // Recursively searches for an exact match. [prefix] is a list of the
+  // route path templates that have been matched for any parent Route objects.
+  // This allows both relative and absolute paths to be defined.
+  Route? _getRecursive(List<String> prefix, List<Route> routes, String path) {
     for (var route in routes) {
-      if (route.path == path) {
+      if (hasExactMatch(route.path, path)) {
         return route;
       }
     }

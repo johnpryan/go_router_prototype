@@ -12,24 +12,54 @@ void main() {
   group('RouteTree', () {
     test('Looks up routes', () {
       final routes = <Route>[
-        Route(
-          builder: (context, state) => const EmptyWidget(),
+        const Route(
+          builder: _emptyBuilder,
           path: '/',
         ),
-        Route(
-          builder: (context, state) => const EmptyWidget(),
+        const Route(
+          builder: _emptyBuilder,
           path: '/item/:id',
         ),
       ];
 
-      var lookup = RouteTree(routes).get('/');
+      final tree = RouteTree(routes);
+
+      var lookup = tree.get('/');
       expect(lookup, routes.first);
 
-      lookup = RouteTree(routes).get('/item/1');
+      lookup = tree.get('/item/1');
       expect(lookup, routes[1]);
+    });
+
+    test('Looks up nested routes', () {
+      final routes = [
+        const Route(
+          builder: _emptyBuilder,
+          path: '/',
+          children: [
+            Route(
+              builder: _emptyBuilder,
+              path: 'books',
+            ),
+            Route(
+              builder: _emptyBuilder,
+              path: 'profile',
+            ),
+          ],
+        ),
+      ];
+      final tree = RouteTree(routes);
+
+      var lookup = tree.get('/');
+      expect(lookup, isNotNull);
+
+      lookup = tree.get('/book');
+      expect(lookup, isNotNull);
     });
   });
 }
+
+Widget _emptyBuilder(context, state) => const EmptyWidget();
 
 class EmptyWidget extends StatelessWidget {
   const EmptyWidget({Key? key}) : super(key: key);

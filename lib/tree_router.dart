@@ -9,6 +9,7 @@ import 'src/parser.dart';
 import 'src/route.dart';
 
 export 'src/route.dart';
+export 'src/typedefs.dart';
 
 class TreeRouter {
   final TreeRouterDelegate delegate;
