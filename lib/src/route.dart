@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:quiver/core.dart';
+
 import 'redirect.dart';
 import 'typedefs.dart';
 
@@ -24,4 +26,19 @@ class Route {
     this.type = RouteType.stacked,
     this.redirect,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      other is Route &&
+      other.path == path &&
+      other.builder == builder &&
+      other.type == type &&
+      other.children == children &&
+      other.redirect == redirect;
+
+  @override
+  int get hashCode => path.hashCode;
+
+  @override
+  String toString() => 'Route: $path';
 }
