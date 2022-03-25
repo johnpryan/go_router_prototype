@@ -75,19 +75,6 @@ class RouteTree {
         // as the result.
         final parameters = extractParameters(routePathWithPrefixes, path);
         return RouteMatch(routes: prefixes, parameters: parameters);
-      } else {
-        // Even though this route didn't match, keep searching recursively for
-        // absolute paths
-
-        prefixes.add(route);
-        final childMatch = _getRecursive(prefixes, route.children, path);
-        if (childMatch.routes.isNotEmpty) {
-          return childMatch;
-        }
-
-        // No absolute paths were found, restore the prefixes list to its
-        // previous state.
-        prefixes.removeLast();
       }
     }
     return RouteMatch(routes: [], parameters: Parameters.empty());
