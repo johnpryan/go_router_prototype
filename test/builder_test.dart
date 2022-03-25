@@ -23,7 +23,8 @@ void main() {
       );
 
       final context = await _getBuildContext(tester);
-      final result = buildMatch(context, routeMatch, () {});
+      final key = GlobalKey<NavigatorState>();
+      final result = buildMatch(context, routeMatch, () {}, key);
 
       expect(result, const TypeMatcher<Navigator>());
       expect(result.pages, hasLength(2));

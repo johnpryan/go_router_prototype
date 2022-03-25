@@ -14,8 +14,7 @@ class TreeRouterDelegate extends RouterDelegate<Uri>
   late final RouteState _routeState;
 
   TreeRouterDelegate(List<Route> routes) {
-    _routeState = RouteState(routes)
-      ..addListener(notifyListeners);
+    _routeState = RouteState(routes)..addListener(notifyListeners);
   }
 
   @override
@@ -28,15 +27,14 @@ class TreeRouterDelegate extends RouterDelegate<Uri>
   Widget build(BuildContext context) {
     return RouteStateScope(
       routeState: _routeState,
-      child: Builder(
-        builder: (context) {
-          return buildMatch(
-            context,
-            _routeState.match!,
-            () => _routeState.pop(),
-          );
-        }
-      ),
+      child: Builder(builder: (context) {
+        return buildMatch(
+          context,
+          _routeState.match!,
+          () => _routeState.pop(),
+          navigatorKey,
+        );
+      }),
     );
   }
 

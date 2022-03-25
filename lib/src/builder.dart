@@ -4,15 +4,16 @@ import 'package:tree_router/src/typedefs.dart';
 
 import 'route.dart' as r;
 
-Navigator buildMatch(
-    BuildContext context, RouteMatch routeMatch, VoidCallback pop) {
-  return buildMatchRecursive(context, routeMatch, 0, pop).widget as Navigator;
+Navigator buildMatch(BuildContext context, RouteMatch routeMatch,
+    VoidCallback pop, Key navigatorKey) {
+  return buildMatchRecursive(context, routeMatch, 0, pop, navigatorKey).widget
+      as Navigator;
 }
 
 // Builds a Navigator for all matched Routes from [startIndex] until the end of
 // the the list, or if a route is a NestedNavigatorRoute
 _RecursiveBuildResult buildMatchRecursive(BuildContext context,
-    RouteMatch routeMatch, int startIndex, VoidCallback pop,
+    RouteMatch routeMatch, int startIndex, VoidCallback pop, Key navigatorKey,
     {Page? firstPage}) {
   final pages = <Page>[];
   if (firstPage != null) pages.add(firstPage);
@@ -31,8 +32,9 @@ _RecursiveBuildResult buildMatchRecursive(BuildContext context,
       final page = _buildPage(context, route.builder, routeMatch);
       // Build the inner Navigator it by recursively calling this method and
       // returning the result directly.
-      final innerNav =
-          buildMatchRecursive(context, routeMatch, i + 1, pop, firstPage: page);
+      final key = ValueKey(route);
+      final innerNav = buildMatchRecursive(context, routeMatch, i + 1, pop, key,
+          firstPage: page);
       return innerNav;
     }
   }
@@ -42,6 +44,7 @@ _RecursiveBuildResult buildMatchRecursive(BuildContext context,
   }
 
   final navigator = Navigator(
+    key: navigatorKey,
     pages: pages,
     onPopPage: (Route<dynamic> route, dynamic result) {
       if (!route.didPop(result)) {
@@ -82,7 +85,8 @@ _RecursiveBuildResult buildSwitcherRecursive(
     childWidget = result.widget;
     i = result.newIndex;
   } else if (child is r.NestedNavigatorRoute) {
-    final result = buildMatchRecursive(context, routeMatch, i + 1, pop);
+    final key = ValueKey(child);
+    final result = buildMatchRecursive(context, routeMatch, i + 1, pop, key);
     childWidget = result.widget;
     i = result.newIndex;
   } else if (child == null) {
