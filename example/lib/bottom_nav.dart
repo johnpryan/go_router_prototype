@@ -14,32 +14,31 @@ class BottomNavigationBarDemo extends StatelessWidget {
 
   final _router = TreeRouter(
     routes: [
-      Route(
+      SwitcherRoute(
         path: '/',
-        nestedBuilder: (context, child) => AppScaffold(child: child),
-        type: RouteType.nested,
+        builder: (context, child) => AppScaffold(child: child),
         children: [
-          Route(
+          NestedNavigatorRoute(
             path: 'a',
             builder: (context) => const Screen(
               title: 'Screen A',
               key: ValueKey('A'),
             ),
             children: [
-              Route(
+              StackedRoute(
                 path: 'details',
                 builder: (context) => const DetailsScreen(label: 'A'),
               ),
             ],
           ),
-          Route(
+          NestedNavigatorRoute(
             path: 'b',
             builder: (context) => const Screen(
               title: 'Screen B',
               key: ValueKey('B'),
             ),
             children: [
-              Route(
+              StackedRoute(
                 path: 'details',
                 builder: (context) => const DetailsScreen(label: 'B'),
               ),

@@ -21,8 +21,8 @@ void main() {
               context,
               RouteMatch(
                 routes: [
-                  Route(path: '/', builder: emptyBuilder),
-                  Route(path: '/foo', builder: emptyBuilder),
+                  StackedRoute(path: '/', builder: emptyBuilder),
+                  StackedRoute(path: '/foo', builder: emptyBuilder),
                 ],
                 parameters: Parameters.empty(),
               ),

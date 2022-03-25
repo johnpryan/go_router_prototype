@@ -4,11 +4,15 @@
 
 import 'package:flutter/widgets.dart';
 
-typedef TreeRouterBuilder = Widget Function(
+typedef StackedRouteBuilder = Widget Function(
   BuildContext context,
 );
 
-typedef NestedTreeRouterBuilder = Widget Function(
+typedef SwitcherRouteBuilder = Widget Function(
   BuildContext context,
   Widget child,
+);
+
+typedef NestedNavigatorRouteBuilder = Widget Function(
+  BuildContext context,
 );

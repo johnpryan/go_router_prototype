@@ -13,7 +13,7 @@ void main() {
     testWidgets('Returns a route state object', (WidgetTester tester) async {
       late final BuildContext childContext;
       final routes = [
-        Route(
+        StackedRoute(
           path: '/',
           builder: (context) => Builder(
             builder: (BuildContext context) {
@@ -38,7 +38,7 @@ void main() {
     testWidgets('Navigates to the correct screen', (WidgetTester tester) async {
       late final BuildContext childContext;
       final routes = [
-        Route(
+        StackedRoute(
           path: '/',
           builder: (context) {
             return Builder(
@@ -49,7 +49,7 @@ void main() {
             );
           },
         ),
-        Route(
+        StackedRoute(
           path: '/a',
           builder: (context) {
             return const Text('Screen A');

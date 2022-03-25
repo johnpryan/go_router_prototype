@@ -14,9 +14,9 @@ void main() {
     test('currentRoutePath combines the paths for the matched routes', () {
       final match = RouteMatch(
         routes: [
-          Route(path: '/', builder: emptyBuilder),
-          Route(path: 'a', builder: emptyBuilder),
-          Route(path: 'b', builder: emptyBuilder),
+          StackedRoute(path: '/', builder: emptyBuilder),
+          StackedRoute(path: 'a', builder: emptyBuilder),
+          StackedRoute(path: 'b', builder: emptyBuilder),
         ],
         parameters: Parameters({}, {}),
       );
@@ -26,8 +26,8 @@ void main() {
     test('currentRoutePath includes parameters', () {
       final match = RouteMatch(
         routes: [
-          Route(path: '/', builder: emptyBuilder),
-          Route(path: 'user/:id', builder: emptyBuilder),
+          StackedRoute(path: '/', builder: emptyBuilder),
+          StackedRoute(path: 'user/:id', builder: emptyBuilder),
         ],
         parameters: Parameters({'id': '123'}, {}),
       );

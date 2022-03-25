@@ -5,37 +5,49 @@
 import 'package:collection/collection.dart';
 import 'package:quiver/core.dart';
 
-import 'redirect.dart';
 import 'typedefs.dart';
 
-enum RouteType {
-  stacked,
-  nested,
+class StackedRoute extends Route {
+  final StackedRouteBuilder builder;
+
+  StackedRoute({
+    required String path,
+    required this.builder,
+    List<Route> children = const [],
+  }) : super(path: path, children: children);
 }
 
-class Route {
-  final String path;
-  final TreeRouterBuilder? builder;
-  final NestedTreeRouterBuilder? nestedBuilder;
-  final List<Route> children;
-  final RouteType type;
-  final Redirect? redirect;
+class SwitcherRoute extends Route {
+  final SwitcherRouteBuilder builder;
 
+  SwitcherRoute({
+    required String path,
+    required this.builder,
+    List<Route> children = const [],
+  }) : super(path: path, children: children);
+}
+
+class NestedNavigatorRoute extends Route {
+  final NestedNavigatorRouteBuilder builder;
+
+  NestedNavigatorRoute({
+    required String path,
+    required this.builder,
+    List<Route> children = const [],
+  }) : super(path: path, children: children);
+}
+
+// TODO rename to RouteBase
+abstract class Route {
   static const _listEquality = ListEquality();
+
+  final String path;
+  final List<Route> children;
 
   const Route({
     required this.path,
-    this.builder,
-    this.nestedBuilder,
     this.children = const [],
-    this.type = RouteType.stacked,
-    this.redirect,
-  })  :
-        // Exactly one builder should be provided
-        assert((builder == null) != (nestedBuilder == null)),
-        // The builder should match the route type
-        assert(type == RouteType.stacked && builder != null ||
-            type == RouteType.nested && nestedBuilder != null);
+  });
 
   @override
   bool operator ==(Object other) =>

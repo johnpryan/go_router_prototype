@@ -14,11 +14,11 @@ void main() {
   group('RouteTree', () {
     test('Looks up routes', () {
       final routes = <Route>[
-        Route(
+        StackedRoute(
           builder: emptyBuilder,
           path: '/',
         ),
-        Route(
+        StackedRoute(
           builder: emptyBuilder,
           path: '/item/:id',
         ),
@@ -36,15 +36,15 @@ void main() {
 
     test('Looks up nested routes', () {
       final routes = [
-        Route(
+        StackedRoute(
           builder: emptyBuilder,
           path: '/',
           children: [
-            Route(
+            StackedRoute(
               builder: emptyBuilder,
               path: 'books/:bookId',
             ),
-            Route(
+            StackedRoute(
               builder: emptyBuilder,
               path: 'profile',
             ),
@@ -69,11 +69,11 @@ void main() {
     });
     test('Looks up nested routes with absolute paths', () {
       final routes = [
-        Route(
+        StackedRoute(
           builder: emptyBuilder,
           path: '/a',
           children: [
-            Route(
+            StackedRoute(
               builder: emptyBuilder,
               path: '/b',
             ),

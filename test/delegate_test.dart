@@ -8,7 +8,7 @@ void main() {
   group('TreeRouterDelegate', () {
     testWidgets('displays the home screen', (WidgetTester tester) async {
       final routes = <Route>[
-        Route(
+        StackedRoute(
           path: '/',
           builder: (context) => const _HomeScreen(),
         ),
@@ -26,11 +26,11 @@ void main() {
         (WidgetTester tester) async {
       final provider = _TestRouteInformationProvider();
       final routes = <Route>[
-        Route(
+        StackedRoute(
           path: '/',
           builder: (context) => const _HomeScreen(),
         ),
-        Route(
+        StackedRoute(
           path: '/a',
           builder: (context) => const _AScreen(),
         ),
@@ -53,11 +53,11 @@ void main() {
         (WidgetTester tester) async {
       final provider = _TestRouteInformationProvider();
       final routes = <Route>[
-        Route(
+        StackedRoute(
           path: '/',
           builder: (context) => const _HomeScreen(),
           children: [
-            Route(
+            StackedRoute(
               path: 'a',
               builder: (context) => const _AScreen(),
             ),
@@ -82,13 +82,11 @@ void main() {
         (WidgetTester tester) async {
       final provider = _TestRouteInformationProvider();
       final routes = <Route>[
-        Route(
+        SwitcherRoute(
           path: '/',
-          nestedBuilder: (context, child) =>
-              _NestedParentScreen(child: child),
-          type: RouteType.nested,
+          builder: (context, child) => _NestedParentScreen(child: child),
           children: [
-            Route(
+            StackedRoute(
               path: 'a',
               builder: (context) => const _AScreen(),
             ),
@@ -114,11 +112,11 @@ void main() {
       (WidgetTester tester) async {
     final provider = _TestRouteInformationProvider(initialRoute: '/a');
     final routes = <Route>[
-      Route(
+      StackedRoute(
         path: '/',
         builder: (context) => const _HomeScreen(),
       ),
-      Route(
+      StackedRoute(
         path: '/a',
         builder: (context) => const _AScreen(),
       ),
@@ -137,30 +135,30 @@ void main() {
   });
 
   testWidgets('Reports the correct information back to the Router',
-          (WidgetTester tester) async {
-        final provider = _TestRouteInformationProvider();
-        final routes = <Route>[
-          Route(
-            path: '/',
-            builder: (context) => const _HomeScreen(),
-          ),
-          Route(
-            path: '/user/:id',
-            builder: (context) => const _AScreen(),
-          ),
-        ];
+      (WidgetTester tester) async {
+    final provider = _TestRouteInformationProvider();
+    final routes = <Route>[
+      StackedRoute(
+        path: '/',
+        builder: (context) => const _HomeScreen(),
+      ),
+      StackedRoute(
+        path: '/user/:id',
+        builder: (context) => const _AScreen(),
+      ),
+    ];
 
-        final widget = _TestWidget(
-          routes: routes,
-          informationProvider: provider,
-        );
+    final widget = _TestWidget(
+      routes: routes,
+      informationProvider: provider,
+    );
 
-        await tester.pumpWidget(widget);
-        provider.value = const RouteInformation(location: '/user/123');
-        await tester.pumpAndSettle();
-        final path = widget.routerDelegate.currentConfiguration.path;
-        expect(path, '/user/123');
-      });
+    await tester.pumpWidget(widget);
+    provider.value = const RouteInformation(location: '/user/123');
+    await tester.pumpAndSettle();
+    final path = widget.routerDelegate.currentConfiguration.path;
+    expect(path, '/user/123');
+  });
 }
 
 class _HomeScreen extends StatelessWidget {

@@ -14,12 +14,11 @@ class NestingDemo extends StatelessWidget {
 
   final _router = TreeRouter(
     routes: [
-      Route(
+      SwitcherRoute(
         path: '/a',
-        nestedBuilder: (context, child) => HomeScreen(child: child),
-        type: RouteType.nested,
+        builder: (context, child) => HomeScreen(child: child),
         children: [
-          Route(
+          StackedRoute(
             path: '/b',
             builder: (context) => const BScreen(),
           ),

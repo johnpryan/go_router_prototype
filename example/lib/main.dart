@@ -14,17 +14,17 @@ class TreeRouterDemo extends StatelessWidget {
 
   final _router = TreeRouter(
     routes: [
-      Route(
+      StackedRoute(
         path: '/a',
         builder: (context) => const AScreen(),
         children: [
-          Route(
+          StackedRoute(
             path: '/b',
             builder: (context) => const BScreen(),
           ),
         ],
       ),
-      Route(
+      StackedRoute(
         path: '/c',
         builder: (context) => const CScreen(),
       ),
