@@ -22,7 +22,7 @@ void main() {
       expect(find.text('Home Screen'), findsOneWidget);
     });
 
-    testWidgets('switches between top-level routes',
+    testWidgets('Displays top-level routes',
         (WidgetTester tester) async {
       final provider = _TestRouteInformationProvider();
       final routes = <Route>[
@@ -49,7 +49,8 @@ void main() {
       expect(find.text('AScreen'), findsOneWidget);
     });
 
-    testWidgets('Adds pages to the Navigator for sub-routes',
+    testWidgets(
+        'StackedRoute adds pages to the Navigator for the active sub-route',
         (WidgetTester tester) async {
       final provider = _TestRouteInformationProvider();
       final routes = <Route>[
@@ -78,13 +79,13 @@ void main() {
       expect(find.text('AScreen'), findsOneWidget);
     });
 
-    testWidgets('Adds sub-routes to the subtree if the type is nested',
+    testWidgets('SwitcherRoute displays the child of the active sub-route',
         (WidgetTester tester) async {
       final provider = _TestRouteInformationProvider();
       final routes = <Route>[
         SwitcherRoute(
           path: '/',
-          builder: (context, child) => _NestedParentScreen(child: child),
+          builder: (context, child) => _SwitcherParentScreen(child: child),
           children: [
             StackedRoute(
               path: 'a',
@@ -179,10 +180,10 @@ class _AScreen extends StatelessWidget {
   }
 }
 
-class _NestedParentScreen extends StatelessWidget {
+class _SwitcherParentScreen extends StatelessWidget {
   final Widget child;
 
-  const _NestedParentScreen({
+  const _SwitcherParentScreen({
     Key? key,
     required this.child,
   }) : super(key: key);

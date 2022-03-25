@@ -34,7 +34,7 @@ void main() {
       expect(lookup.parameters.path, {'id': '1'});
     });
 
-    test('Looks up nested routes', () {
+    test('Looks up child routes', () {
       final routes = [
         StackedRoute(
           builder: emptyBuilder,
@@ -67,7 +67,8 @@ void main() {
       expect(lookup.routes, isNotEmpty);
       expect(lookup.routes, hasLength(2));
     });
-    test('Looks up nested routes with absolute paths', () {
+
+    test('Looks up child routes with absolute paths', () {
       final routes = [
         StackedRoute(
           builder: emptyBuilder,
