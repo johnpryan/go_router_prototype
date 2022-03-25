@@ -26,26 +26,7 @@ void main() {
       final result = buildMatch(context, routeMatch, () {});
 
       expect(result, const TypeMatcher<Navigator>());
-      final navigator = result as Navigator;
-      expect(navigator.pages, hasLength(2));
-    });
-  });
-
-  group('buildMatchRecursive', () {
-    testWidgets('returns a Navigator', (WidgetTester tester) async {
-      final routeMatch = RouteMatch(
-        routes: [
-          StackedRoute(path: '/', builder: emptyBuilder),
-        ],
-        parameters: Parameters.empty(),
-      );
-
-      final context = await _getBuildContext(tester);
-      final result = buildMatchRecursive(context, routeMatch, 0, () {});
-
-      expect(result, const TypeMatcher<Navigator>());
-      final navigator = result as Navigator;
-      expect(navigator.pages, hasLength(1));
+      expect(result.pages, hasLength(2));
     });
   });
 }

@@ -4,34 +4,44 @@ import 'package:tree_router/src/typedefs.dart';
 
 import 'route.dart' as r;
 
-Widget buildMatch(
+Navigator buildMatch(
     BuildContext context, RouteMatch routeMatch, VoidCallback pop) {
-  return buildMatchRecursive(context, routeMatch, 0, pop);
+  return buildMatchRecursive(context, routeMatch, 0, pop).widget as Navigator;
 }
 
 // Builds a Navigator for all matched Routes from [startIndex] until the end of
 // the the list, or if a route is a NestedNavigatorRoute
-Widget buildMatchRecursive(BuildContext context, RouteMatch routeMatch,
-    int startIndex, VoidCallback pop) {
+_RecursiveBuildResult buildMatchRecursive(BuildContext context,
+    RouteMatch routeMatch, int startIndex, VoidCallback pop,
+    {Page? firstPage}) {
   final pages = <Page>[];
+  if (firstPage != null) pages.add(firstPage);
   for (var i = startIndex; i < routeMatch.routes.length; i++) {
     final route = routeMatch.routes[i];
     if (route is r.StackedRoute) {
       final page = _buildPage(context, route.builder, routeMatch);
       pages.add(page);
     } else if (route is r.SwitcherRoute) {
-      final result = buildSwitcherRecursive(context, routeMatch, i);
+      final result = buildSwitcherRecursive(context, routeMatch, i, pop);
       final child = result.widget;
       pages.add(_pageForPlatform(child: child));
       i = result.newIndex;
     } else if (route is r.NestedNavigatorRoute) {
-      // TODO: handle pop callback correctly.
-      final childWidget = buildMatchRecursive(context, routeMatch, i + 1, pop);
-      pages.add(_pageForPlatform(child: childWidget));
-      break;
+      // Build the first page to display
+      final page = _buildPage(context, route.builder, routeMatch);
+      // Build the inner Navigator it by recursively calling this method and
+      // returning the result directly.
+      final innerNav =
+          buildMatchRecursive(context, routeMatch, i + 1, pop, firstPage: page);
+      return innerNav;
     }
   }
-  return Navigator(
+
+  if (pages.isEmpty) {
+    throw ('Attempt to build a Navigator was built with an empty pages list');
+  }
+
+  final navigator = Navigator(
     pages: pages,
     onPopPage: (Route<dynamic> route, dynamic result) {
       if (!route.didPop(result)) {
@@ -41,17 +51,19 @@ Widget buildMatchRecursive(BuildContext context, RouteMatch routeMatch,
       return true;
     },
   );
+
+  return _RecursiveBuildResult(navigator, routeMatch.routes.length);
 }
 
-class _SwitcherBuildResult {
+class _RecursiveBuildResult {
   final Widget widget;
   final int newIndex;
 
-  _SwitcherBuildResult(this.widget, this.newIndex);
+  _RecursiveBuildResult(this.widget, this.newIndex);
 }
 
-_SwitcherBuildResult buildSwitcherRecursive(
-    BuildContext context, RouteMatch routeMatch, int i) {
+_RecursiveBuildResult buildSwitcherRecursive(
+    BuildContext context, RouteMatch routeMatch, int i, VoidCallback pop) {
   final parent = routeMatch.routes[i] as r.SwitcherRoute;
   late final r.Route? child;
 
@@ -66,12 +78,13 @@ _SwitcherBuildResult buildSwitcherRecursive(
     childWidget = child.builder(context);
     i++;
   } else if (child is r.SwitcherRoute) {
-    final result = buildSwitcherRecursive(context, routeMatch, i+1);
+    final result = buildSwitcherRecursive(context, routeMatch, i + 1, pop);
     childWidget = result.widget;
     i = result.newIndex;
   } else if (child is r.NestedNavigatorRoute) {
-    childWidget = child.builder(context);
-    i++;
+    final result = buildMatchRecursive(context, routeMatch, i + 1, pop);
+    childWidget = result.widget;
+    i = result.newIndex;
   } else if (child == null) {
     childWidget = const SizedBox.shrink();
     i++;
@@ -79,7 +92,7 @@ _SwitcherBuildResult buildSwitcherRecursive(
 
   final parentWidget = parent.builder(context, childWidget);
 
-  return _SwitcherBuildResult(parentWidget, i);
+  return _RecursiveBuildResult(parentWidget, i);
 }
 
 Page _pageForPlatform({required Widget child}) {

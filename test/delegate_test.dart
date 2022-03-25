@@ -22,8 +22,7 @@ void main() {
       expect(find.text('Home Screen'), findsOneWidget);
     });
 
-    testWidgets('Displays top-level routes',
-        (WidgetTester tester) async {
+    testWidgets('Displays top-level routes', (WidgetTester tester) async {
       final provider = _TestRouteInformationProvider();
       final routes = <Route>[
         StackedRoute(
@@ -159,6 +158,50 @@ void main() {
     await tester.pumpAndSettle();
     final path = widget.routerDelegate.currentConfiguration.path;
     expect(path, '/user/123');
+  });
+
+  testWidgets('Builds NestedNavigatorRoutes correctly',
+      (WidgetTester tester) async {
+    final provider = _TestRouteInformationProvider();
+    final routes = <Route>[
+      SwitcherRoute(
+        path: '/',
+        builder: (context, child) => Scaffold(
+          body: Column(
+            children: [
+              const Text('Parent screen'),
+              Expanded(child: child),
+            ],
+          ),
+        ),
+        children: [
+          NestedNavigatorRoute(
+            path: 'a',
+            builder: (_) =>
+                const Text('First screen on the nested a Navigator'),
+            children: [
+              StackedRoute(
+                path: 'b',
+                builder: (_) =>
+                    const Text('Additional screen on the nested Navigator'),
+              ),
+            ],
+          )
+        ],
+      ),
+    ];
+
+    final widget = _TestWidget(
+      routes: routes,
+      informationProvider: provider,
+    );
+
+    await tester.pumpWidget(widget);
+    provider.value = const RouteInformation(location: '/a/b');
+    await tester.pumpAndSettle();
+    final path = widget.routerDelegate.currentConfiguration.path;
+    expect(path, '/a/b');
+    expect(find.byType(Navigator), findsNWidgets(2));
   });
 }
 
