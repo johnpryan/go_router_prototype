@@ -40,9 +40,6 @@ class RouteTree {
 
   /// Recursively searches for an exact match. [prefixes] is the list of
   /// parent Routes that have matched so far.
-  ///
-  /// This searches throughout the entire tree so that absolute paths are
-  /// matched regardless of whether the parent Route objects contain a match.
   RouteMatch _getRecursive(
       List<Route> prefixes, List<Route> current, String path) {
     for (var route in current) {
