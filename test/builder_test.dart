@@ -14,25 +14,22 @@ import 'helpers.dart';
 void main() {
   group('buildRoute', () {
     testWidgets('returns a Navigator', (WidgetTester tester) async {
+      final routeMatch = RouteMatch(
+        routes: [
+          StackedRoute(path: '/', builder: emptyBuilder),
+          StackedRoute(path: '/foo', builder: emptyBuilder),
+        ],
+        parameters: Parameters.empty(),
+      );
+
       await tester.pumpWidget(
         Builder(
           builder: (BuildContext context) {
-            final result = buildNavigator(
-              context,
-              RouteMatch(
-                routes: [
-                  StackedRoute(path: '/', builder: emptyBuilder),
-                  StackedRoute(path: '/foo', builder: emptyBuilder),
-                ],
-                parameters: Parameters.empty(),
-              ),
-              () {},
-            );
-
+            final result = buildNavigator(context, routeMatch, () {});
             expect(result, const TypeMatcher<Navigator>());
+
             final navigator = result as Navigator;
             expect(navigator.pages, hasLength(2));
-
             return const Placeholder();
           },
         ),
