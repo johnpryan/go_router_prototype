@@ -12,10 +12,30 @@ import 'matching.dart';
 class RouteTree {
   List<Route> routes;
 
-  RouteTree(this.routes);
+  RouteTree(this.routes) {
+    _validate();
+  }
 
   RouteMatch get(String path) {
     return _getRecursive([], routes, path);
+  }
+
+  // Checks that all route paths are correct, according to these rules:
+  // - Top-level routes start with '/'
+  // - Sub-routes *don't* start with '/')
+  void _validate() {
+    _validateRecursive(routes, true);
+  }
+
+  void _validateRecursive(List<Route> routes, bool topLevel) {
+    for (var route in routes) {
+      if (topLevel && !route.path.startsWith('/')) {
+        throw Exception('Top-level paths must start with "/": ${route.path}');
+      } else if (!topLevel && route.path.startsWith('/')) {
+        throw Exception('Sub-route paths cannot start with "/": ${route.path}');
+      }
+      _validateRecursive(route.children, false);
+    }
   }
 
   /// Recursively searches for an exact match. [prefixes] is the list of
@@ -43,7 +63,8 @@ class RouteTree {
           ? route.path
           : p.joinAll([...prefixStrings, route.path]);
 
-      if (hasMatch(routePathWithPrefixes, path)) { prefixes.add(route);
+      if (hasMatch(routePathWithPrefixes, path)) {
+        prefixes.add(route);
         final childMatch = _getRecursive(prefixes, route.children, path);
         if (childMatch.routes.isNotEmpty) {
           // More of the route was matched, return that match instead

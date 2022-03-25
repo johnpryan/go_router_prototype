@@ -68,7 +68,7 @@ void main() {
       expect(lookup.routes, hasLength(2));
     });
 
-    test('Looks up child routes with absolute paths', () {
+    test('Throws when a sub-routes contains an absolute path', () {
       final routes = [
         StackedRoute(
           builder: emptyBuilder,
@@ -82,11 +82,21 @@ void main() {
         ),
       ];
 
-      final tree = RouteTree(routes);
+      expect(() => RouteTree(routes), throwsException);
+    });
 
-      var lookup = tree.get('/b');
-      expect(lookup.routes, isNotEmpty);
-      expect(lookup.routes, hasLength(2));
+    test('Does not throw when top-level routes contain absolute paths', () {
+      final routes = [
+        StackedRoute(
+          builder: emptyBuilder,
+          path: '/a',
+        ),
+        StackedRoute(
+          builder: emptyBuilder,
+          path: '/b',
+        ),
+      ];
+      RouteTree(routes);
     });
   });
 }

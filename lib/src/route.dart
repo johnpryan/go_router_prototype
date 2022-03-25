@@ -37,7 +37,6 @@ class NestedNavigatorRoute extends Route {
   }) : super(path: path, children: children);
 }
 
-// TODO rename to RouteBase
 abstract class Route {
   static const _listEquality = ListEquality();
 

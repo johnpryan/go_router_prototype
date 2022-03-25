@@ -70,6 +70,63 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Screen A'), findsOneWidget);
     });
+
+    testWidgets(
+        'Navigates to the correct screen when provided with a'
+        ' relative route path', (WidgetTester tester) async {
+      BuildContext? rootContext;
+      BuildContext? aContext;
+      BuildContext? bContext;
+      final routes = [
+        StackedRoute(
+          path: '/',
+          builder: (context) {
+            rootContext ??= context;
+            return const Text('Home');
+          },
+          children: [
+            StackedRoute(
+              path: 'a',
+              builder: (context) {
+                aContext ??= context;
+                return const Text('Screen A');
+              },
+              children: [
+                StackedRoute(
+                  path: 'b',
+                  builder: (context) {
+                    bContext ??= context;
+                    return const Text('Screen B');
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      ];
+
+      await tester.pumpWidget(
+        _TestApp(
+          routes: routes,
+        ),
+      );
+
+      expect(find.text('Home'), findsOneWidget);
+
+      // Navigate to 'a'
+      var routeState = RouteState.of(rootContext!);
+      if (routeState == null) fail('RouteState.of() returned null.');
+      routeState.goTo('a');
+      await tester.pumpAndSettle();
+      expect(find.text('Screen A'), findsOneWidget);
+
+      // Navigate to 'b'
+      routeState = RouteState.of(aContext!);
+      if (routeState == null) fail('RouteState.of() returned null.');
+      routeState.goTo('b');
+      await tester.pumpAndSettle();
+      expect(find.text('Screen B'), findsOneWidget);
+    });
   });
 }
 
