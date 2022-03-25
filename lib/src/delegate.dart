@@ -30,7 +30,7 @@ class TreeRouterDelegate extends RouterDelegate<Uri>
       routeState: _routeState,
       child: Builder(
         builder: (context) {
-          return buildNavigator(
+          return buildMatch(
             context,
             _routeState.match!,
             () => _routeState.pop(),

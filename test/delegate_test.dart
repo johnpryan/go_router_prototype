@@ -104,7 +104,7 @@ void main() {
 
       provider.value = const RouteInformation(location: '/a');
       await tester.pumpAndSettle();
-      expect(find.text('Nested Parent'), findsOneWidget);
+      expect(find.text('Switcher Parent'), findsOneWidget);
       expect(find.text('AScreen'), findsOneWidget);
     });
   });
@@ -192,7 +192,7 @@ class _SwitcherParentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text('Nested Parent'),
+        const Text('Switcher Parent'),
         child,
       ],
     );
