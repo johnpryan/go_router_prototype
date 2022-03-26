@@ -13,14 +13,7 @@ class GlobalRouteState extends ChangeNotifier {
   final RouteTree _routeTree;
   late RouteMatch _match;
 
-  GlobalRouteState(List<Route> routes, String initialRoute)
-      : _routeTree = RouteTree(routes) {
-    final match = _routeTree.get(initialRoute);
-    if (match.notFound) {
-      throw InitialRouteNotFoundError(initialRoute);
-    }
-    _match = match;
-  }
+  GlobalRouteState(List<Route> routes) : _routeTree = RouteTree(routes);
 
   set match(RouteMatch match) {
     // Don't notify listeners if the destination is the same
@@ -37,9 +30,14 @@ class GlobalRouteState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void goTo(String path, {Route? parentRoute}) {
-    match =
-        _routeTree.get(path, parentRoute: parentRoute, previousMatch: match);
+  void goTo(String path, {Route? parentRoute, bool isInitial = false}) {
+    if (isInitial) {
+      _match = _routeTree.get(path);
+      notifyListeners();
+    } else {
+      match =
+          _routeTree.get(path, parentRoute: parentRoute, previousMatch: _match);
+    }
   }
 
   static GlobalRouteState? of(BuildContext context) {

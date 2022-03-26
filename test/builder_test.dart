@@ -26,7 +26,7 @@ void main() {
         parameters: Parameters.empty(),
       );
 
-      final globalRouteState = GlobalRouteState(routes, '/');
+      final globalRouteState = GlobalRouteState(routes);
       final routerDelegate = TreeRouterDelegate.withState(globalRouteState);
 
       await tester.pumpWidget(

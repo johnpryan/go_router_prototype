@@ -4,9 +4,10 @@
 
 import 'package:flutter/material.dart' hide Route;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tree_router/src/delegate.dart';
-import 'package:tree_router/src/parser.dart';
 import 'package:tree_router/src/route.dart';
+import 'package:tree_router/src/state.dart';
+
+import 'helpers.dart';
 
 void main() {
   group('TreeRouterDelegate', () {
@@ -18,16 +19,16 @@ void main() {
         ),
       ];
       await tester.pumpWidget(
-        _TestWidget(
+        TestWidget(
           routes: routes,
-          informationProvider: _TestRouteInformationProvider(),
+          initialRoute: '/',
         ),
       );
       expect(find.text('Home Screen'), findsOneWidget);
     });
 
     testWidgets('Displays top-level routes', (WidgetTester tester) async {
-      final provider = _TestRouteInformationProvider();
+      final provider = TestRouteInformationProvider();
       final routes = <Route>[
         StackedRoute(
           path: '/',
@@ -39,8 +40,9 @@ void main() {
         ),
       ];
       await tester.pumpWidget(
-        _TestWidget(
+        TestWidget(
           routes: routes,
+          initialRoute: '/',
           informationProvider: provider,
         ),
       );
@@ -55,7 +57,7 @@ void main() {
     testWidgets(
         'StackedRoute adds pages to the Navigator for the active sub-route',
         (WidgetTester tester) async {
-      final provider = _TestRouteInformationProvider();
+      final provider = TestRouteInformationProvider();
       final routes = <Route>[
         StackedRoute(
           path: '/',
@@ -69,7 +71,7 @@ void main() {
         ),
       ];
       await tester.pumpWidget(
-        _TestWidget(
+        TestWidget(
           routes: routes,
           informationProvider: provider,
         ),
@@ -84,7 +86,7 @@ void main() {
 
     testWidgets('SwitcherRoute displays the child of the active sub-route',
         (WidgetTester tester) async {
-      final provider = _TestRouteInformationProvider();
+      final provider = TestRouteInformationProvider();
       final routes = <Route>[
         SwitcherRoute(
           path: '/',
@@ -99,7 +101,7 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        _TestWidget(
+        TestWidget(
           routes: routes,
           informationProvider: provider,
         ),
@@ -114,7 +116,7 @@ void main() {
 
   testWidgets('Displays the initial route immediately',
       (WidgetTester tester) async {
-    final provider = _TestRouteInformationProvider(initialRoute: '/a');
+    final provider = TestRouteInformationProvider(initialRoute: '/a');
     final routes = <Route>[
       StackedRoute(
         path: '/',
@@ -127,7 +129,7 @@ void main() {
     ];
 
     await tester.pumpWidget(
-      _TestWidget(
+      TestWidget(
         routes: routes,
         informationProvider: provider,
       ),
@@ -140,7 +142,7 @@ void main() {
 
   testWidgets('Reports the correct information back to the Router',
       (WidgetTester tester) async {
-    final provider = _TestRouteInformationProvider();
+    final provider = TestRouteInformationProvider();
     final routes = <Route>[
       StackedRoute(
         path: '/',
@@ -152,7 +154,7 @@ void main() {
       ),
     ];
 
-    final widget = _TestWidget(
+    final widget = TestWidget(
       routes: routes,
       informationProvider: provider,
     );
@@ -166,7 +168,7 @@ void main() {
 
   testWidgets('Builds NestedNavigatorRoutes correctly',
       (WidgetTester tester) async {
-    final provider = _TestRouteInformationProvider();
+    final provider = TestRouteInformationProvider();
     final routes = <Route>[
       SwitcherRoute(
         path: '/',
@@ -195,7 +197,7 @@ void main() {
       ),
     ];
 
-    final widget = _TestWidget(
+    final widget = TestWidget(
       routes: routes,
       informationProvider: provider,
     );
@@ -232,9 +234,8 @@ void main() {
     ];
 
     await tester.pumpWidget(
-      _TestWidget(
+      TestWidget(
         routes: routes,
-        informationProvider: _TestRouteInformationProvider(initialRoute: '/a'),
         initialRoute: '/a',
       ),
     );
@@ -242,6 +243,23 @@ void main() {
     expect(find.text('AScreen'), findsOneWidget);
     await tester.pumpAndSettle();
     expect(find.text('AScreen'), findsOneWidget);
+  });
+
+  testWidgets('query parameters', (WidgetTester tester) async {
+    final routes = <Route>[
+      StackedRoute(
+        path: '/',
+        builder: (context) => const _QueryParamsScreen(),
+      ),
+    ];
+    await tester.pumpWidget(
+      TestWidget(
+        routes: routes,
+        initialRoute: '/?q=foo',
+      ),
+    );
+
+    expect(find.text('q: foo'), findsOneWidget);
   });
 }
 
@@ -281,6 +299,20 @@ class _CScreen extends StatelessWidget {
   }
 }
 
+class _QueryParamsScreen extends StatelessWidget {
+  const _QueryParamsScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final queryParams = GlobalRouteState.of(context)!.match.parameters.query;
+    return Column(
+      children: [
+        ...queryParams.keys.map((key) => Text('$key: ${queryParams[key]}')),
+      ],
+    );
+  }
+}
+
 class _SwitcherParentScreen extends StatelessWidget {
   final Widget child;
 
@@ -297,56 +329,5 @@ class _SwitcherParentScreen extends StatelessWidget {
         child,
       ],
     );
-  }
-}
-
-class _TestWidget extends StatefulWidget {
-  final TreeRouterDelegate routerDelegate;
-  final TreeRouteInformationParser routeInformationParser;
-  final _TestRouteInformationProvider informationProvider;
-  final String? initialRoute;
-
-  _TestWidget({
-    Key? key,
-    required List<Route> routes,
-    required this.informationProvider,
-    this.initialRoute,
-  })  : routerDelegate = initialRoute == null
-            ? TreeRouterDelegate(routes)
-            : TreeRouterDelegate(routes, initialRoute: initialRoute),
-        routeInformationParser = TreeRouteInformationParser(),
-        super(key: key);
-
-  @override
-  State<_TestWidget> createState() => _TestWidgetState();
-}
-
-class _TestWidgetState<T> extends State<_TestWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerDelegate: widget.routerDelegate,
-      routeInformationParser: widget.routeInformationParser,
-      routeInformationProvider: widget.informationProvider,
-    );
-  }
-}
-
-class _TestRouteInformationProvider extends RouteInformationProvider
-    with ChangeNotifier {
-  RouteInformation _value;
-
-  _TestRouteInformationProvider({String initialRoute = '/'})
-      : _value = RouteInformation(location: initialRoute);
-
-  @override
-  RouteInformation get value => _value;
-
-  set value(RouteInformation value) {
-    if (value == _value) {
-      return;
-    }
-    _value = value;
-    notifyListeners();
   }
 }

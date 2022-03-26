@@ -13,10 +13,9 @@ class TreeRouterDemo extends StatelessWidget {
   TreeRouterDemo({Key? key}) : super(key: key);
 
   final _router = TreeRouter(
-    initialRoute: '/a',
     routes: [
       StackedRoute(
-        path: '/a',
+        path: '/',
         builder: (context) => const AScreen(),
         children: [
           StackedRoute(

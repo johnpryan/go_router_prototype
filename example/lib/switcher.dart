@@ -13,10 +13,9 @@ class NestingDemo extends StatelessWidget {
   NestingDemo({Key? key}) : super(key: key);
 
   final _router = TreeRouter(
-    initialRoute: '/a',
     routes: [
       SwitcherRoute(
-        path: '/a',
+        path: '/',
         builder: (context, child) => HomeScreen(child: child),
         children: [
           StackedRoute(

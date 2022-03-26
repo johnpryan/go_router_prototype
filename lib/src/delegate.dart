@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart' hide Route;
 import 'package:tree_router/src/builder.dart';
 
@@ -13,8 +14,8 @@ class TreeRouterDelegate extends RouterDelegate<Uri>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<Uri> {
   late final GlobalRouteState _globalRouteState;
 
-  factory TreeRouterDelegate(List<Route> routes, {String initialRoute = '/'}) {
-    final state = GlobalRouteState(routes, initialRoute);
+  factory TreeRouterDelegate(List<Route> routes) {
+    final state = GlobalRouteState(routes);
     return TreeRouterDelegate.withState(state);
   }
 
@@ -53,7 +54,14 @@ class TreeRouterDelegate extends RouterDelegate<Uri>
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
-  Future<void> setNewRoutePath(Uri configuration) async {
-    _globalRouteState.goTo(configuration.path);
+  Future<void> setNewRoutePath(Uri configuration) {
+    _globalRouteState.goTo('$configuration');
+    return SynchronousFuture(null);
+  }
+
+  @override
+  Future<void> setInitialRoutePath(Uri configuration) {
+    _globalRouteState.goTo('$configuration', isInitial: true);
+    return SynchronousFuture(null);
   }
 }
