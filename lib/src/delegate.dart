@@ -57,7 +57,8 @@ class TreeRouterDelegate extends RouterDelegate<Uri>
 
   @override
   Future<void> setNewRoutePath(Uri configuration) {
-    _globalRouteState.goTo('$configuration');
+    // TODO: This is probably using decodeComponent incorrectly.
+    _globalRouteState.goTo(Uri.decodeComponent(configuration.toString()));
     return SynchronousFuture(null);
   }
 

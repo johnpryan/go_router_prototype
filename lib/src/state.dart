@@ -31,7 +31,6 @@ class GlobalRouteState extends ChangeNotifier {
   }
 
   void goTo(String path, {Route? parentRoute, bool isInitial = false}) {
-    path = Uri.decodeComponent(path);
     if (isInitial) {
       _match = _routeTree.get(path);
       notifyListeners();
