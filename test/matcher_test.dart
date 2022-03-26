@@ -24,6 +24,10 @@ void main() {
       expect(hasExactMatch('/user', '/user/1'), false);
       expect(hasExactMatch('user', 'user/1'), false);
       expect(hasExactMatch('user/:id', 'user/1'), true);
+      expect(
+          hasExactMatch('Left Hand of Darkness',
+              Uri.decodeComponent('Left%20Hand%20of%20Darkness')),
+          true);
     });
 
     test('extractParameters', () {

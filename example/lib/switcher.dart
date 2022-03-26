@@ -17,13 +17,13 @@ Map<String, dynamic> routeMap = {
   },
   'Documents': {
     'Books': {
-      'Left_Hand_of_Darkness.epub': {},
-      'Kindred.epub': {},
+      'Left Hand of Darkness': {},
+      'Kindred': {},
     },
     'Movies': {
-      'Batman_Begins.mp4': {},
-      'The_Dark_Knight.mp4': {},
-      'The_Dark_Knight_Rises.mp4': {},
+      'Batman Begins': {},
+      'The Dark Knight': {},
+      'The Dark Knight Rises': {},
     },
     'Music': {
       'Playlists': {
@@ -86,7 +86,7 @@ class SwitcherDemo extends StatelessWidget {
   }
 }
 
-class AppScaffold extends StatelessWidget {
+class AppScaffold extends StatefulWidget {
   final Widget child;
   final List<String> childPaths;
 
@@ -94,11 +94,30 @@ class AppScaffold extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<AppScaffold> createState() => _AppScaffoldState();
+}
+
+class _AppScaffoldState extends State<AppScaffold> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: RouteList(
-        childPaths: childPaths,
-        child: child,
+      body: Scrollbar(
+        isAlwaysShown: true,
+        controller: _scrollController,
+        child: LayoutBuilder(
+          builder: (context, viewportConstraints) {
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              controller: _scrollController,
+              child: RouteList(
+                childPaths: widget.childPaths,
+                child: widget.child,
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -113,38 +132,45 @@ class RouteList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scrollbar(
-      isAlwaysShown: true,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            DecoratedBox(
-              decoration: BoxDecoration(
-                  border: Border(
-                      right: BorderSide(width: 1, color: Colors.grey[400]!))),
-              child: ConstrainedBox(
-                constraints: const BoxConstraints.tightFor(width: 300),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ...childPaths.map(
-                      (p) => ListTile(
-                        onTap: () {
-                          RouteState.of(context)!.goTo(p);
-                        },
-                        selected: RouteState.of(context)!.activeChild?.path == p,
-                        title: Text(p),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            border: Border(
+              right: BorderSide(width: 1, color: Colors.grey[400]!),
             ),
-            child,
-          ],
+          ),
+          constraints: const BoxConstraints.tightFor(width: 256),
+          child: RouteSelector(
+            childPaths: childPaths,
+          ),
         ),
-      ),
+        child,
+      ],
+    );
+  }
+}
+
+class RouteSelector extends StatelessWidget {
+  final List<String> childPaths;
+
+  const RouteSelector({required this.childPaths, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ...childPaths.map(
+          (p) => ListTile(
+            onTap: () {
+              RouteState.of(context)!.goTo(p);
+            },
+            selected: RouteState.of(context)!.activeChild?.path == p,
+            title: Text(p),
+          ),
+        ),
+      ],
     );
   }
 }
