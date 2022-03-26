@@ -16,8 +16,56 @@ class RouteTree {
     _validate();
   }
 
-  RouteMatch get(String path) {
-    return _getRecursive([], routes, path);
+  RouteMatch get(String path, {Route? parentRoute, RouteMatch? previousMatch}) {
+    // If this is a relative path, search the children for a match.
+    if (!path.startsWith('/')) {
+      final children = parentRoute?.children ?? [];
+      for (var i =0; i < children.length; i++) {
+        final child = children[i];
+        if (hasMatch(child.path, path)) {
+          final matchedRoutes = [parentRoute!, child];
+
+          // Use the same parameters as the current match, but any routes that
+          // are no longer matched need to have their parameters removed.
+          late final Parameters parameters;
+          if (previousMatch != null) {
+            parameters = _removeOldParameters(
+              previousMatch,
+              matchedRoutes,
+            );
+          } else {
+            parameters = Parameters({}, {});
+          }
+
+          return RouteMatch(routes: matchedRoutes, parameters: parameters);
+        }
+      }
+      throw ('No relative route for $path found as a child of route: $Route');
+    } else {
+      return _getRecursive([], routes, path);
+    }
+  }
+
+  Parameters _removeOldParameters(RouteMatch oldMatch, List<Route> newRoutes) {
+    // Don't preserve query parameters when the route is relative.
+    final newQueryParams = <String, String>{};
+    final newPathParams = Map<String, String>.from(oldMatch.parameters.path);
+    final oldRoutesLength = oldMatch.routes.length;
+    final newRoutesLength = newRoutes.length;
+
+    if (newRoutesLength < oldRoutesLength) {
+      for (var i = newRoutesLength; i < oldRoutesLength; i++) {
+        final route = oldMatch.routes[i];
+        final paramsToRemove = parseParameterNames(route.path);
+
+        for (var paramToRemove in paramsToRemove) {
+          if (newPathParams.containsKey(paramToRemove)) {
+            newPathParams.remove(paramToRemove);
+          }
+        }
+      }
+    }
+    return Parameters(newPathParams, newQueryParams);
   }
 
   // Checks that all route paths are correct, according to these rules:
@@ -38,7 +86,7 @@ class RouteTree {
     }
   }
 
-  /// Recursively searches for an exact match. [prefixes] is the list of
+  /// Recursively searches for a match. [prefixes] is the list of
   /// parent Routes that have matched so far.
   RouteMatch _getRecursive(
       List<Route> prefixes, List<Route> current, String path) {

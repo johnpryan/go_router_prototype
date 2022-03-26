@@ -73,7 +73,7 @@ void main() {
 
     testWidgets(
         'Navigates to the correct screen when provided with a'
-        ' relative route path',(WidgetTester tester) async {
+        ' relative route path', (WidgetTester tester) async {
       BuildContext? rootContext;
       BuildContext? aContext;
       BuildContext? bContext;
@@ -115,18 +115,18 @@ void main() {
 
       // Navigate to 'a'
       var routeState = RouteState.of(rootContext!);
-      if (routeState == null) fail('RouteState.of() returned null.');
-      routeState.goTo('a');
+      expect(routeState, isNotNull);
+      routeState!.goTo('a');
       await tester.pumpAndSettle();
       expect(find.text('Screen A'), findsOneWidget);
 
       // Navigate to 'b'
       routeState = RouteState.of(aContext!);
-      if (routeState == null) fail('RouteState.of() returned null.');
-      routeState.goTo('b');
+      expect(routeState, isNotNull);
+      routeState!.goTo('b');
       await tester.pumpAndSettle();
       expect(find.text('Screen B'), findsOneWidget);
-    }, skip: true);
+    });
   });
 }
 

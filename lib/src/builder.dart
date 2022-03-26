@@ -3,15 +3,16 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:tree_router/src/inheritance.dart';
 import 'package:tree_router/src/match.dart';
 import 'package:tree_router/src/typedefs.dart';
 
 import 'route.dart' as r;
+import 'state.dart';
 
-Navigator buildMatch(BuildContext context, RouteMatch routeMatch,
-    VoidCallback pop, Key navigatorKey) {
-  return buildMatchRecursive(context, routeMatch, 0, pop, navigatorKey).widget
-      as Navigator;
+Widget buildMatch(BuildContext context, RouteMatch routeMatch, VoidCallback pop,
+    Key navigatorKey) {
+  return buildMatchRecursive(context, routeMatch, 0, pop, navigatorKey).widget;
 }
 
 // Builds a Navigator for all matched Routes from [startIndex] until the end of
@@ -24,16 +25,16 @@ _RecursiveBuildResult buildMatchRecursive(BuildContext context,
   for (var i = startIndex; i < routeMatch.routes.length; i++) {
     final route = routeMatch.routes[i];
     if (route is r.StackedRoute) {
-      final page = _buildPage(context, route.builder, routeMatch);
+      final page = _buildPage(context, route, routeMatch);
       pages.add(page);
     } else if (route is r.SwitcherRoute) {
-      final result = buildSwitcherRecursive(context, routeMatch, i, pop);
+      final result = _buildSwitcherRecursive(context, routeMatch, i, pop);
       final child = result.widget;
       pages.add(_pageForPlatform(child: child));
       i = result.newIndex;
     } else if (route is r.NestedNavigatorRoute) {
       // Build the first page to display
-      final page = _buildPage(context, route.builder, routeMatch);
+      final page = _buildPage(context, route, routeMatch);
       // Build the inner Navigator it by recursively calling this method and
       // returning the result directly.
       final key = ValueKey(route);
@@ -47,7 +48,7 @@ _RecursiveBuildResult buildMatchRecursive(BuildContext context,
     throw ('Attempt to build a Navigator was built with an empty pages list');
   }
 
-  final navigator = Navigator(
+  Widget navigator = Navigator(
     key: navigatorKey,
     pages: pages,
     onPopPage: (Route<dynamic> route, dynamic result) {
@@ -69,7 +70,7 @@ class _RecursiveBuildResult {
   _RecursiveBuildResult(this.widget, this.newIndex);
 }
 
-_RecursiveBuildResult buildSwitcherRecursive(
+_RecursiveBuildResult _buildSwitcherRecursive(
     BuildContext context, RouteMatch routeMatch, int i, VoidCallback pop) {
   final parent = routeMatch.routes[i] as r.SwitcherRoute;
   late final r.Route? child;
@@ -80,12 +81,12 @@ _RecursiveBuildResult buildSwitcherRecursive(
     child = null;
   }
 
-  late final Widget childWidget;
+  Widget? childWidget;
   if (child is r.StackedRoute) {
-    childWidget = child.builder(context);
+    childWidget = _callRouteBuilder(context, child);
     i++;
   } else if (child is r.SwitcherRoute) {
-    final result = buildSwitcherRecursive(context, routeMatch, i + 1, pop);
+    final result = _buildSwitcherRecursive(context, routeMatch, i + 1, pop);
     childWidget = result.widget;
     i = result.newIndex;
   } else if (child is r.NestedNavigatorRoute) {
@@ -98,7 +99,12 @@ _RecursiveBuildResult buildSwitcherRecursive(
     i++;
   }
 
-  final parentWidget = parent.builder(context, childWidget);
+  if (child != null) {
+    childWidget = _wrapWithRouteStateScope(context, child, childWidget!);
+  }
+
+  final parentWidget = _wrapWithRouteStateScope(
+      context, parent, parent.builder(context, childWidget!));
 
   return _RecursiveBuildResult(parentWidget, i);
 }
@@ -107,7 +113,33 @@ Page _pageForPlatform({required Widget child}) {
   return MaterialPage(child: child);
 }
 
-Page _buildPage(
-    BuildContext context, StackedRouteBuilder builder, RouteMatch routeMatch) {
-  return _pageForPlatform(child: builder(context));
+Widget _callRouteBuilder(BuildContext context, r.Route route, {Widget? child}) {
+  late final StackedRouteBuilder builder;
+  if (route is r.NestedNavigatorRoute) {
+    builder = route.builder;
+  } else if (route is r.StackedRoute) {
+    builder = route.builder;
+  } else if (route is r.SwitcherRoute) {
+    if (child == null) {
+      throw ('Attempt to build SwitcherRoute without a child widget');
+    }
+    return _wrapWithRouteStateScope(context, route,
+        Builder(builder: (context) => route.builder(context, child)));
+  }
+
+  return _wrapWithRouteStateScope(
+      context, route, Builder(builder: (context) => builder(context)));
+}
+
+Page _buildPage(BuildContext context, r.Route route, RouteMatch routeMatch) {
+  return _pageForPlatform(child: _callRouteBuilder(context, route));
+}
+
+Widget _wrapWithRouteStateScope(
+    BuildContext context, r.Route route, Widget child) {
+  final globalState = GlobalRouteState.of(context);
+  if (globalState == null) {
+    throw Exception('No GlobalRouteState found during route build phase');
+  }
+  return RouteStateScope(state: RouteState(route, globalState), child: child);
 }

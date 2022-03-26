@@ -11,27 +11,31 @@ import 'state.dart';
 
 class TreeRouterDelegate extends RouterDelegate<Uri>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<Uri> {
-  late final RouteState _routeState;
+  late final GlobalRouteState _globalRouteState;
 
   TreeRouterDelegate(List<Route> routes) {
-    _routeState = RouteState(routes)..addListener(notifyListeners);
+    _globalRouteState = GlobalRouteState(routes)..addListener(notifyListeners);
+  }
+
+  TreeRouterDelegate.withState(this._globalRouteState) {
+    _globalRouteState.addListener(notifyListeners);
   }
 
   @override
   void dispose() {
-    _routeState.removeListener(notifyListeners);
+    _globalRouteState.removeListener(notifyListeners);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return RouteStateScope(
-      routeState: _routeState,
+    return GlobalRouteStateScope(
+      state: _globalRouteState,
       child: Builder(builder: (context) {
         return buildMatch(
           context,
-          _routeState.match!,
-          () => _routeState.pop(),
+          _globalRouteState.match!,
+          () => _globalRouteState.pop(),
           navigatorKey,
         );
       }),
@@ -40,7 +44,7 @@ class TreeRouterDelegate extends RouterDelegate<Uri>
 
   @override
   Uri get currentConfiguration {
-    final match = _routeState.match;
+    final match = _globalRouteState.match;
     if (match == null) return Uri.parse('/');
     return Uri.parse(match.currentRoutePath);
   }
@@ -50,6 +54,6 @@ class TreeRouterDelegate extends RouterDelegate<Uri>
 
   @override
   Future<void> setNewRoutePath(Uri configuration) async {
-    _routeState.goTo(configuration.path);
+    _globalRouteState.goTo(configuration.path);
   }
 }

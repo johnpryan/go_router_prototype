@@ -9,11 +9,11 @@ import 'match.dart';
 import 'tree.dart';
 import 'route.dart';
 
-class RouteState extends ChangeNotifier {
+class GlobalRouteState extends ChangeNotifier {
   final RouteTree _routeTree;
   RouteMatch? _match;
 
-  RouteState(List<Route> routes) : _routeTree = RouteTree(routes);
+  GlobalRouteState(List<Route> routes) : _routeTree = RouteTree(routes);
 
   set match(RouteMatch? match) {
     // Don't notify listeners if the destination is the same
@@ -30,15 +30,34 @@ class RouteState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void goTo(String path) {
-    match = _routeTree.get(path);
+  void goTo(String path, {Route? parentRoute}) {
+    match =
+        _routeTree.get(path, parentRoute: parentRoute, previousMatch: match);
   }
 
-  Route? getTopRoute() => match?.getTopRoute();
+  static GlobalRouteState? of(BuildContext context) {
+    final scope =
+        context.dependOnInheritedWidgetOfExactType<GlobalRouteStateScope>();
+    if (scope == null) return null;
+    return scope.state;
+  }
+}
+
+class RouteState extends ChangeNotifier {
+  final Route route;
+  final GlobalRouteState _globalRouteState;
+
+  RouteState(this.route, GlobalRouteState globalState)
+      : _globalRouteState = globalState;
+
+  void goTo(String path) {
+    _globalRouteState.goTo(path, parentRoute: route);
+  }
 
   static RouteState? of(BuildContext context) {
-    final scope = context.dependOnInheritedWidgetOfExactType<RouteStateScope>();
-    if (scope == null) return null;
-    return scope.routeState;
+    final routeStateScope =
+        context.dependOnInheritedWidgetOfExactType<RouteStateScope>();
+    if (routeStateScope == null) return null;
+    return routeStateScope.state;
   }
 }

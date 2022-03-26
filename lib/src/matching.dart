@@ -51,3 +51,20 @@ String fillParameters(String template, Parameters parameters) {
       .replace(queryParameters: parameters.query)
       .toString();
 }
+
+List<String> parseParameterNames(String path) {
+  final List<String> result = [];
+  final matches = _fillRegex.allMatches(path);
+
+  for (var match in matches) {
+    assert(match.groupCount <= 1);
+
+    if (match.groupCount == 1) {
+      final matchedStr = match.group(0);
+      if (matchedStr != null) {
+        result.add(matchedStr.replaceAll(':', ''));
+      }
+    }
+  }
+  return result;
+}

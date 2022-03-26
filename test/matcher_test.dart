@@ -7,7 +7,7 @@ import 'package:tree_router/src/matching.dart';
 import 'package:tree_router/src/parameters.dart';
 
 void main() {
-  group('matching helpers', () {
+  group('Matching helpers', () {
     test('hasMatch', () {
       expect(hasMatch('/user/:id', '/user/1'), true);
       expect(hasMatch('/', '/user/1'), true);
@@ -38,11 +38,16 @@ void main() {
       expect(
           extractParameters('user/:id', 'user/1'), Parameters({'id': '1'}, {}));
     });
+
     test('fillParameters', () {
       expect(
           fillParameters('/user/:id', Parameters({'id': '1'}, {})), '/user/1');
       expect(fillParameters('/search', Parameters({}, {'q': 'dog'})),
           '/search?q=dog');
+    });
+
+    test('parseParameterNames', () {
+      expect(parseParameterNames('user/:id'), ['id']);
     });
   });
 }

@@ -7,15 +7,30 @@ import 'package:flutter/cupertino.dart';
 import 'state.dart';
 
 class RouteStateScope extends InheritedWidget {
-  final RouteState routeState;
+  final RouteState state;
 
   const RouteStateScope(
-      {required this.routeState, required Widget child, Key? key})
+      {required this.state, required Widget child, Key? key})
       : super(child: child, key: key);
 
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) {
-    return oldWidget is RouteStateScope &&
-        routeState != oldWidget.routeState;
+    return oldWidget is RouteStateScope && state != oldWidget.state;
+  }
+}
+
+class GlobalRouteStateScope extends InheritedWidget {
+  final GlobalRouteState state;
+
+  const GlobalRouteStateScope({
+    required this.state,
+    required Widget child,
+    Key? key,
+  }) : super(child: child, key: key);
+
+  @override
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) {
+    return oldWidget is GlobalRouteStateScope &&
+        state != oldWidget.state;
   }
 }
