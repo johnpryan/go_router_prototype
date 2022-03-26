@@ -6,11 +6,11 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:tree_router/tree_router.dart';
 
 void main() {
-  runApp(NestingDemo());
+  runApp(SwitcherDemo());
 }
 
-class NestingDemo extends StatelessWidget {
-  NestingDemo({Key? key}) : super(key: key);
+class SwitcherDemo extends StatelessWidget {
+  SwitcherDemo({Key? key}) : super(key: key);
 
   final _router = TreeRouter(
     routes: [
@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: const Text('Switcher')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -80,7 +80,7 @@ class Screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: const Text('Basics'),),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

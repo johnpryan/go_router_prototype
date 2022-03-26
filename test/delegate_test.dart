@@ -90,7 +90,10 @@ void main() {
       final routes = <Route>[
         SwitcherRoute(
           path: '/',
-          builder: (context, child) => _SwitcherParentScreen(child: child),
+          builder: (context, child) => _SwitcherParentScreen(
+            label: 'Switcher Parent',
+            child: child,
+          ),
           children: [
             StackedRoute(
               path: 'a',
@@ -111,6 +114,77 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Switcher Parent'), findsOneWidget);
       expect(find.text('AScreen'), findsOneWidget);
+    });
+
+    testWidgets('SwitcherRoutes can be children of other SwitcherRoutes',
+        (WidgetTester tester) async {
+      final provider = TestRouteInformationProvider();
+
+      late BuildContext parent1Context;
+      late BuildContext parent2Context;
+      late BuildContext parent3Context;
+
+      final routes = <Route>[
+        SwitcherRoute(
+          path: '/',
+          builder: (context, child) {
+            parent1Context = context;
+            return _SwitcherParentScreen(
+              label: 'parent 1',
+              child: child,
+            );
+          },
+          children: [
+            SwitcherRoute(
+              path: 'a',
+              builder: (context, child) {
+                parent2Context = context;
+                return _SwitcherParentScreen(
+                  label: 'parent 2',
+                  child: child,
+                );
+              },
+              children: [
+                SwitcherRoute(
+                  path: 'b',
+                  builder: (context, child) {
+                    parent3Context = context;
+                    return _SwitcherParentScreen(
+                      label: 'parent 3',
+                      child: child,
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      ];
+
+      await tester.pumpWidget(
+        TestWidget(
+          routes: routes,
+          informationProvider: provider,
+        ),
+      );
+
+      provider.value = const RouteInformation(location: '/a/b');
+      await tester.pumpAndSettle();
+      expect(find.text('parent 1'), findsOneWidget);
+      expect(find.text('parent 2'), findsOneWidget);
+      expect(find.text('parent 3'), findsOneWidget);
+
+      final parent1RouteState = RouteState.of(parent1Context);
+      expect(parent1RouteState, isNotNull);
+      expect(parent1RouteState!.route.path, '/');
+
+      final parent2RouteState = RouteState.of(parent2Context);
+      expect(parent2RouteState, isNotNull);
+      expect(parent2RouteState!.route.path, 'a');
+
+      final parent3RouteState = RouteState.of(parent3Context);
+      expect(parent3RouteState, isNotNull);
+      expect(parent3RouteState!.route.path, 'b');
     });
   });
 
@@ -314,10 +388,12 @@ class _QueryParamsScreen extends StatelessWidget {
 }
 
 class _SwitcherParentScreen extends StatelessWidget {
+  final String label;
   final Widget child;
 
   const _SwitcherParentScreen({
     Key? key,
+    required this.label,
     required this.child,
   }) : super(key: key);
 
@@ -325,7 +401,7 @@ class _SwitcherParentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text('Switcher Parent'),
+        Text(label),
         child,
       ],
     );

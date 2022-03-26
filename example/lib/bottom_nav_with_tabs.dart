@@ -6,11 +6,11 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:tree_router/tree_router.dart';
 
 void main() {
-  runApp(TreeRouterDemo());
+  runApp(BottomNavWithTabsDemo());
 }
 
-class TreeRouterDemo extends StatelessWidget {
-  TreeRouterDemo({Key? key}) : super(key: key);
+class BottomNavWithTabsDemo extends StatelessWidget {
+  BottomNavWithTabsDemo({Key? key}) : super(key: key);
 
   final _router = TreeRouter(
     routes: [
@@ -23,24 +23,22 @@ class TreeRouterDemo extends StatelessWidget {
           SwitcherRoute(
             path: 'books',
             builder: (context, child) {
-              return Builder(
-                builder: (context) => TabScreen(
-                  selectedIndex: _calculateTabIndex(context),
-                  child: child,
-                ),
+              return TabScreen(
+                selectedIndex: _calculateTabIndex(context),
+                child: child,
               );
             },
             children: [
               StackedRoute(
                 path: 'popular',
                 builder: (context) {
-                  return const SettingsScreen();
+                  return const PopularScreen();
                 },
               ),
               StackedRoute(
                 path: 'all',
                 builder: (context) {
-                  return const SettingsScreen();
+                  return const AllScreen();
                 },
               ),
             ],
@@ -57,12 +55,12 @@ class TreeRouterDemo extends StatelessWidget {
   );
 
   static int _calculateTabIndex(BuildContext context) {
-    // final route = RouteState.of(context)!;
-    // final activeChild = route.activeChild;
-    // if (activeChild != null) {
-    //   if (activeChild.path == 'popular') return 0;
-    //   if (activeChild.path == 'all') return 1;
-    // }
+    final route = RouteState.of(context)!;
+    final activeChild = route.activeChild;
+    if (activeChild != null) {
+      if (activeChild.path == 'popular') return 0;
+      if (activeChild.path == 'all') return 1;
+    }
     return 0;
   }
 
@@ -131,7 +129,6 @@ class AppScaffold extends StatelessWidget {
   }
 }
 
-
 class TabScreen extends StatefulWidget {
   final Widget child;
   final int selectedIndex;
@@ -170,7 +167,18 @@ class _TabScreenState extends State<TabScreen>
     super.dispose();
   }
 
-  void _handleTabSelected(int index) {}
+  void _handleTabSelected(int index) {
+    late final String path;
+    switch (index) {
+      case 0:
+        path = 'popular';
+        break;
+      case 1:
+        path = 'all';
+        break;
+    }
+    RouteState.of(context)!.goTo(path);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -181,15 +189,13 @@ class _TabScreenState extends State<TabScreen>
           onTap: _handleTabSelected,
           labelColor: Theme.of(context).primaryColor,
           tabs: const [
-            Tab(icon: Icon(Icons.group), text: 'Users'),
-            Tab(icon: Icon(Icons.settings), text: 'Settings'),
+            Tab(icon: Icon(Icons.lightbulb_outline), text: 'Popular'),
+            Tab(icon: Icon(Icons.list), text: 'All'),
           ],
         ),
-        Expanded(
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            child: widget.child,
-          ),
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          child: widget.child,
         ),
       ],
     );
@@ -201,7 +207,12 @@ class AllScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('All');
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Center(child: Text('All', style: Theme.of(context).textTheme.headline4)),
+      ],
+    );
   }
 }
 
@@ -210,15 +221,27 @@ class PopularScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Popular');
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Center(child: Text('Popular', style: Theme.of(context).textTheme.headline4)),
+      ],
+    );
   }
 }
+
+
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Settings');
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Center(child: Text('Settings', style: Theme.of(context).textTheme.headline4)),
+      ],
+    );
   }
 }

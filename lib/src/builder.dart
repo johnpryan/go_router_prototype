@@ -38,14 +38,16 @@ _RecursiveBuildResult _buildMatchRecursive(BuildContext context,
       // Build the inner Navigator it by recursively calling this method and
       // returning the result directly.
       final key = ValueKey(route);
-      final innerNav = _buildMatchRecursive(context, routeMatch, i + 1, pop, key,
+      final innerNav = _buildMatchRecursive(
+          context, routeMatch, i + 1, pop, key,
           firstPage: page);
       return innerNav;
     }
   }
 
   if (pages.isEmpty) {
-    throw Exception('Attempt to build a Navigator was built with an empty pages list');
+    throw Exception(
+        'Attempt to build a Navigator was built with an empty pages list');
   }
 
   Widget navigator = Navigator(
@@ -99,12 +101,7 @@ _RecursiveBuildResult _buildSwitcherRecursive(
     i++;
   }
 
-  if (child != null) {
-    childWidget = _wrapWithRouteStateScope(context, child, childWidget!);
-  }
-
-  final parentWidget = _wrapWithRouteStateScope(
-      context, parent, parent.builder(context, childWidget!));
+  final parentWidget = _callRouteBuilder(context, parent, child: childWidget!);
 
   return _RecursiveBuildResult(parentWidget, i);
 }
@@ -127,6 +124,7 @@ Widget _callRouteBuilder(BuildContext context, r.Route route, {Widget? child}) {
         Builder(builder: (context) => route.builder(context, child)));
   }
 
+  // The context passed to the builder must be below RouteStateScope.
   return _wrapWithRouteStateScope(
       context, route, Builder(builder: (context) => builder(context)));
 }

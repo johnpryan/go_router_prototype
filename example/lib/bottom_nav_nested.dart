@@ -18,7 +18,7 @@ class BottomNavigationBarDemo extends StatelessWidget {
         path: '/',
         builder: (context, child) => AppScaffold(child: child),
         children: [
-          StackedRoute(
+          NestedNavigatorRoute(
             path: 'a',
             builder: (context) => const Screen(
               title: 'Screen A',
@@ -31,7 +31,7 @@ class BottomNavigationBarDemo extends StatelessWidget {
               ),
             ],
           ),
-          StackedRoute(
+          NestedNavigatorRoute(
             path: 'b',
             builder: (context) => const Screen(
               title: 'Screen B',
@@ -70,6 +70,9 @@ class AppScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final selectedIndex = _calculateSelectedIndex(context);
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Bottom Nav with Nested Navigator'),
+      ),
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 300),
         child: child,
@@ -148,7 +151,7 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Bottom Nav'),),
+      appBar: AppBar(),
       body: Center(
         child: Text(
           'Details for $label',
