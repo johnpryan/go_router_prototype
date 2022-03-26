@@ -9,9 +9,8 @@ import 'state.dart';
 class RouteStateScope extends InheritedWidget {
   final RouteState state;
 
-  const RouteStateScope(
-      {required this.state, required Widget child, Key? key})
-      : super(child: child, key: key);
+  RouteStateScope({required this.state, required Widget child})
+      : super(child: child, key: ValueKey(state.route));
 
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) {
@@ -30,7 +29,6 @@ class GlobalRouteStateScope extends InheritedWidget {
 
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) {
-    return oldWidget is GlobalRouteStateScope &&
-        state != oldWidget.state;
+    return oldWidget is GlobalRouteStateScope && state != oldWidget.state;
   }
 }

@@ -19,7 +19,7 @@ class TreeRouterDemo extends StatelessWidget {
         builder: (context) => const AScreen(),
         children: [
           StackedRoute(
-            path: '/b',
+            path: 'b',
             builder: (context) => const BScreen(),
           ),
         ],
@@ -47,7 +47,7 @@ class AScreen extends Screen {
       : super(
           key: key,
           name: 'Screen A',
-          linkTo: '/b',
+          linkTo: 'b',
         );
 }
 

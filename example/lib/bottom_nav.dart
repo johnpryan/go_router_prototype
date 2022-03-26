@@ -92,9 +92,12 @@ class AppScaffold extends StatelessWidget {
   }
 
   static int _calculateSelectedIndex(BuildContext context) {
-    final routePath = RouteState.of(context)!.route.path;
-    if (routePath == 'a') return 0;
-    if (routePath == 'b') return 1;
+    final route = RouteState.of(context)!;
+    final activeChild = route.activeChild;
+    if (activeChild != null) {
+      if (activeChild.path == 'a') return 0;
+      if (activeChild.path == 'b') return 1;
+    }
     return 0;
   }
 

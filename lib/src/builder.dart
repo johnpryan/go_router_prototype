@@ -141,5 +141,8 @@ Widget _wrapWithRouteStateScope(
   if (globalState == null) {
     throw Exception('No GlobalRouteState found during route build phase');
   }
-  return RouteStateScope(state: RouteState(route, globalState), child: child);
+  return RouteStateScope(
+    state: RouteState(route, globalState),
+    child: child,
+  );
 }

@@ -112,6 +112,7 @@ void main() {
       );
 
       expect(find.text('Home'), findsOneWidget);
+      expect(GlobalRouteState.of(rootContext!)!.match!.routes, hasLength(1));
 
       // Navigate to 'a'
       var routeState = RouteState.of(rootContext!);
@@ -119,6 +120,7 @@ void main() {
       routeState!.goTo('a');
       await tester.pumpAndSettle();
       expect(find.text('Screen A'), findsOneWidget);
+      expect(GlobalRouteState.of(aContext!)!.match!.routes, hasLength(2));
 
       // Navigate to 'b'
       routeState = RouteState.of(aContext!);
@@ -126,6 +128,7 @@ void main() {
       routeState!.goTo('b');
       await tester.pumpAndSettle();
       expect(find.text('Screen B'), findsOneWidget);
+      expect(GlobalRouteState.of(bContext!)!.match!.routes, hasLength(3));
     });
   });
 }

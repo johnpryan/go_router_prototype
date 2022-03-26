@@ -24,6 +24,12 @@ class BottomNavigationBarDemo extends StatelessWidget {
               title: 'Screen A',
               key: ValueKey('A'),
             ),
+            children: [
+              StackedRoute(
+                path: 'details',
+                builder: (context) => const DetailsScreen(label: 'A'),
+              ),
+            ],
           ),
           StackedRoute(
             path: 'b',
@@ -31,6 +37,12 @@ class BottomNavigationBarDemo extends StatelessWidget {
               title: 'Screen B',
               key: ValueKey('B'),
             ),
+            children: [
+              StackedRoute(
+                path: 'details',
+                builder: (context) => const DetailsScreen(label: 'A'),
+              ),
+            ],
           ),
         ],
       ),
@@ -80,9 +92,13 @@ class AppScaffold extends StatelessWidget {
   }
 
   static int _calculateSelectedIndex(BuildContext context) {
-    final routePath = RouteState.of(context)!.route.path;
-    if (routePath == 'a') return 0;
-    if (routePath == 'b') return 1;
+    final route = RouteState.of(context)!;
+    final activeChild = route.activeChild;
+    if (activeChild == null) {
+      return 0;
+    }
+    if (activeChild.path == 'a') return 0;
+    if (activeChild.path == 'b') return 1;
     return 0;
   }
 
@@ -120,6 +136,25 @@ class Screen extends StatelessWidget {
             child: const Text('View  details'),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class DetailsScreen extends StatelessWidget {
+  final String label;
+
+  const DetailsScreen({required this.label, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
+        child: Text(
+          'Details for $label',
+          style: Theme.of(context).textTheme.headline4,
+        ),
       ),
     );
   }

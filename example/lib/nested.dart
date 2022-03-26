@@ -19,7 +19,7 @@ class NestingDemo extends StatelessWidget {
         builder: (context, child) => HomeScreen(child: child),
         children: [
           StackedRoute(
-            path: '/b',
+            path: 'b',
             builder: (context) => const BScreen(),
           ),
         ],
@@ -58,7 +58,7 @@ class HomeScreen extends StatelessWidget {
             TextButton(
               child: const Text('Go to /b'),
               onPressed: () {
-                RouteState.of(context)!.goTo('/b');
+                RouteState.of(context)!.goTo('b');
               },
             ),
             child,

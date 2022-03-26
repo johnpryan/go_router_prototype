@@ -20,10 +20,11 @@ class RouteTree {
     // If this is a relative path, search the children for a match.
     if (!path.startsWith('/')) {
       final children = parentRoute?.children ?? [];
-      for (var i =0; i < children.length; i++) {
+      for (var i = 0; i < children.length; i++) {
         final child = children[i];
         if (hasMatch(child.path, path)) {
-          final matchedRoutes = [parentRoute!, child];
+          final ancestors = _getAncestors(parentRoute!);
+          final matchedRoutes = [...ancestors, child];
 
           // Use the same parameters as the current match, but any routes that
           // are no longer matched need to have their parameters removed.
@@ -40,7 +41,7 @@ class RouteTree {
           return RouteMatch(routes: matchedRoutes, parameters: parameters);
         }
       }
-      throw ('No relative route for $path found as a child of route: $Route');
+      throw ('No relative route for $path found as a child of route: $parentRoute');
     } else {
       return _getRecursive([], routes, path);
     }
@@ -123,5 +124,24 @@ class RouteTree {
       }
     }
     return RouteMatch(routes: [], parameters: Parameters.empty());
+  }
+
+  List<Route> _getAncestors(Route routeToFind) {
+    return _getAncestorsRecursive(routes, routeToFind, []);
+  }
+
+  List<Route> _getAncestorsRecursive(
+      List<Route> current, Route routeToFind, List<Route> prefixes) {
+    for (var route in current) {
+      if (route == routeToFind) {
+        return [...prefixes, routeToFind];
+      }
+      final searchedChildren =
+          _getAncestorsRecursive(route.children, routeToFind, [route]);
+      if (searchedChildren.isNotEmpty) {
+        return searchedChildren;
+      }
+    }
+    return [];
   }
 }

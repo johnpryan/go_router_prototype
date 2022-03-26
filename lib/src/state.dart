@@ -54,6 +54,25 @@ class RouteState extends ChangeNotifier {
     _globalRouteState.goTo(path, parentRoute: route);
   }
 
+  Route? get activeChild {
+    final routes = _globalRouteState.match?.routes;
+    if (routes == null) {
+      throw Exception('GlobalRouteState.match was null');
+    }
+
+    final index = routes.indexOf(route);
+    if (index < 0) {
+      throw('Route not found in global route state: $route');
+    }
+
+    final nextIndex = index + 1;
+    if (nextIndex >= routes.length) {
+      return null;
+    }
+
+    return routes[nextIndex];
+  }
+
   static RouteState? of(BuildContext context) {
     final routeStateScope =
         context.dependOnInheritedWidgetOfExactType<RouteStateScope>();

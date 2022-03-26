@@ -10,8 +10,8 @@ import 'package:tree_router/src/route.dart';
 import 'helpers.dart';
 
 void main() {
-  group('RouteMatch', () {
-    test('currentRoutePath combines the paths for the matched routes', () {
+  group('RouteMatch.currentRoutePath', () {
+    test('combines the paths for the matched routes', () {
       final match = RouteMatch(
         routes: [
           StackedRoute(path: '/', builder: emptyBuilder),
@@ -23,7 +23,7 @@ void main() {
 
       expect(match.currentRoutePath, '/a/b');
     });
-    test('currentRoutePath includes parameters', () {
+    test('includes parameters', () {
       final match = RouteMatch(
         routes: [
           StackedRoute(path: '/', builder: emptyBuilder),
@@ -33,6 +33,19 @@ void main() {
       );
 
       expect(match.currentRoutePath, '/user/123');
+    });
+
+    test('combines the paths for the matched routes', () {
+      final match = RouteMatch(
+        routes: [
+          SwitcherRoute(path: '/', builder: emptySwitcherBuilder),
+          NestedNavigatorRoute(path: 'a', builder: emptyBuilder),
+          StackedRoute(path: 'b', builder: emptyBuilder),
+        ],
+        parameters: Parameters({}, {}),
+      );
+
+      expect(match.currentRoutePath, '/a/b');
     });
   });
 }
