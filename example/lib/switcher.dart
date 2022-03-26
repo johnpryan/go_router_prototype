@@ -25,7 +25,16 @@ Map<String, dynamic> routeMap = {
       'The_Dark_Knight.mp4': {},
       'The_Dark_Knight_Rises.mp4': {},
     },
-    'Music': {},
+    'Music': {
+      'Playlists': {
+        '2022': {},
+        '2021': {},
+        '2020': {},
+        '2019': {},
+      },
+      'Artists': {},
+      'Songs': {},
+    },
     'Pictures': {},
   },
 };
@@ -104,31 +113,38 @@ class RouteList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        DecoratedBox(
-          decoration: BoxDecoration(
-              border: Border(
-                  right: BorderSide(width: 1, color: Colors.grey[400]!))),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints.tightFor(width: 300),
-            child: Column(
-              children: [
-                ...childPaths.map(
-                  (p) => ListTile(
-                    onTap: () {
-                      RouteState.of(context)!.goTo(p);
-                    },
-                    selected: RouteState.of(context)!.activeChild?.path == p,
-                    title: Text(p),
-                  ),
+    return Scrollbar(
+      isAlwaysShown: true,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            DecoratedBox(
+              decoration: BoxDecoration(
+                  border: Border(
+                      right: BorderSide(width: 1, color: Colors.grey[400]!))),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints.tightFor(width: 300),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ...childPaths.map(
+                      (p) => ListTile(
+                        onTap: () {
+                          RouteState.of(context)!.goTo(p);
+                        },
+                        selected: RouteState.of(context)!.activeChild?.path == p,
+                        title: Text(p),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+            child,
+          ],
         ),
-        child,
-      ],
+      ),
     );
   }
 }
