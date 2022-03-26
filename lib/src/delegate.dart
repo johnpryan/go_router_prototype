@@ -47,7 +47,10 @@ class TreeRouterDelegate extends RouterDelegate<Uri>
   @override
   Uri get currentConfiguration {
     final match = _globalRouteState.match;
-    return Uri.parse(match.currentRoutePath);
+    final current = match.currentRoutePath;
+    final currentUri = Uri.parse(current);
+    print('current: $current currentUri: $currentUri');
+    return currentUri;
   }
 
   @override

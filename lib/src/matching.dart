@@ -31,7 +31,7 @@ Parameters extractParameters(String template, String path) {
   return Parameters(extract(parameters, match), queryParams);
 }
 
-final _fillRegex = RegExp(r'\:([A-Za-z0-9-]*)');
+final _fillRegex = RegExp(r'\:([A-Za-z0-9- .%]*)');
 
 String fillParameters(String template, Parameters parameters) {
   final filledPaths = template.replaceAllMapped(_fillRegex, (match) {

@@ -44,6 +44,7 @@ void main() {
           fillParameters('/user/:id', Parameters({'id': '1'}, {})), '/user/1');
       expect(fillParameters('/search', Parameters({}, {'q': 'dog'})),
           '/search?q=dog');
+      expect(fillParameters('/foo.txt', Parameters({}, {})), '/foo.txt');
     });
 
     test('parseParameterNames', () {

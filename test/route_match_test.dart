@@ -47,5 +47,19 @@ void main() {
 
       expect(match.currentRoutePath, '/a/b');
     });
+    test('combines the paths for the matched routes', () {
+      final match = RouteMatch(
+        routes: [
+          SwitcherRoute(path: '/', builder: emptySwitcherBuilder),
+          SwitcherRoute(path: 'Documents', builder: emptySwitcherBuilder),
+          SwitcherRoute(path: 'Books', builder: emptySwitcherBuilder),
+          SwitcherRoute(path: 'Left_Hand.epub', builder: emptySwitcherBuilder),
+        ],
+        parameters: Parameters({}, {}),
+      );
+
+      expect(match.currentRoutePath, '/Documents/Books/Left_Hand.epub');
+    });
+
   });
 }
