@@ -11,11 +11,18 @@ import 'route.dart';
 
 class GlobalRouteState extends ChangeNotifier {
   final RouteTree _routeTree;
-  RouteMatch? _match;
+  late RouteMatch _match;
 
-  GlobalRouteState(List<Route> routes) : _routeTree = RouteTree(routes);
+  GlobalRouteState(List<Route> routes, String initialRoute)
+      : _routeTree = RouteTree(routes) {
+    final match = _routeTree.get(initialRoute);
+    if (match.notFound) {
+      throw InitialRouteNotFoundError(initialRoute);
+    }
+    _match = match;
+  }
 
-  set match(RouteMatch? match) {
+  set match(RouteMatch match) {
     // Don't notify listeners if the destination is the same
     if (_match == match) return;
 
@@ -23,10 +30,10 @@ class GlobalRouteState extends ChangeNotifier {
     notifyListeners();
   }
 
-  RouteMatch? get match => _match;
+  RouteMatch get match => _match;
 
   void pop() {
-    _match = match?.pop();
+    _match = match.pop();
     notifyListeners();
   }
 
@@ -55,14 +62,11 @@ class RouteState extends ChangeNotifier {
   }
 
   Route? get activeChild {
-    final routes = _globalRouteState.match?.routes;
-    if (routes == null) {
-      throw Exception('GlobalRouteState.match was null');
-    }
+    final routes = _globalRouteState.match.routes;
 
     final index = routes.indexOf(route);
     if (index < 0) {
-      throw('Route not found in global route state: $route');
+      throw Exception('Route not found in global route state: $route');
     }
 
     final nextIndex = index + 1;
@@ -79,4 +83,13 @@ class RouteState extends ChangeNotifier {
     if (routeStateScope == null) return null;
     return routeStateScope.state;
   }
+}
+
+class InitialRouteNotFoundError extends Error {
+  final String initialRoute;
+
+  InitialRouteNotFoundError(this.initialRoute);
+
+  @override
+  String toString() => 'No routes found for initial route: "$initialRoute"';
 }

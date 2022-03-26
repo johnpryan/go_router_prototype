@@ -13,6 +13,7 @@ class NestingDemo extends StatelessWidget {
   NestingDemo({Key? key}) : super(key: key);
 
   final _router = TreeRouter(
+    initialRoute: '/a',
     routes: [
       SwitcherRoute(
         path: '/a',
@@ -32,8 +33,6 @@ class NestingDemo extends StatelessWidget {
     return MaterialApp.router(
       routerDelegate: _router.delegate,
       routeInformationParser: _router.parser,
-      routeInformationProvider: PlatformRouteInformationProvider(
-          initialRouteInformation: const RouteInformation(location: '/a')),
     );
   }
 }
@@ -77,4 +76,3 @@ class BScreen extends StatelessWidget {
     return const Text('Screen B');
   }
 }
-

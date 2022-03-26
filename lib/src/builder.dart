@@ -12,12 +12,12 @@ import 'state.dart';
 
 Widget buildMatch(BuildContext context, RouteMatch routeMatch, VoidCallback pop,
     Key navigatorKey) {
-  return buildMatchRecursive(context, routeMatch, 0, pop, navigatorKey).widget;
+  return _buildMatchRecursive(context, routeMatch, 0, pop, navigatorKey).widget;
 }
 
 // Builds a Navigator for all matched Routes from [startIndex] until the end of
 // the the list, or if a route is a NestedNavigatorRoute
-_RecursiveBuildResult buildMatchRecursive(BuildContext context,
+_RecursiveBuildResult _buildMatchRecursive(BuildContext context,
     RouteMatch routeMatch, int startIndex, VoidCallback pop, Key navigatorKey,
     {Page? firstPage}) {
   final pages = <Page>[];
@@ -38,14 +38,14 @@ _RecursiveBuildResult buildMatchRecursive(BuildContext context,
       // Build the inner Navigator it by recursively calling this method and
       // returning the result directly.
       final key = ValueKey(route);
-      final innerNav = buildMatchRecursive(context, routeMatch, i + 1, pop, key,
+      final innerNav = _buildMatchRecursive(context, routeMatch, i + 1, pop, key,
           firstPage: page);
       return innerNav;
     }
   }
 
   if (pages.isEmpty) {
-    throw ('Attempt to build a Navigator was built with an empty pages list');
+    throw Exception('Attempt to build a Navigator was built with an empty pages list');
   }
 
   Widget navigator = Navigator(
@@ -91,7 +91,7 @@ _RecursiveBuildResult _buildSwitcherRecursive(
     i = result.newIndex;
   } else if (child is r.NestedNavigatorRoute) {
     final key = ValueKey(child);
-    final result = buildMatchRecursive(context, routeMatch, i + 1, pop, key);
+    final result = _buildMatchRecursive(context, routeMatch, i + 1, pop, key);
     childWidget = result.widget;
     i = result.newIndex;
   } else if (child == null) {

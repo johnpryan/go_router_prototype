@@ -77,13 +77,27 @@ class RouteTree {
   }
 
   void _validateRecursive(List<Route> routes, bool topLevel) {
+    // A '/' route is required because PlatformRouteInformationProvider uses
+    // WidgetsBinding.instance!.window.defaultRouteName, which will be '/' if no
+    // default route was requested.
+    bool foundDefaultRoute = false;
     for (var route in routes) {
+      if (topLevel && route.path == '/') {
+        foundDefaultRoute = true;
+      }
       if (topLevel && !route.path.startsWith('/')) {
-        throw Exception('Top-level paths must start with "/": ${route.path}');
+        throw RouteConfigurationError(
+            'Top-level paths must start with "/"', route);
       } else if (!topLevel && route.path.startsWith('/')) {
-        throw Exception('Sub-route paths cannot start with "/": ${route.path}');
+        throw RouteConfigurationError(
+            'Sub-route paths cannot start with "/"', route);
       }
       _validateRecursive(route.children, false);
+    }
+
+    if (topLevel && !foundDefaultRoute) {
+      throw RouteConfigurationError(
+          'A top-level route with the path "/" is required');
     }
   }
 
@@ -144,4 +158,14 @@ class RouteTree {
     }
     return [];
   }
+}
+
+class RouteConfigurationError extends Error {
+  final String message;
+  final Route? route;
+
+  RouteConfigurationError(this.message, [this.route]);
+
+  @override
+  String toString() => route == null ? message : '$message: "${route!.path}"';
 }

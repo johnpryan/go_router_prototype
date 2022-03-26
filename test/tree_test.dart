@@ -82,11 +82,35 @@ void main() {
         ),
       ];
 
-      expect(() => RouteTree(routes), throwsException);
+      expect(() => RouteTree(routes), throwsA(isA<RouteConfigurationError>()));
+    });
+    test('Throws when there is no top-level path "/"', () {
+      final routes = [
+        StackedRoute(
+          path: '/a',
+          builder: emptyBuilder,
+          children: [
+            StackedRoute(
+              path: 'b',
+              builder: emptyBuilder,
+            ),
+          ],
+        ),
+        StackedRoute(
+          path: '/c',
+          builder: emptyBuilder,
+        ),
+      ];
+
+      expect(() => RouteTree(routes), throwsA(isA<RouteConfigurationError>()));
     });
 
     test('Does not throw when top-level routes contain absolute paths', () {
       final routes = [
+        StackedRoute(
+          builder: emptyBuilder,
+          path: '/',
+        ),
         StackedRoute(
           builder: emptyBuilder,
           path: '/a',

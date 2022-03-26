@@ -13,8 +13,9 @@ class TreeRouterDelegate extends RouterDelegate<Uri>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<Uri> {
   late final GlobalRouteState _globalRouteState;
 
-  TreeRouterDelegate(List<Route> routes) {
-    _globalRouteState = GlobalRouteState(routes)..addListener(notifyListeners);
+  factory TreeRouterDelegate(List<Route> routes, {String initialRoute = '/'}) {
+    final state = GlobalRouteState(routes, initialRoute);
+    return TreeRouterDelegate.withState(state);
   }
 
   TreeRouterDelegate.withState(this._globalRouteState) {
@@ -34,7 +35,7 @@ class TreeRouterDelegate extends RouterDelegate<Uri>
       child: Builder(builder: (context) {
         return buildMatch(
           context,
-          _globalRouteState.match!,
+          _globalRouteState.match,
           () => _globalRouteState.pop(),
           navigatorKey,
         );
@@ -45,7 +46,6 @@ class TreeRouterDelegate extends RouterDelegate<Uri>
   @override
   Uri get currentConfiguration {
     final match = _globalRouteState.match;
-    if (match == null) return Uri.parse('/');
     return Uri.parse(match.currentRoutePath);
   }
 

@@ -13,6 +13,7 @@ class TreeRouterDemo extends StatelessWidget {
   TreeRouterDemo({Key? key}) : super(key: key);
 
   final _router = TreeRouter(
+    initialRoute: '/a',
     routes: [
       StackedRoute(
         path: '/a',
@@ -36,8 +37,6 @@ class TreeRouterDemo extends StatelessWidget {
     return MaterialApp.router(
       routerDelegate: _router.delegate,
       routeInformationParser: _router.parser,
-      routeInformationProvider: PlatformRouteInformationProvider(
-          initialRouteInformation: const RouteInformation(location: '/a')),
     );
   }
 }

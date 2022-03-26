@@ -18,6 +18,7 @@ class TreeRouter {
 
   TreeRouter({
     required List<Route> routes,
-  })  : delegate = TreeRouterDelegate(routes),
+    String initialRoute = '/',
+  })  : delegate = TreeRouterDelegate(routes, initialRoute: initialRoute),
         parser = TreeRouteInformationParser();
 }

@@ -207,6 +207,42 @@ void main() {
     expect(path, '/a/b');
     expect(find.byType(Navigator), findsNWidgets(2));
   });
+
+  testWidgets('Displays the initial route immediately with nested routes',
+      (WidgetTester tester) async {
+    final routes = [
+      StackedRoute(
+        path: '/',
+        builder: (context) => const _HomeScreen(),
+      ),
+      StackedRoute(
+        path: '/a',
+        builder: (context) => const _AScreen(),
+        children: [
+          StackedRoute(
+            path: 'b',
+            builder: (context) => const _BScreen(),
+          ),
+        ],
+      ),
+      StackedRoute(
+        path: '/c',
+        builder: (context) => const _CScreen(),
+      ),
+    ];
+
+    await tester.pumpWidget(
+      _TestWidget(
+        routes: routes,
+        informationProvider: _TestRouteInformationProvider(initialRoute: '/a'),
+        initialRoute: '/a',
+      ),
+    );
+
+    expect(find.text('AScreen'), findsOneWidget);
+    await tester.pumpAndSettle();
+    expect(find.text('AScreen'), findsOneWidget);
+  });
 }
 
 class _HomeScreen extends StatelessWidget {
@@ -224,6 +260,24 @@ class _AScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Text('AScreen');
+  }
+}
+
+class _BScreen extends StatelessWidget {
+  const _BScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('BScreen');
+  }
+}
+
+class _CScreen extends StatelessWidget {
+  const _CScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('CScreen');
   }
 }
 
@@ -250,12 +304,16 @@ class _TestWidget extends StatefulWidget {
   final TreeRouterDelegate routerDelegate;
   final TreeRouteInformationParser routeInformationParser;
   final _TestRouteInformationProvider informationProvider;
+  final String? initialRoute;
 
-  _TestWidget(
-      {Key? key,
-      required List<Route> routes,
-      required this.informationProvider})
-      : routerDelegate = TreeRouterDelegate(routes),
+  _TestWidget({
+    Key? key,
+    required List<Route> routes,
+    required this.informationProvider,
+    this.initialRoute,
+  })  : routerDelegate = initialRoute == null
+            ? TreeRouterDelegate(routes)
+            : TreeRouterDelegate(routes, initialRoute: initialRoute),
         routeInformationParser = TreeRouteInformationParser(),
         super(key: key);
 
