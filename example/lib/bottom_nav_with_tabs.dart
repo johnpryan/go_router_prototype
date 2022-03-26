@@ -210,7 +210,8 @@ class AllScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Center(child: Text('All', style: Theme.of(context).textTheme.headline4)),
+        Center(
+            child: Text('All', style: Theme.of(context).textTheme.headline4)),
       ],
     );
   }
@@ -224,13 +225,13 @@ class PopularScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Center(child: Text('Popular', style: Theme.of(context).textTheme.headline4)),
+        Center(
+            child:
+                Text('Popular', style: Theme.of(context).textTheme.headline4)),
       ],
     );
   }
 }
-
-
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -240,7 +241,9 @@ class SettingsScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Center(child: Text('Settings', style: Theme.of(context).textTheme.headline4)),
+        Center(
+            child:
+                Text('Settings', style: Theme.of(context).textTheme.headline4)),
       ],
     );
   }

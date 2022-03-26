@@ -148,7 +148,9 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Bottom Nav'),),
+      appBar: AppBar(
+        title: const Text('Bottom Nav'),
+      ),
       body: Center(
         child: Text(
           'Details for $label',

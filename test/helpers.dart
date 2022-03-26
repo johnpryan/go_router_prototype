@@ -17,7 +17,6 @@ class EmptyWidget extends StatelessWidget {
   Widget build(BuildContext context) => const Placeholder();
 }
 
-
 class TestWidget extends StatefulWidget {
   final TreeRouterDelegate routerDelegate;
   final TreeRouteInformationParser routeInformationParser;

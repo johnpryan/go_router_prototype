@@ -10,7 +10,9 @@ class Parameters {
   final Map<String, String> query;
 
   Parameters(this.path, this.query);
-  Parameters.empty() : path = {}, query = {};
+  Parameters.empty()
+      : path = {},
+        query = {};
 
   static const _equality = MapEquality();
 

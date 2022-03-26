@@ -16,9 +16,12 @@ void main() {
     testWidgets(
         'Configures the Navigator based on the match in GlobalRouteState',
         (WidgetTester tester) async {
-      final routeB = StackedRoute(path: 'b', builder: (_) => const Text('Screen B'));
-      final routeA =
-          StackedRoute(path: '/', builder: (_) => const Text('Screen B'), children: [routeB]);
+      final routeB =
+          StackedRoute(path: 'b', builder: (_) => const Text('Screen B'));
+      final routeA = StackedRoute(
+          path: '/',
+          builder: (_) => const Text('Screen B'),
+          children: [routeB]);
       final routes = [routeA];
 
       final routeMatch = RouteMatch(

@@ -8,8 +8,8 @@ import 'package:flutter/widgets.dart';
 class TreeRouteInformationParser extends RouteInformationParser<Uri> {
   @override
   Future<Uri> parseRouteInformation(
-      RouteInformation routeInformation,
-      ) =>
+    RouteInformation routeInformation,
+  ) =>
       SynchronousFuture<Uri>(Uri.parse(routeInformation.location!));
 
   @override
