@@ -57,6 +57,7 @@ _RecursiveBuildResult _buildMatchRecursive(BuildContext context,
       if (!route.didPop(result)) {
         return false;
       }
+      // TODO: Pop from the correct Navigator with route.navigator
       pop();
       return true;
     },
