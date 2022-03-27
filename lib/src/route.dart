@@ -19,10 +19,12 @@ class StackedRoute extends Route {
 
 class SwitcherRoute extends Route {
   final SwitcherRouteBuilder builder;
+  final String? defaultChild;
 
   SwitcherRoute({
     required String path,
     required this.builder,
+    this.defaultChild,
     List<Route> children = const [],
   }) : super(path: path, children: children);
 }

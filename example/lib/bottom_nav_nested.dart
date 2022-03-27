@@ -16,6 +16,7 @@ class BottomNavigationBarDemo extends StatelessWidget {
     routes: [
       SwitcherRoute(
         path: '/',
+        defaultChild: 'a',
         builder: (context, child) => AppScaffold(child: child),
         children: [
           NestedNavigatorRoute(

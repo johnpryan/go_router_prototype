@@ -38,13 +38,25 @@ class RouteTree {
             parameters = Parameters({}, {});
           }
 
-          return RouteMatch(routes: matchedRoutes, parameters: parameters);
+          return _includeDefaultChild(
+              RouteMatch(routes: matchedRoutes, parameters: parameters));
         }
       }
       throw ('No relative route for $path found as a child of route: $parentRoute');
     } else {
       return _getRecursive([], routes, path);
     }
+  }
+
+  RouteMatch _includeDefaultChild(RouteMatch match) {
+    final lastRoute = match.getLast();
+    if (lastRoute == null) return match;
+    final defaultChild =
+        lastRoute is SwitcherRoute ? lastRoute.defaultChild : null;
+    if (defaultChild != null) {
+      return get(defaultChild, parentRoute: lastRoute);
+    }
+    return match;
   }
 
   Parameters _removeOldParameters(RouteMatch oldMatch, List<Route> newRoutes) {
@@ -109,7 +121,8 @@ class RouteTree {
       if (hasExactMatch(route.path, path)) {
         prefixes.add(route);
         final parameters = extractParameters(route.path, path);
-        return RouteMatch(routes: prefixes, parameters: parameters);
+        return _includeDefaultChild(
+            RouteMatch(routes: prefixes, parameters: parameters));
       }
     }
 
@@ -134,7 +147,8 @@ class RouteTree {
         // This is a relative route and no children matched, so return this
         // as the result.
         final parameters = extractParameters(routePathWithPrefixes, path);
-        return RouteMatch(routes: prefixes, parameters: parameters);
+        return _includeDefaultChild(
+            RouteMatch(routes: prefixes, parameters: parameters));
       }
     }
     return RouteMatch(routes: [], parameters: Parameters.empty());
@@ -150,8 +164,8 @@ class RouteTree {
       if (route == routeToFind) {
         return [...prefixes, routeToFind];
       }
-      final searchedChildren =
-          _getAncestorsRecursive(route.children, routeToFind, [...prefixes, route]);
+      final searchedChildren = _getAncestorsRecursive(
+          route.children, routeToFind, [...prefixes, route]);
       if (searchedChildren.isNotEmpty) {
         return searchedChildren;
       }
