@@ -103,20 +103,22 @@ class _AppScaffoldState extends State<AppScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Scrollbar(
-        isAlwaysShown: true,
-        controller: _scrollController,
-        child: LayoutBuilder(
-          builder: (context, viewportConstraints) {
-            return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              controller: _scrollController,
-              child: RouteList(
-                childPaths: widget.childPaths,
-                child: widget.child,
-              ),
-            );
-          },
+      body: SafeArea(
+        child: Scrollbar(
+          isAlwaysShown: true,
+          controller: _scrollController,
+          child: LayoutBuilder(
+            builder: (context, viewportConstraints) {
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                controller: _scrollController,
+                child: RouteList(
+                  childPaths: widget.childPaths,
+                  child: widget.child,
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
