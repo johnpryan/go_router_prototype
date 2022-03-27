@@ -59,6 +59,10 @@ class RouteState extends ChangeNotifier {
     _globalRouteState.goTo(path, parentRoute: route);
   }
 
+  void pop() {
+    _globalRouteState.pop();
+  }
+
   Map<String, String> get queryParameters =>
       _globalRouteState.match.parameters.query;
 

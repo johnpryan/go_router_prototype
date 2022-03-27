@@ -9,8 +9,9 @@ import 'package:tree_router/src/parser.dart';
 import 'package:tree_router/tree_router.dart';
 
 void main() {
-  group('RouteState.of', () {
-    testWidgets('Returns a route state object', (WidgetTester tester) async {
+  group('RouteState', () {
+    testWidgets('.of() Returns a route state object',
+        (WidgetTester tester) async {
       late final BuildContext childContext;
       final routes = [
         StackedRoute(
@@ -32,10 +33,9 @@ void main() {
 
       expect(RouteState.of(childContext), isNotNull);
     });
-  });
 
-  group('RouteState.goTo()', () {
-    testWidgets('Navigates to the correct screen', (WidgetTester tester) async {
+    testWidgets('goTo() Navigates to the correct screen',
+        (WidgetTester tester) async {
       late final BuildContext childContext;
       final routes = [
         StackedRoute(
@@ -69,6 +69,50 @@ void main() {
       routeState.goTo('/a');
       await tester.pumpAndSettle();
       expect(find.text('Screen A'), findsOneWidget);
+    });
+
+    testWidgets('pop() Navigates to the correct screen',
+        (WidgetTester tester) async {
+      BuildContext? childContext;
+      final routes = [
+        StackedRoute(
+          path: '/',
+          builder: (context) {
+            return Builder(
+              builder: (BuildContext context) {
+                childContext ??= context;
+                return const Text('Home');
+              },
+            );
+          },
+          children: [
+            StackedRoute(
+              path: 'a',
+              builder: (context) {
+                return const Text('Screen A');
+              },
+            ),
+          ],
+        ),
+      ];
+
+      await tester.pumpWidget(
+        _TestApp(
+          routes: routes,
+        ),
+      );
+
+      expect(find.text('Home'), findsOneWidget);
+      final routeState = RouteState.of(childContext!);
+      if (routeState == null) fail('RouteState.of() returned null.');
+
+      routeState.goTo('/a');
+      await tester.pumpAndSettle();
+      expect(find.text('Screen A'), findsOneWidget);
+
+      routeState.pop();
+      await tester.pumpAndSettle();
+      expect(find.text('Home'), findsOneWidget);
     });
 
     testWidgets(
