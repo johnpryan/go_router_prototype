@@ -122,6 +122,33 @@ void main() {
       ];
       RouteTree(routes);
     });
+
+    test('Removes path parameters when pop() is called', () {
+      final routes = [
+        StackedRoute(
+          builder: emptyBuilder,
+          path: '/',
+          children: [
+            StackedRoute(
+              builder: emptyBuilder,
+              path: 'books/:bookId',
+              children: [
+                StackedRoute(
+                  builder: emptyBuilder,
+                  path: 'details/:detailId',
+                ),
+              ],
+            ),
+          ],
+        ),
+      ];
+      final tree = RouteTree(routes);
+      final match = tree.get('/books/123/details/456');
+      expect(match.parameters.path.keys.length, 2);
+
+      final newMatch = tree.pop(match);
+      expect(newMatch.parameters.path.keys.length, 1);
+    });
   });
 }
 

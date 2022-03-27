@@ -16,12 +16,6 @@ class RouteMatch {
     required this.parameters,
   });
 
-  RouteMatch pop() {
-    final newRoutes = List<Route>.from(routes)..removeLast();
-    // todo: remove parameters?
-    return RouteMatch(routes: newRoutes, parameters: parameters);
-  }
-
   Route? getLast() => routes.isEmpty ? null : routes.last;
 
   String get currentRoutePath {

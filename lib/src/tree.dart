@@ -48,6 +48,18 @@ class RouteTree {
     }
   }
 
+  RouteMatch pop(RouteMatch previousMatch) {
+    final lastRoute = previousMatch.getLast();
+    if (lastRoute == null) {
+      throw RouteStateError(
+          'Unable to call pop() because no matching routes were found');
+    }
+
+    final newRoutes = _getAncestors(lastRoute, inclusive: false);
+    final newParams = _removeOldParameters(previousMatch, newRoutes);
+    return RouteMatch(routes: newRoutes, parameters: newParams);
+  }
+
   RouteMatch _includeDefaultChild(RouteMatch match) {
     final lastRoute = match.getLast();
     if (lastRoute == null) return match;
@@ -154,18 +166,21 @@ class RouteTree {
     return RouteMatch(routes: [], parameters: Parameters.empty());
   }
 
-  List<Route> _getAncestors(Route routeToFind) {
-    return _getAncestorsRecursive(routes, routeToFind, []);
+  List<Route> _getAncestors(Route routeToFind, {bool inclusive = true}) {
+    return _getAncestorsRecursive(routes, routeToFind, [], inclusive);
   }
 
-  List<Route> _getAncestorsRecursive(
-      List<Route> current, Route routeToFind, List<Route> prefixes) {
+  List<Route> _getAncestorsRecursive(List<Route> current, Route routeToFind,
+      List<Route> prefixes, bool inclusive) {
     for (var route in current) {
       if (route == routeToFind) {
-        return [...prefixes, routeToFind];
+        return [
+          ...prefixes,
+          if (inclusive) routeToFind,
+        ];
       }
       final searchedChildren = _getAncestorsRecursive(
-          route.children, routeToFind, [...prefixes, route]);
+          route.children, routeToFind, [...prefixes, route], inclusive);
       if (searchedChildren.isNotEmpty) {
         return searchedChildren;
       }
@@ -182,4 +197,13 @@ class RouteConfigurationError extends Error {
 
   @override
   String toString() => route == null ? message : '$message: "${route!.path}"';
+}
+
+class RouteStateError extends Error {
+  final String message;
+
+  RouteStateError(this.message);
+
+  @override
+  String toString() => message;
 }

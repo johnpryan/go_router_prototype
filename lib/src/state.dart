@@ -26,7 +26,7 @@ class GlobalRouteState extends ChangeNotifier {
   RouteMatch get match => _match;
 
   void pop() {
-    _match = match.pop();
+    _match = _routeTree.pop(_match);
     notifyListeners();
   }
 
