@@ -15,6 +15,7 @@ void main() {
       expect(hasMatch('/user', '/user/1'), true);
       expect(hasMatch('user', 'user/1'), true);
       expect(hasMatch('user/:id', 'user/1'), true);
+      expect(hasMatch('/user/:id', '/user/1/suffix'), true);
     });
 
     test('hasExactMatch', () {

@@ -6,8 +6,8 @@ import 'package:path/path.dart' as p;
 import 'package:tree_router/src/parameters.dart';
 
 import 'match.dart';
-import 'route.dart';
 import 'matching.dart';
+import 'route.dart';
 
 class RouteTree {
   List<Route> routes;
@@ -23,19 +23,16 @@ class RouteTree {
       for (var i = 0; i < children.length; i++) {
         final child = children[i];
         if (hasMatch(child.path, path)) {
-          final ancestors = _getAncestors(parentRoute!);
+          final ancestors =
+              _getAncestors(parentRoute!, previousMatch: previousMatch);
           final matchedRoutes = [...ancestors, child];
 
           // Use the same parameters as the current match, but any routes that
           // are no longer matched need to have their parameters removed.
-          late final Parameters parameters;
+          Parameters parameters = extractParameters(child.path, path);
           if (previousMatch != null) {
-            parameters = _removeOldParameters(
-              previousMatch,
-              matchedRoutes,
-            );
-          } else {
-            parameters = Parameters({}, {});
+            parameters =
+                _removeOldParameters(previousMatch, matchedRoutes, parameters);
           }
 
           return _includeDefaultChild(
@@ -55,8 +52,10 @@ class RouteTree {
           'Unable to call pop() because no matching routes were found');
     }
 
-    final newRoutes = _getAncestors(lastRoute, inclusive: false);
-    final newParams = _removeOldParameters(previousMatch, newRoutes);
+    final newRoutes = _getAncestors(lastRoute,
+        inclusive: false, previousMatch: previousMatch);
+    final newParams = _removeOldParameters(
+        previousMatch, newRoutes, previousMatch.parameters);
     return RouteMatch(routes: newRoutes, parameters: newParams);
   }
 
@@ -71,10 +70,11 @@ class RouteTree {
     return match;
   }
 
-  Parameters _removeOldParameters(RouteMatch oldMatch, List<Route> newRoutes) {
+  Parameters _removeOldParameters(
+      RouteMatch oldMatch, List<Route> newRoutes, Parameters newParams) {
     // Don't preserve query parameters when the route is relative.
-    final newQueryParams = <String, String>{};
-    final newPathParams = Map<String, String>.from(oldMatch.parameters.path);
+    final newQueryParams = newParams.query;
+    final newPathParams = newParams.path;
     final oldRoutesLength = oldMatch.routes.length;
     final newRoutesLength = newRoutes.length;
 
@@ -166,21 +166,27 @@ class RouteTree {
     return RouteMatch(routes: [], parameters: Parameters.empty());
   }
 
-  List<Route> _getAncestors(Route routeToFind, {bool inclusive = true}) {
-    return _getAncestorsRecursive(routes, routeToFind, [], inclusive);
+  List<Route> _getAncestors(Route routeToFind,
+      {RouteMatch? previousMatch, bool inclusive = true}) {
+    return _getAncestorsRecursive(
+        routes, routeToFind, [], inclusive, previousMatch);
   }
 
   List<Route> _getAncestorsRecursive(List<Route> current, Route routeToFind,
-      List<Route> prefixes, bool inclusive) {
+      List<Route> prefixes, bool inclusive, RouteMatch? previousMatch) {
+    final currentPathTemplate = p.joinAll(prefixes.map((r) => r.path));
+    bool routeHasCorrectPrefix = previousMatch == null
+        ? true
+        : hasMatch(currentPathTemplate, previousMatch.path);
     for (var route in current) {
-      if (route == routeToFind) {
+      if (route == routeToFind && routeHasCorrectPrefix) {
         return [
           ...prefixes,
           if (inclusive) routeToFind,
         ];
       }
-      final searchedChildren = _getAncestorsRecursive(
-          route.children, routeToFind, [...prefixes, route], inclusive);
+      final searchedChildren = _getAncestorsRecursive(route.children,
+          routeToFind, [...prefixes, route], inclusive, previousMatch);
       if (searchedChildren.isNotEmpty) {
         return searchedChildren;
       }

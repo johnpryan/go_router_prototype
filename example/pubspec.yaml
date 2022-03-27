@@ -12,6 +12,7 @@ dependencies:
   tree_router:
     path: ../
   url_launcher: ^6.0.0
+  adaptive_navigation: ^0.0.5
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -21,7 +21,7 @@ void main() {
         parameters: Parameters({}, {}),
       );
 
-      expect(match.currentRoutePath, '/a/b');
+      expect(match.path, '/a/b');
     });
     test('includes parameters', () {
       final match = RouteMatch(
@@ -32,7 +32,7 @@ void main() {
         parameters: Parameters({'id': '123'}, {}),
       );
 
-      expect(match.currentRoutePath, '/user/123');
+      expect(match.path, '/user/123');
     });
 
     test('combines the paths for the matched routes', () {
@@ -45,7 +45,7 @@ void main() {
         parameters: Parameters({}, {}),
       );
 
-      expect(match.currentRoutePath, '/a/b');
+      expect(match.path, '/a/b');
     });
     test('combines the paths for the matched routes', () {
       final match = RouteMatch(
@@ -58,7 +58,7 @@ void main() {
         parameters: Parameters({}, {}),
       );
 
-      expect(match.currentRoutePath, '/Documents/Books/Left_Hand.epub');
+      expect(match.path, '/Documents/Books/Left_Hand.epub');
     });
   });
 }

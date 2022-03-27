@@ -6,8 +6,8 @@ import 'package:flutter/widgets.dart' hide Route;
 import 'package:tree_router/src/inheritance.dart';
 
 import 'match.dart';
-import 'tree.dart';
 import 'route.dart';
+import 'tree.dart';
 
 class GlobalRouteState extends ChangeNotifier {
   final RouteTree _routeTree;

@@ -5,7 +5,7 @@
 import 'package:flutter/widgets.dart' hide Route;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tree_router/src/route.dart';
-
+import 'package:tree_router/src/state.dart';
 import 'package:tree_router/src/tree.dart';
 
 import 'helpers.dart';
@@ -148,6 +148,46 @@ void main() {
 
       final newMatch = tree.pop(match);
       expect(newMatch.parameters.path.keys.length, 1);
+    });
+
+    test('pop() shows the correct route when there are duplicate paths', () {
+      final bookRoute = StackedRoute(
+        builder: (context) {
+          final bookId = RouteState.of(context)!.pathParameters['bookId']!;
+          return Text('Book $bookId');
+        },
+        path: 'book/:bookId',
+      );
+
+      final routes = [
+        SwitcherRoute(
+          builder: (context, child) => child,
+          path: '/',
+          children: [
+            StackedRoute(
+              builder: (context) => const Text('popular'),
+              path: 'popular',
+              children: [
+                bookRoute,
+              ],
+            ),
+            StackedRoute(
+              builder: (context) => const Text('all'),
+              path: 'all',
+              children: [
+                bookRoute,
+              ],
+            ),
+          ],
+        ),
+      ];
+      final tree = RouteTree(routes);
+      var match = tree.get('/all/book/123');
+      expect(match.routes, hasLength(3));
+
+      match = tree.pop(match);
+      expect(match.routes, hasLength(2));
+      expect(match.getLast()!.path, 'all');
     });
   });
 }
