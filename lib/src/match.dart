@@ -22,8 +22,6 @@ class RouteMatch {
     return fillParameters(p.joinAll(routes.map((r) => r.path)), parameters);
   }
 
-  bool get notFound => routes.isEmpty;
-
   @override
   String toString() {
     return 'RouteMatch: $routes, $parameters';

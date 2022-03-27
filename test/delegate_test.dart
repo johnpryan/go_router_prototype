@@ -117,37 +117,36 @@ void main() {
     });
 
     testWidgets('SwitcherRoute displays the default child',
-            (WidgetTester tester) async {
-          final provider = TestRouteInformationProvider();
-          final routes = <Route>[
-            SwitcherRoute(
-              path: '/',
-              defaultChild: 'a',
-              builder: (context, child) => _SwitcherParentScreen(
-                label: 'Switcher Parent',
-                child: child,
-              ),
-              children: [
-                StackedRoute(
-                  path: 'a',
-                  builder: (context) => const _AScreen(),
-                ),
-              ],
+        (WidgetTester tester) async {
+      final provider = TestRouteInformationProvider();
+      final routes = <Route>[
+        SwitcherRoute(
+          path: '/',
+          defaultChild: 'a',
+          builder: (context, child) => _SwitcherParentScreen(
+            label: 'Switcher Parent',
+            child: child,
+          ),
+          children: [
+            StackedRoute(
+              path: 'a',
+              builder: (context) => const _AScreen(),
             ),
-          ];
+          ],
+        ),
+      ];
 
-          await tester.pumpWidget(
-            TestWidget(
-              routes: routes,
-              informationProvider: provider,
-            ),
-          );
+      await tester.pumpWidget(
+        TestWidget(
+          routes: routes,
+          informationProvider: provider,
+        ),
+      );
 
-          await tester.pumpAndSettle();
-          expect(find.text('Switcher Parent'), findsOneWidget);
-          expect(find.text('AScreen'), findsOneWidget);
-        });
-
+      await tester.pumpAndSettle();
+      expect(find.text('Switcher Parent'), findsOneWidget);
+      expect(find.text('AScreen'), findsOneWidget);
+    });
 
     testWidgets('SwitcherRoutes can be children of other SwitcherRoutes',
         (WidgetTester tester) async {
