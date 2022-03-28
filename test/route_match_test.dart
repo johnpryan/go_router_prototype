@@ -47,6 +47,7 @@ void main() {
 
       expect(match.path, '/a/b');
     });
+
     test('combines the paths for the matched routes', () {
       final match = RouteMatch(
         routes: [
@@ -59,6 +60,33 @@ void main() {
       );
 
       expect(match.path, '/Documents/Books/Left_Hand.epub');
+    });
+
+    group('prefix operations', () {
+      RouteMatch _buildMatch(List<String> paths) {
+        return RouteMatch(
+          routes: [
+            ...paths.map((p) => StackedRoute(path: p, builder: emptyBuilder))
+          ],
+          parameters: Parameters({}, {}),
+        );
+      }
+
+      final match1 = _buildMatch(['/', 'Documents']);
+      final match2 = _buildMatch(['/', 'Documents', 'Books', 'book1']);
+      final match3 = _buildMatch(['/', 'Documents', 'Pictures']);
+
+      test('isPrefixOf', () {
+        expect(match1.isPrefixOf(match2), true);
+        expect(match1.isPrefixOf(match1), true);
+        expect(match3.isPrefixOf(match1), false);
+      });
+
+      test('getMatchingPrefixIndex', () {
+        expect(match1.getMatchingPrefixIndex(match2), 2);
+        expect(match2.getMatchingPrefixIndex(match3), 2);
+        expect(match3.getMatchingPrefixIndex(match1), -1);
+      });
     });
   });
 }

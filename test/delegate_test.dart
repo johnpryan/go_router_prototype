@@ -24,6 +24,7 @@ void main() {
           initialRoute: '/',
         ),
       );
+      await tester.pumpAndSettle();
       expect(find.text('Home Screen'), findsOneWidget);
     });
 
@@ -241,7 +242,7 @@ void main() {
       ),
     );
 
-    expect(find.text('AScreen'), findsOneWidget);
+    // expect(find.text('AScreen'), findsOneWidget);
     await tester.pumpAndSettle();
     expect(find.text('AScreen'), findsOneWidget);
   });
@@ -346,7 +347,6 @@ void main() {
       ),
     );
 
-    expect(find.text('AScreen'), findsOneWidget);
     await tester.pumpAndSettle();
     expect(find.text('AScreen'), findsOneWidget);
   });
@@ -358,13 +358,21 @@ void main() {
         builder: (context) => const _QueryParamsScreen(),
       ),
     ];
+
+    final routeState = GlobalRouteState(routes);
+
     await tester.pumpWidget(
       TestWidget(
         routes: routes,
         initialRoute: '/?q=foo',
+        routeState: routeState,
       ),
     );
 
+    await tester.pumpAndSettle();
+    expect(routeState.match.parameters.query, hasLength(1));
+    await tester.pumpAndSettle();
+    expect(routeState.match.parameters.query, hasLength(1));
     expect(find.text('q: foo'), findsOneWidget);
   });
 }
@@ -410,7 +418,7 @@ class _QueryParamsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final queryParams = GlobalRouteState.of(context)!.match.parameters.query;
+    final queryParams = RouteState.of(context)!.queryParameters;
     return Column(
       children: [
         ...queryParams.keys.map((key) => Text('$key: ${queryParams[key]}')),

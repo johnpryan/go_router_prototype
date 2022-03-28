@@ -56,15 +56,16 @@ class TreeRouterDelegate extends RouterDelegate<Uri>
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
-  Future<void> setNewRoutePath(Uri configuration) {
+  Future<void> setNewRoutePath(Uri configuration) async {
     // TODO: This is probably using decodeComponent incorrectly.
-    _globalRouteState.goTo(Uri.decodeComponent(configuration.toString()));
+    await _globalRouteState.goTo(Uri.decodeComponent(configuration.toString()));
     return SynchronousFuture(null);
   }
 
   @override
-  Future<void> setInitialRoutePath(Uri configuration) {
-    _globalRouteState.goTo('$configuration', isInitial: true);
+  Future<void> setInitialRoutePath(Uri configuration) async {
+    await _globalRouteState.goTo(Uri.decodeComponent(configuration.toString()),
+        isInitial: true);
     return SynchronousFuture(null);
   }
 }
