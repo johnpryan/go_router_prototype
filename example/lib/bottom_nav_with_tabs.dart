@@ -16,12 +16,14 @@ class BottomNavWithTabsDemo extends StatelessWidget {
     routes: [
       SwitcherRoute(
         path: '/',
+        defaultChild: 'books',
         builder: (context, child) {
           return AppScaffold(child: child);
         },
         children: [
           SwitcherRoute(
             path: 'books',
+            defaultChild: 'popular',
             builder: (context, child) {
               return TabScreen(
                 selectedIndex: _calculateTabIndex(context),
