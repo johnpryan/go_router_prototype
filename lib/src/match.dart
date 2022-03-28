@@ -27,6 +27,32 @@ class RouteMatch {
     return fillParameters(p.joinAll(routes.map((r) => r.path)), parameters);
   }
 
+  bool isPrefixOf(RouteMatch other) {
+    if (other.routes.length < routes.length) {
+      return false;
+    }
+    for (var i = 0; i < routes.length; i++) {
+      if (routes[i].path != other.routes[i].path) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // Returns the index of [other.routes] where this route's paths no longer
+  // match.
+  int getMatchingPrefixIndex(RouteMatch other) {
+    for (var i = 0; i < other.routes.length; i++) {
+      if (i >= routes.length) {
+        return i;
+      }
+      if (routes[i].path != other.routes[i].path) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
   @override
   bool operator ==(Object other) {
     return other is RouteMatch &&

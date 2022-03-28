@@ -41,12 +41,36 @@ class GlobalRouteState extends ChangeNotifier {
   }
 
   Future<RouteMatch> _handleRedirects(RouteMatch match) async {
-    for (var route in match.routes) {
+    return _handleRedirectsRecursive(match);
+  }
+
+  Future<RouteMatch> _handleRedirectsRecursive(RouteMatch match,
+      {int endIndex = 0}) async {
+    if (endIndex < 0) endIndex = 0;
+    for (var i = match.routes.length - 1; i >= endIndex; i--) {
+      final route = match.routes[i];
       final redirect = route.redirect;
       if (redirect != null) {
         final newPath = await redirect(match);
-        if (newPath != null ) {
-          return _routeTree.get(newPath, parentRoute: route, previousMatch: match);
+        if (newPath != null) {
+          final newMatch = _routeTree.get(
+            newPath,
+            parentRoute: route,
+            previousMatch: match,
+          );
+          // If the previous match is a prefix of the new match, stop searching
+          // for redirects at the point where the two routes are the same.
+          //
+          // For example, if the previous match was '/a/b', and the new match is
+          // /a/b/c, we can skip searching '/a/b' for redirects, since those
+          // will be handled by previous invocations of this method on the call
+          // stack.
+          if (match.isPrefixOf(newMatch)) {
+            final endIndex = match.getMatchingPrefixIndex(newMatch);
+            return _handleRedirectsRecursive(newMatch,
+                endIndex: endIndex);
+          }
+          return _handleRedirectsRecursive(newMatch);
         }
       }
     }

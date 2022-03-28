@@ -12,10 +12,10 @@ void main() {
       final routes = <Route>[
         SwitcherRoute(
           path: '/',
-          builder: (_, child) => child,
           redirect: (match) {
             return SynchronousFuture('a');
           },
+          builder: (_, child) => child,
           children: [
             StackedRoute(
               path: 'a',
@@ -35,6 +35,89 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Screen A'), findsOneWidget);
     });
+
+    testWidgets('Redirects multiple times', (WidgetTester tester) async {
+      final routes = <Route>[
+        SwitcherRoute(
+          path: '/',
+          redirect: (match) {
+            return SynchronousFuture('a');
+          },
+          builder: (_, child) => child,
+          children: [
+            StackedRoute(
+              path: 'a',
+              redirect: (match) {
+                return SynchronousFuture('b');
+              },
+              builder: (context) {
+                return const AScreen();
+              },
+              children: [
+                StackedRoute(
+                  path: 'b',
+                  builder: (context) {
+                    return const BScreen();
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      ];
+
+      await tester.pumpWidget(
+        TestWidget(
+          routes: routes,
+          initialRoute: '/',
+        ),
+      );
+
+      await tester.pumpAndSettle();
+      expect(find.text('Screen B'), findsOneWidget);
+    });
+
+    testWidgets('Avoids infinite redirects', (WidgetTester tester) async {
+      final routes = <Route>[
+        SwitcherRoute(
+          path: '/',
+          redirect: (match) {
+            return SynchronousFuture('/a');
+          },
+          builder: (_, child) => child,
+          children: [
+            StackedRoute(
+              path: 'a',
+              redirect: (match) {
+                return SynchronousFuture('/b');
+              },
+              builder: (context) {
+                return const AScreen();
+              },
+            ),
+            StackedRoute(
+              path: 'b',
+              redirect: (match) {
+                return SynchronousFuture('/a');
+              },
+              builder: (context) {
+                return const BScreen();
+              },
+            ),
+          ],
+        ),
+      ];
+
+      await tester.pumpWidget(
+        TestWidget(
+          routes: routes,
+          initialRoute: '/',
+        ),
+      );
+
+      await tester.pumpAndSettle();
+      expect(find.text('Screen B'), findsOneWidget);
+    }, skip: true);
   });
 }
 
@@ -53,5 +136,14 @@ class AScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Text('Screen A');
+  }
+}
+
+class BScreen extends StatelessWidget {
+  const BScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Screen B');
   }
 }
