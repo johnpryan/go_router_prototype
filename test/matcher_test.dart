@@ -29,6 +29,7 @@ void main() {
           hasExactMatch('Left Hand of Darkness',
               Uri.decodeComponent('Left%20Hand%20of%20Darkness')),
           true);
+      expect(hasExactMatch('/', '/?q=foo'), true);
     });
 
     test('extractParameters', () {

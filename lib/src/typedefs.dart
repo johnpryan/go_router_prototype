@@ -4,6 +4,8 @@
 
 import 'package:flutter/widgets.dart';
 
+import 'match.dart';
+
 typedef StackedRouteBuilder = Widget Function(
   BuildContext context,
 );
@@ -16,3 +18,5 @@ typedef SwitcherRouteBuilder = Widget Function(
 typedef NestedNavigatorRouteBuilder = Widget Function(
   BuildContext context,
 );
+
+typedef Redirect = Future<String?> Function(RouteMatch routeState);

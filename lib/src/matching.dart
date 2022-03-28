@@ -16,6 +16,10 @@ bool hasExactMatch(String template, String path) {
 
 bool _hasMatch(String template, String path, bool prefix) {
   final parameters = <String>[];
+
+  // remove query parameters
+  path = Uri.decodeComponent(Uri.parse(path).path);
+
   var pathRegExp = pathToRegExp(template,
       parameters: parameters, prefix: prefix, caseSensitive: true);
   return pathRegExp.hasMatch(path);

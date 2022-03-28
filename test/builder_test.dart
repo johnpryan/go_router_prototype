@@ -39,7 +39,7 @@ void main() {
         ),
       );
 
-      globalRouteState.match = routeMatch;
+      await globalRouteState.setMatch(routeMatch);
       await tester.pumpAndSettle();
 
       expect(find.text('Screen B'), findsOneWidget);

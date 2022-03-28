@@ -13,8 +13,13 @@ class StackedRoute extends Route {
   StackedRoute({
     required String path,
     required this.builder,
+    Redirect? redirect,
     List<Route> children = const [],
-  }) : super(path: path, children: children);
+  }) : super(
+          path: path,
+          children: children,
+          redirect: redirect,
+        );
 }
 
 class SwitcherRoute extends Route {
@@ -25,8 +30,13 @@ class SwitcherRoute extends Route {
     required String path,
     required this.builder,
     this.defaultChild,
+    Redirect? redirect,
     List<Route> children = const [],
-  }) : super(path: path, children: children);
+  }) : super(
+          path: path,
+          children: children,
+          redirect: redirect,
+        );
 }
 
 class NestedNavigatorRoute extends Route {
@@ -35,8 +45,13 @@ class NestedNavigatorRoute extends Route {
   NestedNavigatorRoute({
     required String path,
     required this.builder,
+    Redirect? redirect,
     List<Route> children = const [],
-  }) : super(path: path, children: children);
+  }) : super(
+          path: path,
+          children: children,
+          redirect: redirect,
+        );
 }
 
 abstract class Route {
@@ -44,10 +59,12 @@ abstract class Route {
 
   final String path;
   final List<Route> children;
+  final Redirect? redirect;
 
   const Route({
     required this.path,
     this.children = const [],
+    this.redirect,
   });
 
   @override

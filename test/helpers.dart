@@ -8,6 +8,7 @@ import 'package:tree_router/src/parser.dart';
 import 'package:tree_router/tree_router.dart';
 
 Widget emptyBuilder(context) => const EmptyWidget();
+
 Widget emptySwitcherBuilder(context, child) => child;
 
 class EmptyWidget extends StatelessWidget {
@@ -26,8 +27,11 @@ class TestWidget extends StatefulWidget {
     Key? key,
     required List<Route> routes,
     TestRouteInformationProvider? informationProvider,
+    GlobalRouteState? routeState,
     String initialRoute = '/',
-  })  : routerDelegate = TreeRouterDelegate(routes),
+  })  : routerDelegate = routeState == null
+            ? TreeRouterDelegate(routes)
+            : TreeRouterDelegate.withState(routeState),
         routeInformationParser = TreeRouteInformationParser(),
         informationProvider = informationProvider ??
             TestRouteInformationProvider(initialRoute: initialRoute),

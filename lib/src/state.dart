@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart' hide Route;
 import 'package:tree_router/src/inheritance.dart';
 
@@ -13,12 +14,12 @@ class GlobalRouteState extends ChangeNotifier {
   final RouteTree _routeTree;
   late RouteMatch _match;
 
-  GlobalRouteState(List<Route> routes) : _routeTree = RouteTree(routes);
+  GlobalRouteState(List<Route> routes) : _routeTree = RouteTree(routes) {
+    _match = _routeTree.get('/');
+  }
 
-  set match(RouteMatch match) {
-    // Don't notify listeners if the destination is the same
-    if (_match == match) return;
-
+  Future setMatch(RouteMatch match) async {
+    match = await _handleRedirects(match);
     _match = match;
     notifyListeners();
   }
@@ -30,14 +31,26 @@ class GlobalRouteState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void goTo(String path, {Route? parentRoute, bool isInitial = false}) {
+  Future goTo(String path, {Route? parentRoute, bool isInitial = false}) async {
     if (isInitial) {
-      _match = _routeTree.get(path);
-      notifyListeners();
+      await setMatch(_routeTree.get(path));
     } else {
-      match =
-          _routeTree.get(path, parentRoute: parentRoute, previousMatch: _match);
+      await setMatch(_routeTree.get(path,
+          parentRoute: parentRoute, previousMatch: _match));
     }
+  }
+
+  Future<RouteMatch> _handleRedirects(RouteMatch match) async {
+    for (var route in match.routes) {
+      final redirect = route.redirect;
+      if (redirect != null) {
+        final newPath = await redirect(match);
+        if (newPath != null ) {
+          return _routeTree.get(newPath, parentRoute: route, previousMatch: match);
+        }
+      }
+    }
+    return SynchronousFuture(match);
   }
 
   static GlobalRouteState? of(BuildContext context) {
