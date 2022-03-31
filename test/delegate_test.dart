@@ -219,6 +219,54 @@ void main() {
       expect(parent3RouteState, isNotNull);
       expect(parent3RouteState!.route.path, 'b');
     });
+
+    testWidgets('SwitcherRoute preserveState', (WidgetTester tester) async {
+      final provider = TestRouteInformationProvider();
+      final routes = <Route>[
+        SwitcherRoute(
+          path: '/',
+          preserveState: true,
+          builder: (context, child) => _SwitcherParentScreen(
+            label: 'Switcher Parent',
+            child: child,
+          ),
+          children: [
+            NestedNavigatorRoute(
+              path: 'a',
+              builder: (context) => const _AScreen(),
+              children: [
+                StackedRoute(
+                  path: 'c',
+                  builder: (context) => const _CScreen(),
+                )
+              ],
+            ),
+            NestedNavigatorRoute(
+              path: 'b',
+              builder: (context) => const _BScreen(),
+              children: [
+                StackedRoute(
+                  path: 'd',
+                  builder: (context) => const _DScreen(),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ];
+
+      await tester.pumpWidget(
+        TestWidget(
+          routes: routes,
+          informationProvider: provider,
+        ),
+      );
+
+      provider.value = const RouteInformation(location: '/a');
+      await tester.pumpAndSettle();
+      expect(find.text('AScreen'), findsOneWidget);
+      expect(find.text('BScreen', skipOffstage: true), isOffstage);
+    });
   });
 
   testWidgets('Displays the initial route immediately',
@@ -413,6 +461,15 @@ class _CScreen extends StatelessWidget {
   }
 }
 
+class _DScreen extends StatelessWidget {
+  const _DScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('DScreen');
+  }
+}
+
 class _QueryParamsScreen extends StatelessWidget {
   const _QueryParamsScreen({Key? key}) : super(key: key);
 
@@ -442,7 +499,7 @@ class _SwitcherParentScreen extends StatelessWidget {
     return Column(
       children: [
         Text(label),
-        child,
+        Expanded(child: child),
       ],
     );
   }

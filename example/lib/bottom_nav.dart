@@ -16,7 +16,9 @@ class BottomNavigationBarDemo extends StatelessWidget {
     routes: [
       SwitcherRoute(
         path: '/',
+        // defaultChild: 'a',
         builder: (context, child) => AppScaffold(child: child),
+        // preserveState: true
         children: [
           StackedRoute(
             path: 'a',
@@ -104,10 +106,10 @@ class AppScaffold extends StatelessWidget {
   void _onItemTapped(int index, BuildContext context) {
     switch (index) {
       case 0:
-        RouteState.of(context)!.goTo('/a');
+        RouteState.of(context)!.goTo('a');
         break;
       case 1:
-        RouteState.of(context)!.goTo('/b');
+        RouteState.of(context)!.goTo('b');
         break;
     }
   }

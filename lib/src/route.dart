@@ -24,11 +24,13 @@ class StackedRoute extends Route {
 
 class SwitcherRoute extends Route {
   final SwitcherRouteBuilder builder;
+  final bool preserveState;
   final String? defaultChild;
 
   SwitcherRoute({
     required String path,
     required this.builder,
+    this.preserveState = false,
     this.defaultChild,
     Redirect? redirect,
     List<Route> children = const [],
