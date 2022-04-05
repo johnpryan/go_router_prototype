@@ -116,7 +116,8 @@ void main() {
     });
 
     testWidgets(
-        'Navigates to the correct screen when provided with a relative route path', (WidgetTester tester) async {
+        'Navigates to the correct screen when provided with a relative route path',
+        (WidgetTester tester) async {
       BuildContext? rootContext;
       BuildContext? aContext;
       BuildContext? bContext;
@@ -175,7 +176,8 @@ void main() {
       expect(RouteState.of(bContext!)!.pathParameters, hasLength(1));
     });
 
-    testWidgets('Relative route paths include path parameters', (WidgetTester tester) async {
+    testWidgets('Relative route paths include path parameters',
+        (WidgetTester tester) async {
       BuildContext? rootContext;
       BuildContext? aContext;
       final routes = [
@@ -216,6 +218,65 @@ void main() {
       expect(RouteState.of(aContext!)!.pathParameters, hasLength(1));
     });
 
+    testWidgets(
+        'Relative route paths include path parameters of the parent route',
+        (WidgetTester tester) async {
+      BuildContext? rootContext;
+      BuildContext? aContext;
+      final routes = [
+        StackedRoute(
+          path: '/',
+          builder: (context) {
+            rootContext ??= context;
+            return const Text('Home');
+          },
+          children: [
+            StackedRoute(
+              path: 'a/:id',
+              builder: (context) {
+                aContext ??= context;
+                return const Text('Screen A');
+              },
+              children: [
+                StackedRoute(
+                    path: 'details',
+                    builder: (context) {
+                      return const Text('Screen A Details');
+                    }),
+              ],
+            ),
+          ],
+        ),
+      ];
+
+      await tester.pumpWidget(
+        _TestApp(
+          routes: routes,
+        ),
+      );
+
+      expect(find.text('Home'), findsOneWidget);
+      expect(GlobalRouteState.of(rootContext!)!.match.routes, hasLength(1));
+
+      // Navigate to 'a'
+      var routeState = RouteState.of(rootContext!);
+      expect(routeState, isNotNull);
+      routeState!.goTo('a/123');
+
+      await tester.pumpAndSettle();
+      expect(find.text('Screen A'), findsOneWidget);
+      expect(GlobalRouteState.of(aContext!)!.match.routes, hasLength(2));
+      expect(RouteState.of(aContext!)!.pathParameters, hasLength(1));
+
+      routeState = RouteState.of(aContext!);
+      expect(routeState, isNotNull);
+      routeState!.goTo('details');
+
+      await tester.pumpAndSettle();
+      expect(find.text('Screen A Details'), findsOneWidget);
+      expect(GlobalRouteState.of(aContext!)!.match.routes, hasLength(3));
+      expect(RouteState.of(aContext!)!.pathParameters, hasLength(1));
+    });
   });
 }
 

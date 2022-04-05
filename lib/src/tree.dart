@@ -73,8 +73,8 @@ class RouteTree {
   Parameters _removeOldParameters(
       RouteMatch oldMatch, List<Route> newRoutes, Parameters newParams) {
     // Don't preserve query parameters when the route is relative.
-    final newQueryParams = newParams.query;
-    final newPathParams = newParams.path;
+    final newQueryParams = {...oldMatch.parameters.query, ...newParams.query};
+    final newPathParams = {...oldMatch.parameters.path, ...newParams.path};
     final oldRoutesLength = oldMatch.routes.length;
     final newRoutesLength = newRoutes.length;
 
