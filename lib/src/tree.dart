@@ -19,7 +19,7 @@ class RouteTree {
   RouteMatch get(String path, {Route? parentRoute, RouteMatch? previousMatch}) {
     // If this is a relative path, search the children for a match.
     if (!path.startsWith('/')) {
-      final children = parentRoute?.children ?? [];
+      final children = parentRoute?.routes ?? [];
       for (var i = 0; i < children.length; i++) {
         final child = children[i];
         if (hasMatch(child.path, path)) {
@@ -63,7 +63,7 @@ class RouteTree {
     final lastRoute = match.getLast();
     if (lastRoute == null) return match;
     final defaultChild =
-        lastRoute is ShellRoute ? lastRoute.defaultChild : null;
+        lastRoute is ShellRoute ? lastRoute.defaultRoute : null;
     if (defaultChild != null) {
       return get(defaultChild, parentRoute: lastRoute);
     }
@@ -116,7 +116,7 @@ class RouteTree {
         throw RouteConfigurationError(
             'Sub-route paths cannot start with "/"', route);
       }
-      _validateRecursive(route.children, false);
+      _validateRecursive(route.routes, false);
     }
 
     if (topLevel && !foundDefaultRoute) {
@@ -150,7 +150,7 @@ class RouteTree {
 
       if (hasMatch(routePathWithPrefixes, path)) {
         prefixes.add(route);
-        final childMatch = _getRecursive(prefixes, route.children, path);
+        final childMatch = _getRecursive(prefixes, route.routes, path);
         if (childMatch.routes.isNotEmpty) {
           // More of the route was matched, return that match instead
           return childMatch;
@@ -185,7 +185,7 @@ class RouteTree {
           if (inclusive) routeToFind,
         ];
       }
-      final searchedChildren = _getAncestorsRecursive(route.children,
+      final searchedChildren = _getAncestorsRecursive(route.routes,
           routeToFind, [...prefixes, route], inclusive, previousMatch);
       if (searchedChildren.isNotEmpty) {
         return searchedChildren;

@@ -123,7 +123,7 @@ void main() {
       final routes = <Route>[
         ShellRoute(
           path: '/',
-          defaultChild: 'a',
+          defaultRoute: 'a',
           builder: (context, child) => _ShellScreen(
             label: 'Shell Parent',
             child: child,

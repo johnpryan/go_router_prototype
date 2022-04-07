@@ -16,14 +16,14 @@ class BottomNavWithTabsDemo extends StatelessWidget {
     routes: [
       ShellRoute(
         path: '/',
-        defaultChild: 'books',
+        defaultRoute: 'books',
         builder: (context, child) {
           return AppScaffold(child: child);
         },
         routes: [
           ShellRoute(
             path: 'books',
-            defaultChild: 'popular',
+            defaultRoute: 'popular',
             builder: (context, child) {
               return TabScreen(
                 selectedIndex: _calculateTabIndex(context),

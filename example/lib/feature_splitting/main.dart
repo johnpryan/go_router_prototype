@@ -28,7 +28,7 @@ class FeatureSplittingDemo extends StatelessWidget {
     routes: [
       ShellRoute(
         path: '/',
-        defaultChild: ListenNowFeature.route.path,
+        defaultRoute: ListenNowFeature.route.path,
         builder: (context, child) => AppScaffold(child: child),
         routes: [
           ...features.map((f) => f.route),

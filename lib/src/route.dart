@@ -17,24 +17,24 @@ class StackedRoute extends Route {
     List<Route> routes = const [],
   }) : super(
           path: path,
-          children: routes,
+          routes: routes,
           redirect: redirect,
         );
 }
 
 class ShellRoute extends Route {
   final ShellRouteBuilder builder;
-  final String? defaultChild;
+  final String? defaultRoute;
 
   ShellRoute({
     required String path,
     required this.builder,
-    this.defaultChild,
+    this.defaultRoute,
     Redirect? redirect,
     List<Route> routes = const [],
   }) : super(
           path: path,
-          children: routes,
+          routes: routes,
           redirect: redirect,
         );
 }
@@ -49,7 +49,7 @@ class NavigatorRoute extends Route {
     List<Route> routes = const [],
   }) : super(
           path: path,
-          children: routes,
+          routes: routes,
           redirect: redirect,
         );
 }
@@ -58,12 +58,12 @@ abstract class Route {
   static const _listEquality = ListEquality();
 
   final String path;
-  final List<Route> children;
+  final List<Route> routes;
   final Redirect? redirect;
 
   const Route({
     required this.path,
-    this.children = const [],
+    this.routes = const [],
     this.redirect,
   });
 
@@ -71,10 +71,10 @@ abstract class Route {
   bool operator ==(Object other) =>
       other is Route &&
       other.path == path &&
-      _listEquality.equals(other.children, children);
+      _listEquality.equals(other.routes, routes);
 
   @override
-  int get hashCode => hash2(path, _listEquality.hash(children));
+  int get hashCode => hash2(path, _listEquality.hash(routes));
 
   @override
   String toString() => 'Route: $path';

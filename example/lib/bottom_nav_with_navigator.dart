@@ -16,7 +16,7 @@ class BottomNavigationBarDemo extends StatelessWidget {
     routes: [
       ShellRoute(
         path: '/',
-        defaultChild: 'a',
+        defaultRoute: 'a',
         builder: (context, child) => AppScaffold(child: child),
         routes: [
           NavigatorRoute(
