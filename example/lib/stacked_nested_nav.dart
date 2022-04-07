@@ -22,7 +22,7 @@ class BottomNavigationBarDemo extends StatelessWidget {
             path: 'a',
             builder: (context, child) => AScreen(child: child),
             children: [
-              NestedNavigatorRoute(
+              NavigatorRoute(
                 path: 'b',
                 builder: (context) => const BScreen(),
                 children: [

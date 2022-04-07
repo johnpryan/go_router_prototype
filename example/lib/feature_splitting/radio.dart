@@ -4,7 +4,7 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:tree_router/tree_router.dart';
 
 class RadioFeature extends StatelessWidget {
-  static Route route = NestedNavigatorRoute(
+  static Route route = NavigatorRoute(
     path: 'radio',
     builder: (context) => const RadioFeature(),
     children: [

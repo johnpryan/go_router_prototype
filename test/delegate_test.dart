@@ -92,7 +92,7 @@ void main() {
         ShellRoute(
           path: '/',
           builder: (context, child) => _ShellScreen(
-            label: 'ShellRoute Parent',
+            label: 'Shell Parent',
             child: child,
           ),
           children: [
@@ -273,7 +273,7 @@ void main() {
     expect(path, '/user/123');
   });
 
-  testWidgets('Builds NestedNavigatorRoutes correctly',
+  testWidgets('Builds NavigatorRoutes correctly',
       (WidgetTester tester) async {
     final provider = TestRouteInformationProvider();
     final routes = <Route>[
@@ -288,15 +288,15 @@ void main() {
           ),
         ),
         children: [
-          NestedNavigatorRoute(
+          NavigatorRoute(
             path: 'a',
             builder: (_) =>
-                const Text('First screen on the nested a Navigator'),
+                const Text('First screen on the inner Navigator'),
             children: [
               StackedRoute(
                 path: 'b',
                 builder: (_) =>
-                    const Text('Additional screen on the nested Navigator'),
+                    const Text('Additional screen on the inner Navigator'),
               ),
             ],
           )
@@ -317,7 +317,7 @@ void main() {
     expect(find.byType(Navigator), findsNWidgets(2));
   });
 
-  testWidgets('Displays the initial route immediately with nested routes',
+  testWidgets('Displays the initial route immediately with child routes',
       (WidgetTester tester) async {
     final routes = [
       StackedRoute(

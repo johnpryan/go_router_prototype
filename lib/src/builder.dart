@@ -16,7 +16,7 @@ Widget buildMatch(BuildContext context, RouteMatch routeMatch, VoidCallback pop,
 }
 
 // Builds a Navigator for all matched Routes from [startIndex] until the end of
-// the the list, or if a route is a NestedNavigatorRoute
+// the the list, or if a route is a NavigatorRoute
 _RecursiveBuildResult _buildMatchRecursive(BuildContext context,
     RouteMatch routeMatch, int startIndex, VoidCallback pop, Key navigatorKey,
     {Page? firstPage}) {
@@ -32,7 +32,7 @@ _RecursiveBuildResult _buildMatchRecursive(BuildContext context,
       final child = result.widget;
       pages.add(_pageForPlatform(child: child));
       i = result.newIndex;
-    } else if (route is r.NestedNavigatorRoute) {
+    } else if (route is r.NavigatorRoute) {
       // Build the first page to display
       final page = _buildPage(context, route, routeMatch);
       // Build the inner Navigator it by recursively calling this method and
@@ -92,7 +92,7 @@ _RecursiveBuildResult _buildShellRecursive(
     final result = _buildShellRecursive(context, routeMatch, i + 1, pop);
     childWidget = result.widget;
     i = result.newIndex;
-  } else if (child is r.NestedNavigatorRoute) {
+  } else if (child is r.NavigatorRoute) {
     final key = ValueKey(child);
     final result = _buildMatchRecursive(context, routeMatch, i + 1, pop, key);
     childWidget = result.widget;
@@ -113,7 +113,7 @@ Page _pageForPlatform({required Widget child}) {
 
 Widget _callRouteBuilder(BuildContext context, r.Route route, {Widget? child}) {
   late final StackedRouteBuilder builder;
-  if (route is r.NestedNavigatorRoute) {
+  if (route is r.NavigatorRoute) {
     builder = route.builder;
   } else if (route is r.StackedRoute) {
     builder = route.builder;

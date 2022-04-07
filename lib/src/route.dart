@@ -39,10 +39,10 @@ class ShellRoute extends Route {
         );
 }
 
-class NestedNavigatorRoute extends Route {
-  final NestedNavigatorRouteBuilder builder;
+class NavigatorRoute extends Route {
+  final NavigatorRouteBuilder builder;
 
-  NestedNavigatorRoute({
+  NavigatorRoute({
     required String path,
     required this.builder,
     Redirect? redirect,

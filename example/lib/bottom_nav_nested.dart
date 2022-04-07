@@ -19,7 +19,7 @@ class BottomNavigationBarDemo extends StatelessWidget {
         defaultChild: 'a',
         builder: (context, child) => AppScaffold(child: child),
         children: [
-          NestedNavigatorRoute(
+          NavigatorRoute(
             path: 'a',
             builder: (context) => const Screen(
               title: 'Screen A',
@@ -32,7 +32,7 @@ class BottomNavigationBarDemo extends StatelessWidget {
               ),
             ],
           ),
-          NestedNavigatorRoute(
+          NavigatorRoute(
             path: 'b',
             builder: (context) => const Screen(
               title: 'Screen B',

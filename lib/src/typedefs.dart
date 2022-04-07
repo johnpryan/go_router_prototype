@@ -15,7 +15,7 @@ typedef ShellRouteBuilder = Widget Function(
   Widget child,
 );
 
-typedef NestedNavigatorRouteBuilder = Widget Function(
+typedef NavigatorRouteBuilder = Widget Function(
   BuildContext context,
 );
 
