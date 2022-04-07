@@ -17,14 +17,14 @@ class BottomNavigationBarDemo extends StatelessWidget {
       ShellRoute(
         path: '/',
         builder: (context, child) => AppScaffold(child: child),
-        children: [
+        routes: [
           StackedRoute(
             path: 'a',
             builder: (context) => const Screen(
               title: 'Screen A',
               key: ValueKey('A'),
             ),
-            children: [
+            routes: [
               StackedRoute(
                 path: 'details',
                 builder: (context) => const DetailsScreen(label: 'A'),
@@ -37,7 +37,7 @@ class BottomNavigationBarDemo extends StatelessWidget {
               title: 'Screen B',
               key: ValueKey('B'),
             ),
-            children: [
+            routes: [
               StackedRoute(
                 path: 'details',
                 builder: (context) => const DetailsScreen(label: 'B'),

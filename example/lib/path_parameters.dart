@@ -29,13 +29,13 @@ class PathParametersDemo extends StatelessWidget {
       StackedRoute(
         path: '/',
         builder: (context) => const HomeScreen(),
-        children: [
+        routes: [
           StackedRoute(
             path: 'user/:id',
             builder: (context) {
               return UserScreen(userId: _userId(context));
             },
-            children: [
+            routes: [
               StackedRoute(
                 path: 'details',
                 builder: (context) {

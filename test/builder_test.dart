@@ -21,7 +21,7 @@ void main() {
       final routeA = StackedRoute(
           path: '/',
           builder: (_) => const Text('Screen B'),
-          children: [routeB]);
+          routes: [routeB]);
       final routes = [routeA];
 
       final routeMatch = RouteMatch(

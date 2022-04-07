@@ -8,7 +8,7 @@ class ListenNowFeature extends StatelessWidget {
   static Route route = StackedRoute(
     path: 'listen-now',
     builder: (context) => const ListenNowFeature(),
-    children: [
+    routes: [
       StackedRoute(
         path: 'song/:songId',
         builder: (context) => const SongScreen(),

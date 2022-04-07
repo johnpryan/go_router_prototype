@@ -39,7 +39,7 @@ void main() {
         StackedRoute(
           builder: emptyBuilder,
           path: '/',
-          children: [
+          routes: [
             StackedRoute(
               builder: emptyBuilder,
               path: 'books/:bookId',
@@ -73,7 +73,7 @@ void main() {
         StackedRoute(
           builder: emptyBuilder,
           path: '/a',
-          children: [
+          routes: [
             StackedRoute(
               builder: emptyBuilder,
               path: '/b',
@@ -89,7 +89,7 @@ void main() {
         StackedRoute(
           path: '/a',
           builder: emptyBuilder,
-          children: [
+          routes: [
             StackedRoute(
               path: 'b',
               builder: emptyBuilder,
@@ -128,11 +128,11 @@ void main() {
         StackedRoute(
           builder: emptyBuilder,
           path: '/',
-          children: [
+          routes: [
             StackedRoute(
               builder: emptyBuilder,
               path: 'books/:bookId',
-              children: [
+              routes: [
                 StackedRoute(
                   builder: emptyBuilder,
                   path: 'details/:detailId',
@@ -163,18 +163,18 @@ void main() {
         ShellRoute(
           builder: (context, child) => child,
           path: '/',
-          children: [
+          routes: [
             StackedRoute(
               builder: (context) => const Text('popular'),
               path: 'popular',
-              children: [
+              routes: [
                 bookRoute,
               ],
             ),
             StackedRoute(
               builder: (context) => const Text('all'),
               path: 'all',
-              children: [
+              routes: [
                 bookRoute,
               ],
             ),

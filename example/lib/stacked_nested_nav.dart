@@ -17,15 +17,15 @@ class BottomNavigationBarDemo extends StatelessWidget {
       StackedRoute(
         path: '/',
         builder: (context) => const HomeScreen(),
-        children: [
+        routes: [
           ShellRoute(
             path: 'a',
             builder: (context, child) => AScreen(child: child),
-            children: [
+            routes: [
               NavigatorRoute(
                 path: 'b',
                 builder: (context) => const BScreen(),
-                children: [
+                routes: [
                   StackedRoute(
                     path: 'c',
                     builder: (context) => const CScreen(),

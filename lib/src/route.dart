@@ -14,10 +14,10 @@ class StackedRoute extends Route {
     required String path,
     required this.builder,
     Redirect? redirect,
-    List<Route> children = const [],
+    List<Route> routes = const [],
   }) : super(
           path: path,
-          children: children,
+          children: routes,
           redirect: redirect,
         );
 }
@@ -31,10 +31,10 @@ class ShellRoute extends Route {
     required this.builder,
     this.defaultChild,
     Redirect? redirect,
-    List<Route> children = const [],
+    List<Route> routes = const [],
   }) : super(
           path: path,
-          children: children,
+          children: routes,
           redirect: redirect,
         );
 }
@@ -46,10 +46,10 @@ class NavigatorRoute extends Route {
     required String path,
     required this.builder,
     Redirect? redirect,
-    List<Route> children = const [],
+    List<Route> routes = const [],
   }) : super(
           path: path,
-          children: children,
+          children: routes,
           redirect: redirect,
         );
 }

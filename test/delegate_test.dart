@@ -63,7 +63,7 @@ void main() {
         StackedRoute(
           path: '/',
           builder: (context) => const _HomeScreen(),
-          children: [
+          routes: [
             StackedRoute(
               path: 'a',
               builder: (context) => const _AScreen(),
@@ -95,7 +95,7 @@ void main() {
             label: 'Shell Parent',
             child: child,
           ),
-          children: [
+          routes: [
             StackedRoute(
               path: 'a',
               builder: (context) => const _AScreen(),
@@ -128,7 +128,7 @@ void main() {
             label: 'Shell Parent',
             child: child,
           ),
-          children: [
+          routes: [
             StackedRoute(
               path: 'a',
               builder: (context) => const _AScreen(),
@@ -167,7 +167,7 @@ void main() {
               child: child,
             );
           },
-          children: [
+          routes: [
             ShellRoute(
               path: 'a',
               builder: (context, child) {
@@ -177,7 +177,7 @@ void main() {
                   child: child,
                 );
               },
-              children: [
+              routes: [
                 ShellRoute(
                   path: 'b',
                   builder: (context, child) {
@@ -287,12 +287,12 @@ void main() {
             ],
           ),
         ),
-        children: [
+        routes: [
           NavigatorRoute(
             path: 'a',
             builder: (_) =>
                 const Text('First screen on the inner Navigator'),
-            children: [
+            routes: [
               StackedRoute(
                 path: 'b',
                 builder: (_) =>
@@ -327,7 +327,7 @@ void main() {
       StackedRoute(
         path: '/a',
         builder: (context) => const _AScreen(),
-        children: [
+        routes: [
           StackedRoute(
             path: 'b',
             builder: (context) => const _BScreen(),

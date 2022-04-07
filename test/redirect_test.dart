@@ -16,7 +16,7 @@ void main() {
             return SynchronousFuture('a');
           },
           builder: (_, child) => child,
-          children: [
+          routes: [
             StackedRoute(
               path: 'a',
               builder: (context) {
@@ -44,7 +44,7 @@ void main() {
             return SynchronousFuture('a');
           },
           builder: (_, child) => child,
-          children: [
+          routes: [
             StackedRoute(
               path: 'a',
               redirect: (match) {
@@ -53,7 +53,7 @@ void main() {
               builder: (context) {
                 return const AScreen();
               },
-              children: [
+              routes: [
                 StackedRoute(
                   path: 'b',
                   builder: (context) {
@@ -85,7 +85,7 @@ void main() {
             return SynchronousFuture('/a');
           },
           builder: (_, child) => child,
-          children: [
+          routes: [
             StackedRoute(
               path: 'a',
               redirect: (match) {

@@ -18,14 +18,14 @@ class BottomNavigationBarDemo extends StatelessWidget {
         path: '/',
         defaultChild: 'a',
         builder: (context, child) => AppScaffold(child: child),
-        children: [
+        routes: [
           NavigatorRoute(
             path: 'a',
             builder: (context) => const Screen(
               title: 'Screen A',
               key: ValueKey('A'),
             ),
-            children: [
+            routes: [
               StackedRoute(
                 path: 'details',
                 builder: (context) => const DetailsScreen(label: 'A'),
@@ -38,7 +38,7 @@ class BottomNavigationBarDemo extends StatelessWidget {
               title: 'Screen B',
               key: ValueKey('B'),
             ),
-            children: [
+            routes: [
               StackedRoute(
                 path: 'details',
                 builder: (context) => const DetailsScreen(label: 'B'),
@@ -72,7 +72,7 @@ class AppScaffold extends StatelessWidget {
     final selectedIndex = _calculateSelectedIndex(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bottom Nav with Nested Navigator'),
+        title: const Text('Bottom Nav with inner Navigator'),
       ),
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 300),

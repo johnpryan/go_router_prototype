@@ -17,7 +17,7 @@ class TreeRouterDemo extends StatelessWidget {
       StackedRoute(
         path: '/',
         builder: (context) => const AScreen(),
-        children: [
+        routes: [
           StackedRoute(
             path: 'b',
             builder: (context) => const BScreen(),

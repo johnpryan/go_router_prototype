@@ -52,7 +52,7 @@ List<Route> _buildRoutesRecursive(Map routeMap) {
             childPaths: [...childMap.keys],
           );
         },
-        children: _buildRoutesRecursive(childMap),
+        routes: _buildRoutesRecursive(childMap),
       ),
     );
   }
@@ -72,7 +72,7 @@ class ShellDemo extends StatelessWidget {
             child: child,
           );
         },
-        children: _buildRoutesRecursive(routeMap),
+        routes: _buildRoutesRecursive(routeMap),
       ),
     ],
   );

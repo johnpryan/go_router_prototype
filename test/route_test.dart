@@ -19,7 +19,7 @@ void main() {
       final route = StackedRoute(
         path: '/',
         builder: emptyBuilder,
-        children: [
+        routes: [
           StackedRoute(path: 'a', builder: emptyBuilder),
         ],
       );

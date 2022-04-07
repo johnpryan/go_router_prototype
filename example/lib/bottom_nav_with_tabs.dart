@@ -20,7 +20,7 @@ class BottomNavWithTabsDemo extends StatelessWidget {
         builder: (context, child) {
           return AppScaffold(child: child);
         },
-        children: [
+        routes: [
           ShellRoute(
             path: 'books',
             defaultChild: 'popular',
@@ -30,7 +30,7 @@ class BottomNavWithTabsDemo extends StatelessWidget {
                 child: child,
               );
             },
-            children: [
+            routes: [
               StackedRoute(
                 path: 'popular',
                 builder: (context) {

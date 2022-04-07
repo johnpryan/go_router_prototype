@@ -85,7 +85,7 @@ void main() {
               },
             );
           },
-          children: [
+          routes: [
             StackedRoute(
               path: 'a',
               builder: (context) {
@@ -128,14 +128,14 @@ void main() {
             rootContext ??= context;
             return const Text('Home');
           },
-          children: [
+          routes: [
             StackedRoute(
               path: 'a',
               builder: (context) {
                 aContext ??= context;
                 return const Text('Screen A');
               },
-              children: [
+              routes: [
                 StackedRoute(
                   path: 'b/:id',
                   builder: (context) {
@@ -187,7 +187,7 @@ void main() {
             rootContext ??= context;
             return const Text('Home');
           },
-          children: [
+          routes: [
             StackedRoute(
               path: 'a/:id',
               builder: (context) {
@@ -230,14 +230,14 @@ void main() {
             rootContext ??= context;
             return const Text('Home');
           },
-          children: [
+          routes: [
             StackedRoute(
               path: 'a/:id',
               builder: (context) {
                 aContext ??= context;
                 return const Text('Screen A');
               },
-              children: [
+              routes: [
                 StackedRoute(
                     path: 'details',
                     builder: (context) {

@@ -7,7 +7,7 @@ class RadioFeature extends StatelessWidget {
   static Route route = NavigatorRoute(
     path: 'radio',
     builder: (context) => const RadioFeature(),
-    children: [
+    routes: [
       StackedRoute(
         path: 'song/:songId',
         builder: (context) => const SongScreen(),
