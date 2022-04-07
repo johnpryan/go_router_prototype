@@ -160,7 +160,7 @@ void main() {
       );
 
       final routes = [
-        SwitcherRoute(
+        ShellRoute(
           builder: (context, child) => child,
           path: '/',
           children: [

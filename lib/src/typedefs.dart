@@ -10,7 +10,7 @@ typedef StackedRouteBuilder = Widget Function(
   BuildContext context,
 );
 
-typedef SwitcherRouteBuilder = Widget Function(
+typedef ShellRouteBuilder = Widget Function(
   BuildContext context,
   Widget child,
 );

@@ -18,7 +18,7 @@ class BottomNavigationBarDemo extends StatelessWidget {
         path: '/',
         builder: (context) => const HomeScreen(),
         children: [
-          SwitcherRoute(
+          ShellRoute(
             path: 'a',
             builder: (context, child) => AScreen(child: child),
             children: [

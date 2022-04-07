@@ -14,14 +14,14 @@ class BottomNavWithTabsDemo extends StatelessWidget {
 
   final _router = TreeRouter(
     routes: [
-      SwitcherRoute(
+      ShellRoute(
         path: '/',
         defaultChild: 'books',
         builder: (context, child) {
           return AppScaffold(child: child);
         },
         children: [
-          SwitcherRoute(
+          ShellRoute(
             path: 'books',
             defaultChild: 'popular',
             builder: (context, child) {

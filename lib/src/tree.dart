@@ -63,7 +63,7 @@ class RouteTree {
     final lastRoute = match.getLast();
     if (lastRoute == null) return match;
     final defaultChild =
-        lastRoute is SwitcherRoute ? lastRoute.defaultChild : null;
+        lastRoute is ShellRoute ? lastRoute.defaultChild : null;
     if (defaultChild != null) {
       return get(defaultChild, parentRoute: lastRoute);
     }

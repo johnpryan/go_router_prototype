@@ -85,14 +85,14 @@ void main() {
       expect(find.text('AScreen'), findsOneWidget);
     });
 
-    testWidgets('SwitcherRoute displays the child of the active sub-route',
+    testWidgets('ShellRoute displays the child of the active sub-route',
         (WidgetTester tester) async {
       final provider = TestRouteInformationProvider();
       final routes = <Route>[
-        SwitcherRoute(
+        ShellRoute(
           path: '/',
-          builder: (context, child) => _SwitcherParentScreen(
-            label: 'Switcher Parent',
+          builder: (context, child) => _ShellScreen(
+            label: 'ShellRoute Parent',
             child: child,
           ),
           children: [
@@ -113,19 +113,19 @@ void main() {
 
       provider.value = const RouteInformation(location: '/a');
       await tester.pumpAndSettle();
-      expect(find.text('Switcher Parent'), findsOneWidget);
+      expect(find.text('Shell Parent'), findsOneWidget);
       expect(find.text('AScreen'), findsOneWidget);
     });
 
-    testWidgets('SwitcherRoute displays the default child',
+    testWidgets('ShellRoute displays the default child',
         (WidgetTester tester) async {
       final provider = TestRouteInformationProvider();
       final routes = <Route>[
-        SwitcherRoute(
+        ShellRoute(
           path: '/',
           defaultChild: 'a',
-          builder: (context, child) => _SwitcherParentScreen(
-            label: 'Switcher Parent',
+          builder: (context, child) => _ShellScreen(
+            label: 'Shell Parent',
             child: child,
           ),
           children: [
@@ -145,11 +145,11 @@ void main() {
       );
 
       await tester.pumpAndSettle();
-      expect(find.text('Switcher Parent'), findsOneWidget);
+      expect(find.text('Shell Parent'), findsOneWidget);
       expect(find.text('AScreen'), findsOneWidget);
     });
 
-    testWidgets('SwitcherRoutes can be children of other SwitcherRoutes',
+    testWidgets('ShellRoutes can be children of other ShellRoutes',
         (WidgetTester tester) async {
       final provider = TestRouteInformationProvider();
 
@@ -158,31 +158,31 @@ void main() {
       late BuildContext parent3Context;
 
       final routes = <Route>[
-        SwitcherRoute(
+        ShellRoute(
           path: '/',
           builder: (context, child) {
             parent1Context = context;
-            return _SwitcherParentScreen(
+            return _ShellScreen(
               label: 'parent 1',
               child: child,
             );
           },
           children: [
-            SwitcherRoute(
+            ShellRoute(
               path: 'a',
               builder: (context, child) {
                 parent2Context = context;
-                return _SwitcherParentScreen(
+                return _ShellScreen(
                   label: 'parent 2',
                   child: child,
                 );
               },
               children: [
-                SwitcherRoute(
+                ShellRoute(
                   path: 'b',
                   builder: (context, child) {
                     parent3Context = context;
-                    return _SwitcherParentScreen(
+                    return _ShellScreen(
                       label: 'parent 3',
                       child: child,
                     );
@@ -277,7 +277,7 @@ void main() {
       (WidgetTester tester) async {
     final provider = TestRouteInformationProvider();
     final routes = <Route>[
-      SwitcherRoute(
+      ShellRoute(
         path: '/',
         builder: (context, child) => Scaffold(
           body: Column(
@@ -427,11 +427,11 @@ class _QueryParamsScreen extends StatelessWidget {
   }
 }
 
-class _SwitcherParentScreen extends StatelessWidget {
+class _ShellScreen extends StatelessWidget {
   final String label;
   final Widget child;
 
-  const _SwitcherParentScreen({
+  const _ShellScreen({
     Key? key,
     required this.label,
     required this.child,

@@ -27,8 +27,8 @@ _RecursiveBuildResult _buildMatchRecursive(BuildContext context,
     if (route is r.StackedRoute) {
       final page = _buildPage(context, route, routeMatch);
       pages.add(page);
-    } else if (route is r.SwitcherRoute) {
-      final result = _buildSwitcherRecursive(context, routeMatch, i, pop);
+    } else if (route is r.ShellRoute) {
+      final result = _buildShellRecursive(context, routeMatch, i, pop);
       final child = result.widget;
       pages.add(_pageForPlatform(child: child));
       i = result.newIndex;
@@ -73,9 +73,9 @@ class _RecursiveBuildResult {
   _RecursiveBuildResult(this.widget, this.newIndex);
 }
 
-_RecursiveBuildResult _buildSwitcherRecursive(
+_RecursiveBuildResult _buildShellRecursive(
     BuildContext context, RouteMatch routeMatch, int i, VoidCallback pop) {
-  final parent = routeMatch.routes[i] as r.SwitcherRoute;
+  final parent = routeMatch.routes[i] as r.ShellRoute;
   late final r.Route? child;
 
   if (i + 1 < routeMatch.routes.length) {
@@ -88,8 +88,8 @@ _RecursiveBuildResult _buildSwitcherRecursive(
   if (child is r.StackedRoute) {
     childWidget = _callRouteBuilder(context, child);
     i++;
-  } else if (child is r.SwitcherRoute) {
-    final result = _buildSwitcherRecursive(context, routeMatch, i + 1, pop);
+  } else if (child is r.ShellRoute) {
+    final result = _buildShellRecursive(context, routeMatch, i + 1, pop);
     childWidget = result.widget;
     i = result.newIndex;
   } else if (child is r.NestedNavigatorRoute) {
@@ -117,9 +117,9 @@ Widget _callRouteBuilder(BuildContext context, r.Route route, {Widget? child}) {
     builder = route.builder;
   } else if (route is r.StackedRoute) {
     builder = route.builder;
-  } else if (route is r.SwitcherRoute) {
+  } else if (route is r.ShellRoute) {
     if (child == null) {
-      throw ('Attempt to build SwitcherRoute without a child widget');
+      throw ('Attempt to build ShellRoute without a child widget');
     }
     return _wrapWithRouteStateScope(context, route,
         Builder(builder: (context) => route.builder(context, child)));

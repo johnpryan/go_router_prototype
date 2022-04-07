@@ -6,7 +6,7 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:tree_router/tree_router.dart';
 
 void main() {
-  runApp(SwitcherDemo());
+  runApp(ShellDemo());
 }
 
 Map<String, dynamic> routeMap = {
@@ -40,11 +40,11 @@ Map<String, dynamic> routeMap = {
 };
 
 List<Route> _buildRoutesRecursive(Map routeMap) {
-  final children = <SwitcherRoute>[];
+  final children = <ShellRoute>[];
   for (var key in routeMap.keys) {
     final childMap = routeMap[key] as Map;
     children.add(
-      SwitcherRoute(
+      ShellRoute(
         path: key,
         builder: (context, child) {
           return RouteList(
@@ -59,12 +59,12 @@ List<Route> _buildRoutesRecursive(Map routeMap) {
   return children;
 }
 
-class SwitcherDemo extends StatelessWidget {
-  SwitcherDemo({Key? key}) : super(key: key);
+class ShellDemo extends StatelessWidget {
+  ShellDemo({Key? key}) : super(key: key);
 
   final _router = TreeRouter(
     routes: [
-      SwitcherRoute(
+      ShellRoute(
         path: '/',
         builder: (context, child) {
           return AppScaffold(

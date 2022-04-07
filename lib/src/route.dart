@@ -22,11 +22,11 @@ class StackedRoute extends Route {
         );
 }
 
-class SwitcherRoute extends Route {
-  final SwitcherRouteBuilder builder;
+class ShellRoute extends Route {
+  final ShellRouteBuilder builder;
   final String? defaultChild;
 
-  SwitcherRoute({
+  ShellRoute({
     required String path,
     required this.builder,
     this.defaultChild,

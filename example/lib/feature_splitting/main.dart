@@ -26,7 +26,7 @@ class FeatureSplittingDemo extends StatelessWidget {
 
   final _router = TreeRouter(
     routes: [
-      SwitcherRoute(
+      ShellRoute(
         path: '/',
         defaultChild: ListenNowFeature.route.path,
         builder: (context, child) => AppScaffold(child: child),

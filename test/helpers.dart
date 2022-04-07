@@ -9,7 +9,7 @@ import 'package:tree_router/tree_router.dart';
 
 Widget emptyBuilder(context) => const EmptyWidget();
 
-Widget emptySwitcherBuilder(context, child) => child;
+Widget emptyShellBuilder(context, child) => child;
 
 class EmptyWidget extends StatelessWidget {
   const EmptyWidget({Key? key}) : super(key: key);

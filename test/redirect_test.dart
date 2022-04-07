@@ -10,7 +10,7 @@ void main() {
     testWidgets('redirects to a relative path at startup',
         (WidgetTester tester) async {
       final routes = <Route>[
-        SwitcherRoute(
+        ShellRoute(
           path: '/',
           redirect: (match) {
             return SynchronousFuture('a');
@@ -38,7 +38,7 @@ void main() {
 
     testWidgets('Redirects multiple times', (WidgetTester tester) async {
       final routes = <Route>[
-        SwitcherRoute(
+        ShellRoute(
           path: '/',
           redirect: (match) {
             return SynchronousFuture('a');
@@ -79,7 +79,7 @@ void main() {
 
     testWidgets('Avoids infinite redirects', (WidgetTester tester) async {
       final routes = <Route>[
-        SwitcherRoute(
+        ShellRoute(
           path: '/',
           redirect: (match) {
             return SynchronousFuture('/a');

@@ -38,7 +38,7 @@ void main() {
     test('combines the paths for the matched routes', () {
       final match = RouteMatch(
         routes: [
-          SwitcherRoute(path: '/', builder: emptySwitcherBuilder),
+          ShellRoute(path: '/', builder: emptyShellBuilder),
           NestedNavigatorRoute(path: 'a', builder: emptyBuilder),
           StackedRoute(path: 'b', builder: emptyBuilder),
         ],
@@ -51,10 +51,10 @@ void main() {
     test('combines the paths for the matched routes', () {
       final match = RouteMatch(
         routes: [
-          SwitcherRoute(path: '/', builder: emptySwitcherBuilder),
-          SwitcherRoute(path: 'Documents', builder: emptySwitcherBuilder),
-          SwitcherRoute(path: 'Books', builder: emptySwitcherBuilder),
-          SwitcherRoute(path: 'Left_Hand.epub', builder: emptySwitcherBuilder),
+          ShellRoute(path: '/', builder: emptyShellBuilder),
+          ShellRoute(path: 'Documents', builder: emptyShellBuilder),
+          ShellRoute(path: 'Books', builder: emptyShellBuilder),
+          ShellRoute(path: 'Left_Hand.epub', builder: emptyShellBuilder),
         ],
         parameters: Parameters({}, {}),
       );
