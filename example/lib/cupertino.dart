@@ -33,7 +33,7 @@ final _router = TreeRouter(
           builder: (context) => const HomeScreen(),
           routes: [
             StackedRoute(
-              path: 'details',
+              path: 'details/:id',
               builder: (context) => const DetailsScreen(),
             ),
           ],
@@ -43,7 +43,7 @@ final _router = TreeRouter(
           builder: (context) => const ChatScreen(),
           routes: [
             StackedRoute(
-              path: 'details',
+              path: 'details/:id',
               builder: (context) => const DetailsScreen(),
             ),
           ],
@@ -53,7 +53,7 @@ final _router = TreeRouter(
           builder: (context) => const ProfileScreen(),
           routes: [
             StackedRoute(
-              path: 'details',
+              path: 'details/:id',
               builder: (context) => const DetailsScreen(),
             ),
           ],
@@ -67,9 +67,10 @@ int _selectedIndex(BuildContext context) {
   final route = RouteState.of(context)!;
   final activeChild = route.activeChild;
   if (activeChild != null) {
+    print('activeChild.path = ${activeChild.path}');
     if (activeChild.path == 'home') return 0;
     if (activeChild.path == 'chat') return 1;
-    if (activeChild.path == 'profile') return 1;
+    if (activeChild.path == 'profile') return 2;
   }
   return 0;
 }
@@ -177,7 +178,7 @@ class HomeScreen extends StatelessWidget {
             ),
             CupertinoButton(
               onPressed: () {
-                RouteState.of(context)!.goTo('details');
+                RouteState.of(context)!.goTo('details/10');
               },
               child: const Text('Show a new screen'),
             ),
@@ -207,7 +208,7 @@ class ChatScreen extends StatelessWidget {
             ),
             CupertinoButton(
               onPressed: () {
-                RouteState.of(context)!.goTo('details');
+                RouteState.of(context)!.goTo('details/42');
               },
               child: const Text('Show a new screen'),
             ),
@@ -237,7 +238,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             CupertinoButton(
               onPressed: () {
-                RouteState.of(context)!.goTo('details');
+                RouteState.of(context)!.goTo('details/100');
               },
               child: const Text('Show a new screen'),
             ),
@@ -292,13 +293,14 @@ class _DetailsScreenState extends State<DetailsScreen> with RestorationMixin {
 
   @override
   Widget build(BuildContext context) {
+    final id = int.tryParse(RouteState.of(context)?.pathParameters['id'] ?? '');
     return UnmanagedRestorationScope(
       bucket: bucket,
       child: CupertinoPageScaffold(
         navigationBar: const CupertinoNavigationBar(),
         child: Center(
           child: Text(
-            'Item ${widget.id}',
+            'Item $id',
             style: CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle,
           ),
         ),
