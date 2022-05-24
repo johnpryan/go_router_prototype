@@ -105,7 +105,9 @@ class BScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Screen B'),),
+      appBar: AppBar(
+        title: const Text('Screen B'),
+      ),
       body: Center(
         child: Column(
           children: [
@@ -129,7 +131,9 @@ class CScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Screen C'),),
+      appBar: AppBar(
+        title: const Text('Screen C'),
+      ),
       body: Center(
         child: Column(
           children: [

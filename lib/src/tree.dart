@@ -185,8 +185,8 @@ class RouteTree {
           if (inclusive) routeToFind,
         ];
       }
-      final searchedChildren = _getAncestorsRecursive(route.routes,
-          routeToFind, [...prefixes, route], inclusive, previousMatch);
+      final searchedChildren = _getAncestorsRecursive(route.routes, routeToFind,
+          [...prefixes, route], inclusive, previousMatch);
       if (searchedChildren.isNotEmpty) {
         return searchedChildren;
       }

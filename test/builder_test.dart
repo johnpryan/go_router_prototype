@@ -19,9 +19,7 @@ void main() {
       final routeB =
           StackedRoute(path: 'b', builder: (_) => const Text('Screen B'));
       final routeA = StackedRoute(
-          path: '/',
-          builder: (_) => const Text('Screen B'),
-          routes: [routeB]);
+          path: '/', builder: (_) => const Text('Screen B'), routes: [routeB]);
       final routes = [routeA];
 
       final routeMatch = RouteMatch(

@@ -273,8 +273,7 @@ void main() {
     expect(path, '/user/123');
   });
 
-  testWidgets('Builds NavigatorRoutes correctly',
-      (WidgetTester tester) async {
+  testWidgets('Builds NavigatorRoutes correctly', (WidgetTester tester) async {
     final provider = TestRouteInformationProvider();
     final routes = <Route>[
       ShellRoute(
@@ -290,8 +289,7 @@ void main() {
         routes: [
           NavigatorRoute(
             path: 'a',
-            builder: (_) =>
-                const Text('First screen on the inner Navigator'),
+            builder: (_) => const Text('First screen on the inner Navigator'),
             routes: [
               StackedRoute(
                 path: 'b',

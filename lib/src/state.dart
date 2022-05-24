@@ -67,8 +67,7 @@ class GlobalRouteState extends ChangeNotifier {
           // stack.
           if (match.isPrefixOf(newMatch)) {
             final endIndex = match.getMatchingPrefixIndex(newMatch);
-            return _handleRedirectsRecursive(newMatch,
-                endIndex: endIndex);
+            return _handleRedirectsRecursive(newMatch, endIndex: endIndex);
           }
           return _handleRedirectsRecursive(newMatch);
         }
