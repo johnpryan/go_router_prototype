@@ -39,7 +39,7 @@ Map<String, dynamic> routeMap = {
   },
 };
 
-List<Route> _buildRoutesRecursive(Map routeMap) {
+List<RouteBase> _buildRoutesRecursive(Map routeMap) {
   final children = <ShellRoute>[];
   for (var key in routeMap.keys) {
     final childMap = routeMap[key] as Map;
@@ -62,7 +62,7 @@ List<Route> _buildRoutesRecursive(Map routeMap) {
 class ShellDemo extends StatelessWidget {
   ShellDemo({Key? key}) : super(key: key);
 
-  final _router = TreeRouter(
+  final _router = GoRouter(
     routes: [
       ShellRoute(
         path: '/',

@@ -12,12 +12,12 @@ export 'src/route.dart';
 export 'src/state.dart';
 export 'src/typedefs.dart';
 
-class TreeRouter {
-  final TreeRouterDelegate delegate;
-  final TreeRouteInformationParser parser;
+class GoRouter {
+  final GoRouterDelegate delegate;
+  final GoRouteInformationParser parser;
 
-  TreeRouter({
-    required List<Route> routes,
-  })  : delegate = TreeRouterDelegate(routes),
-        parser = TreeRouteInformationParser();
+  GoRouter({
+    required List<RouteBase> routes,
+  })  : delegate = GoRouterDelegate(routes),
+        parser = GoRouteInformationParser();
 }

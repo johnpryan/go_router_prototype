@@ -13,7 +13,7 @@ import 'route.dart';
 class RouteMatch {
   static const _listEquality = ListEquality();
 
-  final List<Route> routes;
+  final List<RouteBase> routes;
   final Parameters parameters;
 
   const RouteMatch({
@@ -21,7 +21,7 @@ class RouteMatch {
     required this.parameters,
   });
 
-  Route? getLast() => routes.isEmpty ? null : routes.last;
+  RouteBase? getLast() => routes.isEmpty ? null : routes.last;
 
   String get path {
     return fillParameters(p.joinAll(routes.map((r) => r.path)), parameters);

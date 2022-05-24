@@ -281,15 +281,15 @@ void main() {
 }
 
 class _TestApp extends StatelessWidget {
-  final List<Route> routes;
+  final List<RouteBase> routes;
 
   const _TestApp({required this.routes, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routerDelegate: TreeRouterDelegate(routes),
-      routeInformationParser: TreeRouteInformationParser(),
+      routerDelegate: GoRouterDelegate(routes),
+      routeInformationParser: GoRouteInformationParser(),
     );
   }
 }

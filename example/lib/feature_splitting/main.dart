@@ -10,7 +10,7 @@ void main() {
 }
 
 class Feature {
-  final Route route;
+  final RouteBase route;
   final AdaptiveScaffoldDestination destination;
 
   Feature(this.route, this.destination);
@@ -24,7 +24,7 @@ final List<Feature> features = [
 class FeatureSplittingDemo extends StatelessWidget {
   FeatureSplittingDemo({Key? key}) : super(key: key);
 
-  final _router = TreeRouter(
+  final _router = GoRouter(
     routes: [
       ShellRoute(
         path: '/',

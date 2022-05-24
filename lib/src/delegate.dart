@@ -10,16 +10,16 @@ import 'inheritance.dart';
 import 'route.dart';
 import 'state.dart';
 
-class TreeRouterDelegate extends RouterDelegate<Uri>
+class GoRouterDelegate extends RouterDelegate<Uri>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<Uri> {
   late final GlobalRouteState _globalRouteState;
 
-  factory TreeRouterDelegate(List<Route> routes) {
+  factory GoRouterDelegate(List<RouteBase> routes) {
     final state = GlobalRouteState(routes);
-    return TreeRouterDelegate.withState(state);
+    return GoRouterDelegate.withState(state);
   }
 
-  TreeRouterDelegate.withState(this._globalRouteState) {
+  GoRouterDelegate.withState(this._globalRouteState) {
     _globalRouteState.addListener(notifyListeners);
   }
 

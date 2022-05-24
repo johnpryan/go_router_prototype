@@ -7,14 +7,14 @@ import 'package:quiver/core.dart';
 
 import 'typedefs.dart';
 
-class StackedRoute extends Route {
+class StackedRoute extends RouteBase {
   final StackedRouteBuilder builder;
 
   StackedRoute({
     required String path,
     required this.builder,
     Redirect? redirect,
-    List<Route> routes = const [],
+    List<RouteBase> routes = const [],
   }) : super(
           path: path,
           routes: routes,
@@ -22,7 +22,7 @@ class StackedRoute extends Route {
         );
 }
 
-class ShellRoute extends Route {
+class ShellRoute extends RouteBase {
   final ShellRouteBuilder builder;
   final String? defaultRoute;
 
@@ -31,7 +31,7 @@ class ShellRoute extends Route {
     required this.builder,
     this.defaultRoute,
     Redirect? redirect,
-    List<Route> routes = const [],
+    List<RouteBase> routes = const [],
   }) : super(
           path: path,
           routes: routes,
@@ -39,14 +39,14 @@ class ShellRoute extends Route {
         );
 }
 
-class NavigatorRoute extends Route {
+class NestedStackRoute extends RouteBase {
   final NavigatorRouteBuilder builder;
 
-  NavigatorRoute({
+  NestedStackRoute({
     required String path,
     required this.builder,
     Redirect? redirect,
-    List<Route> routes = const [],
+    List<RouteBase> routes = const [],
   }) : super(
           path: path,
           routes: routes,
@@ -54,14 +54,14 @@ class NavigatorRoute extends Route {
         );
 }
 
-abstract class Route {
+abstract class RouteBase {
   static const _listEquality = ListEquality();
 
   final String path;
-  final List<Route> routes;
+  final List<RouteBase> routes;
   final Redirect? redirect;
 
-  const Route({
+  const RouteBase({
     required this.path,
     this.routes = const [],
     this.redirect,
@@ -69,7 +69,7 @@ abstract class Route {
 
   @override
   bool operator ==(Object other) =>
-      other is Route &&
+      other is RouteBase &&
       other.path == path &&
       _listEquality.equals(other.routes, routes);
 
