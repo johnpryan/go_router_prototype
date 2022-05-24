@@ -67,7 +67,6 @@ int _selectedIndex(BuildContext context) {
   final route = RouteState.of(context)!;
   final activeChild = route.activeChild;
   if (activeChild != null) {
-    print('activeChild.path = ${activeChild.path}');
     if (activeChild.path == 'home') return 0;
     if (activeChild.path == 'chat') return 1;
     if (activeChild.path == 'profile') return 2;
