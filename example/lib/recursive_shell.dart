@@ -105,7 +105,7 @@ class _AppScaffoldState extends State<AppScaffold> {
     return Scaffold(
       body: SafeArea(
         child: Scrollbar(
-          isAlwaysShown: true,
+          thumbVisibility: true,
           controller: _scrollController,
           child: LayoutBuilder(
             builder: (context, viewportConstraints) {
