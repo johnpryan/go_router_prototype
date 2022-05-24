@@ -28,7 +28,7 @@ void main() {
       );
 
       final globalRouteState = GlobalRouteState(routes);
-      final routerDelegate = TreeRouterDelegate.withState(globalRouteState);
+      final routerDelegate = GoRouterDelegate.withState(globalRouteState);
 
       await tester.pumpWidget(
         _TestWidget(
@@ -46,15 +46,15 @@ void main() {
 }
 
 class _TestWidget extends StatefulWidget {
-  final TreeRouterDelegate routerDelegate;
-  final TreeRouteInformationParser routeInformationParser;
+  final GoRouterDelegate routerDelegate;
+  final GoRouteInformationParser routeInformationParser;
   final _TestRouteInformationProvider informationProvider;
 
   _TestWidget(
       {Key? key,
       required this.informationProvider,
       required this.routerDelegate})
-      : routeInformationParser = TreeRouteInformationParser(),
+      : routeInformationParser = GoRouteInformationParser(),
         super(key: key);
 
   @override

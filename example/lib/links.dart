@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Route;
 import 'package:tree_router/tree_router.dart';
 import 'package:url_launcher/link.dart';
 
@@ -9,7 +9,7 @@ void main() {
 class LinkWidgetDemo extends StatelessWidget {
   LinkWidgetDemo({Key? key}) : super(key: key);
 
-  final _router = TreeRouter(
+  final _router = GoRouter(
     routes: [
       StackedRoute(
         path: '/',

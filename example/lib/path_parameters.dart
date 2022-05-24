@@ -24,7 +24,7 @@ class PathParametersDemo extends StatelessWidget {
     return params['id']!;
   }
 
-  final _router = TreeRouter(
+  final _router = GoRouter(
     routes: [
       StackedRoute(
         path: '/',

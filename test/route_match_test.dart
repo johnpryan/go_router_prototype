@@ -39,7 +39,7 @@ void main() {
       final match = RouteMatch(
         routes: [
           ShellRoute(path: '/', builder: emptyShellBuilder),
-          NavigatorRoute(path: 'a', builder: emptyBuilder),
+          NestedStackRoute(path: 'a', builder: emptyBuilder),
           StackedRoute(path: 'b', builder: emptyBuilder),
         ],
         parameters: Parameters({}, {}),

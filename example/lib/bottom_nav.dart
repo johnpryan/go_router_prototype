@@ -12,11 +12,12 @@ void main() {
 class BottomNavigationBarDemo extends StatelessWidget {
   BottomNavigationBarDemo({Key? key}) : super(key: key);
 
-  final _router = TreeRouter(
+  final _router = GoRouter(
     routes: [
       ShellRoute(
         path: '/',
         builder: (context, child) => AppScaffold(child: child),
+        // preserveState: true,
         routes: [
           StackedRoute(
             path: 'a',
@@ -31,7 +32,7 @@ class BottomNavigationBarDemo extends StatelessWidget {
               ),
             ],
           ),
-          StackedRoute(
+          NestedStackRoute(
             path: 'b',
             builder: (context) => const Screen(
               title: 'Screen B',

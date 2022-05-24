@@ -13,7 +13,7 @@ import 'helpers.dart';
 void main() {
   group('RouteTree', () {
     test('Looks up routes', () {
-      final routes = <Route>[
+      final routes = <RouteBase>[
         StackedRoute(
           builder: emptyBuilder,
           path: '/',

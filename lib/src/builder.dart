@@ -32,7 +32,7 @@ _RecursiveBuildResult _buildMatchRecursive(BuildContext context,
       final child = result.widget;
       pages.add(_pageForPlatform(child: child));
       i = result.newIndex;
-    } else if (route is r.NavigatorRoute) {
+    } else if (route is r.NestedStackRoute) {
       // Build the first page to display
       final page = _buildPage(context, route, routeMatch);
       // Build the inner Navigator it by recursively calling this method and
@@ -76,7 +76,7 @@ class _RecursiveBuildResult {
 _RecursiveBuildResult _buildShellRecursive(
     BuildContext context, RouteMatch routeMatch, int i, VoidCallback pop) {
   final parent = routeMatch.routes[i] as r.ShellRoute;
-  late final r.Route? child;
+  late final r.RouteBase? child;
 
   if (i + 1 < routeMatch.routes.length) {
     child = routeMatch.routes[i + 1];
@@ -92,7 +92,7 @@ _RecursiveBuildResult _buildShellRecursive(
     final result = _buildShellRecursive(context, routeMatch, i + 1, pop);
     childWidget = result.widget;
     i = result.newIndex;
-  } else if (child is r.NavigatorRoute) {
+  } else if (child is r.NestedStackRoute) {
     final key = ValueKey(child);
     final result = _buildMatchRecursive(context, routeMatch, i + 1, pop, key);
     childWidget = result.widget;
@@ -111,9 +111,10 @@ Page _pageForPlatform({required Widget child}) {
   return MaterialPage(child: child);
 }
 
-Widget _callRouteBuilder(BuildContext context, r.Route route, {Widget? child}) {
+Widget _callRouteBuilder(BuildContext context, r.RouteBase route,
+    {Widget? child}) {
   late final StackedRouteBuilder builder;
-  if (route is r.NavigatorRoute) {
+  if (route is r.NestedStackRoute) {
     builder = route.builder;
   } else if (route is r.StackedRoute) {
     builder = route.builder;
@@ -130,12 +131,13 @@ Widget _callRouteBuilder(BuildContext context, r.Route route, {Widget? child}) {
       context, route, Builder(builder: (context) => builder(context)));
 }
 
-Page _buildPage(BuildContext context, r.Route route, RouteMatch routeMatch) {
+Page _buildPage(
+    BuildContext context, r.RouteBase route, RouteMatch routeMatch) {
   return _pageForPlatform(child: _callRouteBuilder(context, route));
 }
 
 Widget _wrapWithRouteStateScope(
-    BuildContext context, r.Route route, Widget child) {
+    BuildContext context, r.RouteBase route, Widget child) {
   final globalState = GlobalRouteState.of(context);
   if (globalState == null) {
     throw Exception('No GlobalRouteState found during route build phase');

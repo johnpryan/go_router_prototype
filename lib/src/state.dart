@@ -14,7 +14,7 @@ class GlobalRouteState extends ChangeNotifier {
   final RouteTree _routeTree;
   late RouteMatch _match;
 
-  GlobalRouteState(List<Route> routes) : _routeTree = RouteTree(routes) {
+  GlobalRouteState(List<RouteBase> routes) : _routeTree = RouteTree(routes) {
     _match = _routeTree.get('/');
   }
 
@@ -31,7 +31,8 @@ class GlobalRouteState extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future goTo(String path, {Route? parentRoute, bool isInitial = false}) async {
+  Future goTo(String path,
+      {RouteBase? parentRoute, bool isInitial = false}) async {
     if (isInitial) {
       await setMatch(_routeTree.get(path));
     } else {
@@ -85,7 +86,7 @@ class GlobalRouteState extends ChangeNotifier {
 }
 
 class RouteState extends ChangeNotifier {
-  final Route route;
+  final RouteBase route;
   final GlobalRouteState _globalRouteState;
 
   RouteState(this.route, GlobalRouteState globalState)
@@ -105,7 +106,7 @@ class RouteState extends ChangeNotifier {
   Map<String, String> get pathParameters =>
       _globalRouteState.match.parameters.path;
 
-  Route? get activeChild {
+  RouteBase? get activeChild {
     final routes = _globalRouteState.match.routes;
 
     final index = routes.indexOf(route);
@@ -121,10 +122,10 @@ class RouteState extends ChangeNotifier {
     return routes[nextIndex];
   }
 
-  static RouteState? of(BuildContext context) {
+  static RouteState of(BuildContext context) {
     final routeStateScope =
         context.dependOnInheritedWidgetOfExactType<RouteStateScope>();
-    if (routeStateScope == null) return null;
+    if (routeStateScope == null) throw ('No RouteState in scope!');
     return routeStateScope.state;
   }
 }

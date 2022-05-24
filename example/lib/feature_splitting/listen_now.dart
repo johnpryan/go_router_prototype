@@ -5,7 +5,7 @@ import 'package:tree_router/tree_router.dart';
 import 'song.dart';
 
 class ListenNowFeature extends StatelessWidget {
-  static Route route = StackedRoute(
+  static RouteBase route = StackedRoute(
     path: 'listen-now',
     builder: (context) => const ListenNowFeature(),
     routes: [

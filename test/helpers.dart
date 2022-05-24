@@ -19,20 +19,20 @@ class EmptyWidget extends StatelessWidget {
 }
 
 class TestWidget extends StatefulWidget {
-  final TreeRouterDelegate routerDelegate;
-  final TreeRouteInformationParser routeInformationParser;
+  final GoRouterDelegate routerDelegate;
+  final GoRouteInformationParser routeInformationParser;
   final TestRouteInformationProvider informationProvider;
 
   TestWidget({
     Key? key,
-    required List<Route> routes,
+    required List<RouteBase> routes,
     TestRouteInformationProvider? informationProvider,
     GlobalRouteState? routeState,
     String initialRoute = '/',
   })  : routerDelegate = routeState == null
-            ? TreeRouterDelegate(routes)
-            : TreeRouterDelegate.withState(routeState),
-        routeInformationParser = TreeRouteInformationParser(),
+            ? GoRouterDelegate(routes)
+            : GoRouterDelegate.withState(routeState),
+        routeInformationParser = GoRouteInformationParser(),
         informationProvider = informationProvider ??
             TestRouteInformationProvider(initialRoute: initialRoute),
         super(key: key);

@@ -4,8 +4,9 @@
 
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
-import 'package:tree_router/tree_router.dart' hide Route;
+import 'package:flutter/cupertino.dart' hide Route;
+import 'package:flutter/cupertino.dart' as cupertino show Route;
+import 'package:tree_router/tree_router.dart' hide RouteBase;
 
 void main() {
   runApp(const CupertinoTabBarDemo());
@@ -18,7 +19,7 @@ class _TabInfo {
   final IconData icon;
 }
 
-final _router = TreeRouter(
+final _router = GoRouter(
   routes: [
     ShellRoute(
       path: '/',
@@ -28,7 +29,7 @@ final _router = TreeRouter(
         child: child,
       ),
       routes: [
-        NavigatorRoute(
+        NestedStackRoute(
           path: 'home',
           builder: (context) => const HomeScreen(),
           routes: [
@@ -38,19 +39,9 @@ final _router = TreeRouter(
             ),
           ],
         ),
-        NavigatorRoute(
+        NestedStackRoute(
           path: 'chat',
           builder: (context) => const ChatScreen(),
-          routes: [
-            StackedRoute(
-              path: 'details/:id',
-              builder: (context) => const DetailsScreen(),
-            ),
-          ],
-        ),
-        NavigatorRoute(
-          path: 'profile',
-          builder: (context) => const ProfileScreen(),
           routes: [
             StackedRoute(
               path: 'details/:id',
@@ -262,7 +253,8 @@ class DetailsScreen extends StatefulWidget {
     return navigator.restorablePush<void>(_routeBuilder, arguments: id);
   }
 
-  static Route<void> _routeBuilder(BuildContext context, Object? arguments) {
+  static cupertino.Route<void> _routeBuilder(
+      BuildContext context, Object? arguments) {
     final id = arguments as int?;
     return CupertinoPageRoute(
       builder: (context) => DetailsScreen(id: id, restorationId: 'details'),

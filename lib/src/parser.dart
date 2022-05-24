@@ -5,7 +5,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
-class TreeRouteInformationParser extends RouteInformationParser<Uri> {
+class GoRouteInformationParser extends RouteInformationParser<Uri> {
   @override
   Future<Uri> parseRouteInformation(
     RouteInformation routeInformation,

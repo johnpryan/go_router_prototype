@@ -6,13 +6,13 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:tree_router/tree_router.dart';
 
 void main() {
-  runApp(TreeRouterDemo());
+  runApp(ExampleApp());
 }
 
-class TreeRouterDemo extends StatelessWidget {
-  TreeRouterDemo({Key? key}) : super(key: key);
+class ExampleApp extends StatelessWidget {
+  ExampleApp({Key? key}) : super(key: key);
 
-  final _router = TreeRouter(
+  final _router = GoRouter(
     routes: [
       StackedRoute(
         path: '/',

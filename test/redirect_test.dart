@@ -9,7 +9,7 @@ void main() {
   group('Redirect', () {
     testWidgets('redirects to a relative path at startup',
         (WidgetTester tester) async {
-      final routes = <Route>[
+      final routes = <RouteBase>[
         ShellRoute(
           path: '/',
           redirect: (match) {
@@ -37,7 +37,7 @@ void main() {
     });
 
     testWidgets('Redirects multiple times', (WidgetTester tester) async {
-      final routes = <Route>[
+      final routes = <RouteBase>[
         ShellRoute(
           path: '/',
           redirect: (match) {
@@ -78,7 +78,7 @@ void main() {
     });
 
     testWidgets('Avoids infinite redirects', (WidgetTester tester) async {
-      final routes = <Route>[
+      final routes = <RouteBase>[
         ShellRoute(
           path: '/',
           redirect: (match) {

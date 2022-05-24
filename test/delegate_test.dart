@@ -12,7 +12,7 @@ import 'helpers.dart';
 void main() {
   group('TreeRouterDelegate', () {
     testWidgets('displays the home screen', (WidgetTester tester) async {
-      final routes = <Route>[
+      final routes = <RouteBase>[
         StackedRoute(
           path: '/',
           builder: (context) => const _HomeScreen(),
@@ -30,7 +30,7 @@ void main() {
 
     testWidgets('Displays top-level routes', (WidgetTester tester) async {
       final provider = TestRouteInformationProvider();
-      final routes = <Route>[
+      final routes = <RouteBase>[
         StackedRoute(
           path: '/',
           builder: (context) => const _HomeScreen(),
@@ -59,7 +59,7 @@ void main() {
         'StackedRoute adds pages to the Navigator for the active sub-route',
         (WidgetTester tester) async {
       final provider = TestRouteInformationProvider();
-      final routes = <Route>[
+      final routes = <RouteBase>[
         StackedRoute(
           path: '/',
           builder: (context) => const _HomeScreen(),
@@ -88,7 +88,7 @@ void main() {
     testWidgets('ShellRoute displays the child of the active sub-route',
         (WidgetTester tester) async {
       final provider = TestRouteInformationProvider();
-      final routes = <Route>[
+      final routes = <RouteBase>[
         ShellRoute(
           path: '/',
           builder: (context, child) => _ShellScreen(
@@ -120,7 +120,7 @@ void main() {
     testWidgets('ShellRoute displays the default child',
         (WidgetTester tester) async {
       final provider = TestRouteInformationProvider();
-      final routes = <Route>[
+      final routes = <RouteBase>[
         ShellRoute(
           path: '/',
           defaultRoute: 'a',
@@ -157,7 +157,7 @@ void main() {
       late BuildContext parent2Context;
       late BuildContext parent3Context;
 
-      final routes = <Route>[
+      final routes = <RouteBase>[
         ShellRoute(
           path: '/',
           builder: (context, child) {
@@ -224,7 +224,7 @@ void main() {
   testWidgets('Displays the initial route immediately',
       (WidgetTester tester) async {
     final provider = TestRouteInformationProvider(initialRoute: '/a');
-    final routes = <Route>[
+    final routes = <RouteBase>[
       StackedRoute(
         path: '/',
         builder: (context) => const _HomeScreen(),
@@ -250,7 +250,7 @@ void main() {
   testWidgets('Reports the correct information back to the Router',
       (WidgetTester tester) async {
     final provider = TestRouteInformationProvider();
-    final routes = <Route>[
+    final routes = <RouteBase>[
       StackedRoute(
         path: '/',
         builder: (context) => const _HomeScreen(),
@@ -275,7 +275,7 @@ void main() {
 
   testWidgets('Builds NavigatorRoutes correctly', (WidgetTester tester) async {
     final provider = TestRouteInformationProvider();
-    final routes = <Route>[
+    final routes = <RouteBase>[
       ShellRoute(
         path: '/',
         builder: (context, child) => Scaffold(
@@ -287,7 +287,7 @@ void main() {
           ),
         ),
         routes: [
-          NavigatorRoute(
+          NestedStackRoute(
             path: 'a',
             builder: (_) => const Text('First screen on the inner Navigator'),
             routes: [
@@ -350,7 +350,7 @@ void main() {
   });
 
   testWidgets('query parameters', (WidgetTester tester) async {
-    final routes = <Route>[
+    final routes = <RouteBase>[
       StackedRoute(
         path: '/',
         builder: (context) => const _QueryParamsScreen(),

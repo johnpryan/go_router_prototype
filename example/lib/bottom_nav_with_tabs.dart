@@ -12,7 +12,7 @@ void main() {
 class BottomNavWithTabsDemo extends StatelessWidget {
   BottomNavWithTabsDemo({Key? key}) : super(key: key);
 
-  final _router = TreeRouter(
+  final _router = GoRouter(
     routes: [
       ShellRoute(
         path: '/',

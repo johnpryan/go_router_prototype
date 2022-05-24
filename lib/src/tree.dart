@@ -10,13 +10,14 @@ import 'matching.dart';
 import 'route.dart';
 
 class RouteTree {
-  List<Route> routes;
+  List<RouteBase> routes;
 
   RouteTree(this.routes) {
     _validate();
   }
 
-  RouteMatch get(String path, {Route? parentRoute, RouteMatch? previousMatch}) {
+  RouteMatch get(String path,
+      {RouteBase? parentRoute, RouteMatch? previousMatch}) {
     // If this is a relative path, search the children for a match.
     if (!path.startsWith('/')) {
       final children = parentRoute?.routes ?? [];
@@ -71,7 +72,7 @@ class RouteTree {
   }
 
   Parameters _removeOldParameters(
-      RouteMatch oldMatch, List<Route> newRoutes, Parameters newParams) {
+      RouteMatch oldMatch, List<RouteBase> newRoutes, Parameters newParams) {
     // Don't preserve query parameters when the route is relative.
     final newQueryParams = {...oldMatch.parameters.query, ...newParams.query};
     final newPathParams = {...oldMatch.parameters.path, ...newParams.path};
@@ -100,7 +101,7 @@ class RouteTree {
     _validateRecursive(routes, true);
   }
 
-  void _validateRecursive(List<Route> routes, bool topLevel) {
+  void _validateRecursive(List<RouteBase> routes, bool topLevel) {
     // A '/' route is required because PlatformRouteInformationProvider uses
     // WidgetsBinding.instance!.window.defaultRouteName, which will be '/' if no
     // default route was requested.
@@ -128,7 +129,7 @@ class RouteTree {
   /// Recursively searches for a match. [prefixes] is the list of
   /// parent Routes that have matched so far.
   RouteMatch _getRecursive(
-      List<Route> prefixes, List<Route> current, String path) {
+      List<RouteBase> prefixes, List<RouteBase> current, String path) {
     for (var route in current) {
       if (hasExactMatch(route.path, path)) {
         prefixes.add(route);
@@ -166,14 +167,18 @@ class RouteTree {
     return RouteMatch(routes: [], parameters: Parameters.empty());
   }
 
-  List<Route> _getAncestors(Route routeToFind,
+  List<RouteBase> _getAncestors(RouteBase routeToFind,
       {RouteMatch? previousMatch, bool inclusive = true}) {
     return _getAncestorsRecursive(
         routes, routeToFind, [], inclusive, previousMatch);
   }
 
-  List<Route> _getAncestorsRecursive(List<Route> current, Route routeToFind,
-      List<Route> prefixes, bool inclusive, RouteMatch? previousMatch) {
+  List<RouteBase> _getAncestorsRecursive(
+      List<RouteBase> current,
+      RouteBase routeToFind,
+      List<RouteBase> prefixes,
+      bool inclusive,
+      RouteMatch? previousMatch) {
     final currentPathTemplate = p.joinAll(prefixes.map((r) => r.path));
     bool routeHasCorrectPrefix = previousMatch == null
         ? true
@@ -197,7 +202,7 @@ class RouteTree {
 
 class RouteConfigurationError extends Error {
   final String message;
-  final Route? route;
+  final RouteBase? route;
 
   RouteConfigurationError(this.message, [this.route]);
 
