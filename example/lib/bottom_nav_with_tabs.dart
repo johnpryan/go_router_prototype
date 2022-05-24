@@ -57,7 +57,7 @@ class BottomNavWithTabsDemo extends StatelessWidget {
   );
 
   static int _calculateTabIndex(BuildContext context) {
-    final route = RouteState.of(context)!;
+    final route = RouteState.of(context);
     final activeChild = route.activeChild;
     if (activeChild != null) {
       if (activeChild.path == 'popular') return 0;
@@ -110,7 +110,7 @@ class AppScaffold extends StatelessWidget {
   }
 
   static int _calculateSelectedIndex(BuildContext context) {
-    final route = RouteState.of(context)!;
+    final route = RouteState.of(context);
     final activeChild = route.activeChild;
     if (activeChild != null) {
       if (activeChild.path == 'books') return 0;
@@ -122,10 +122,10 @@ class AppScaffold extends StatelessWidget {
   void _onItemTapped(int index, BuildContext context) {
     switch (index) {
       case 0:
-        RouteState.of(context)!.goTo('books');
+        RouteState.of(context).goTo('books');
         break;
       case 1:
-        RouteState.of(context)!.goTo('settings');
+        RouteState.of(context).goTo('settings');
         break;
     }
   }
@@ -179,7 +179,7 @@ class _TabScreenState extends State<TabScreen>
         path = 'all';
         break;
     }
-    RouteState.of(context)!.goTo(path);
+    RouteState.of(context).goTo(path);
   }
 
   @override

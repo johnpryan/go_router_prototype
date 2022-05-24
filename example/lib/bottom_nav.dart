@@ -93,7 +93,7 @@ class AppScaffold extends StatelessWidget {
   }
 
   static int _calculateSelectedIndex(BuildContext context) {
-    final route = RouteState.of(context)!;
+    final route = RouteState.of(context);
     final activeChild = route.activeChild;
     if (activeChild != null) {
       if (activeChild.path == 'a') return 0;
@@ -105,10 +105,10 @@ class AppScaffold extends StatelessWidget {
   void _onItemTapped(int index, BuildContext context) {
     switch (index) {
       case 0:
-        RouteState.of(context)!.goTo('a');
+        RouteState.of(context).goTo('a');
         break;
       case 1:
-        RouteState.of(context)!.goTo('b');
+        RouteState.of(context).goTo('b');
         break;
     }
   }
@@ -131,7 +131,7 @@ class Screen extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              RouteState.of(context)!.goTo('details');
+              RouteState.of(context).goTo('details');
             },
             child: const Text('View  details'),
           ),

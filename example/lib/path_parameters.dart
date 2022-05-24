@@ -14,9 +14,6 @@ class PathParametersDemo extends StatelessWidget {
 
   static String _userId(BuildContext context) {
     final routeState = RouteState.of(context);
-    if (routeState == null) {
-      throw ('No RouteState');
-    }
     final params = routeState.pathParameters;
     if (!params.containsKey('id')) {
       throw ('Expected :id param in URL');
@@ -78,19 +75,19 @@ class HomeScreen extends StatelessWidget {
             TextButton(
               child: const Text('User 1'),
               onPressed: () {
-                RouteState.of(context)!.goTo('/user/1');
+                RouteState.of(context).goTo('/user/1');
               },
             ),
             TextButton(
               child: const Text('User 2'),
               onPressed: () {
-                RouteState.of(context)!.goTo('/user/2');
+                RouteState.of(context).goTo('/user/2');
               },
             ),
             TextButton(
               child: const Text('User abc'),
               onPressed: () {
-                RouteState.of(context)!.goTo('/user/abc');
+                RouteState.of(context).goTo('/user/abc');
               },
             ),
           ],
@@ -124,7 +121,7 @@ class UserScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                RouteState.of(context)!.goTo('details');
+                RouteState.of(context).goTo('details');
               },
               child: const Text('View details'),
             ),

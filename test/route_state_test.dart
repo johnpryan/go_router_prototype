@@ -65,7 +65,6 @@ void main() {
 
       expect(find.text('Home'), findsOneWidget);
       final routeState = RouteState.of(childContext);
-      if (routeState == null) fail('RouteState.of() returned null.');
       routeState.goTo('/a');
       await tester.pumpAndSettle();
       expect(find.text('Screen A'), findsOneWidget);
@@ -104,7 +103,6 @@ void main() {
 
       expect(find.text('Home'), findsOneWidget);
       final routeState = RouteState.of(childContext!);
-      if (routeState == null) fail('RouteState.of() returned null.');
 
       routeState.goTo('/a');
       await tester.pumpAndSettle();
@@ -161,7 +159,7 @@ void main() {
       // Navigate to 'a'
       var routeState = RouteState.of(rootContext!);
       expect(routeState, isNotNull);
-      routeState!.goTo('a');
+      routeState.goTo('a');
       await tester.pumpAndSettle();
       expect(find.text('Screen A'), findsOneWidget);
       expect(GlobalRouteState.of(aContext!)!.match.routes, hasLength(2));
@@ -169,11 +167,11 @@ void main() {
       // Navigate to 'b'
       routeState = RouteState.of(aContext!);
       expect(routeState, isNotNull);
-      routeState!.goTo('b/123');
+      routeState.goTo('b/123');
       await tester.pumpAndSettle();
       expect(find.text('Screen B'), findsOneWidget);
       expect(GlobalRouteState.of(bContext!)!.match.routes, hasLength(3));
-      expect(RouteState.of(bContext!)!.pathParameters, hasLength(1));
+      expect(RouteState.of(bContext!).pathParameters, hasLength(1));
     });
 
     testWidgets('Relative route paths include path parameters',
@@ -211,11 +209,11 @@ void main() {
       // Navigate to 'a'
       var routeState = RouteState.of(rootContext!);
       expect(routeState, isNotNull);
-      routeState!.goTo('a/123');
+      routeState.goTo('a/123');
       await tester.pumpAndSettle();
       expect(find.text('Screen A'), findsOneWidget);
       expect(GlobalRouteState.of(aContext!)!.match.routes, hasLength(2));
-      expect(RouteState.of(aContext!)!.pathParameters, hasLength(1));
+      expect(RouteState.of(aContext!).pathParameters, hasLength(1));
     });
 
     testWidgets(
@@ -261,21 +259,21 @@ void main() {
       // Navigate to 'a'
       var routeState = RouteState.of(rootContext!);
       expect(routeState, isNotNull);
-      routeState!.goTo('a/123');
+      routeState.goTo('a/123');
 
       await tester.pumpAndSettle();
       expect(find.text('Screen A'), findsOneWidget);
       expect(GlobalRouteState.of(aContext!)!.match.routes, hasLength(2));
-      expect(RouteState.of(aContext!)!.pathParameters, hasLength(1));
+      expect(RouteState.of(aContext!).pathParameters, hasLength(1));
 
       routeState = RouteState.of(aContext!);
       expect(routeState, isNotNull);
-      routeState!.goTo('details');
+      routeState.goTo('details');
 
       await tester.pumpAndSettle();
       expect(find.text('Screen A Details'), findsOneWidget);
       expect(GlobalRouteState.of(aContext!)!.match.routes, hasLength(3));
-      expect(RouteState.of(aContext!)!.pathParameters, hasLength(1));
+      expect(RouteState.of(aContext!).pathParameters, hasLength(1));
     });
   });
 }

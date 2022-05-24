@@ -153,7 +153,7 @@ void main() {
     test('pop() shows the correct route when there are duplicate paths', () {
       final bookRoute = StackedRoute(
         builder: (context) {
-          final bookId = RouteState.of(context)!.pathParameters['bookId']!;
+          final bookId = RouteState.of(context).pathParameters['bookId']!;
           return Text('Book $bookId');
         },
         path: 'book/:bookId',

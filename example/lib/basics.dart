@@ -94,7 +94,7 @@ class Screen extends StatelessWidget {
             TextButton(
               child: Text('Go to $linkTo'),
               onPressed: () {
-                RouteState.of(context)!.goTo(linkTo);
+                RouteState.of(context).goTo(linkTo);
               },
             ),
           ],

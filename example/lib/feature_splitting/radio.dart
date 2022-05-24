@@ -33,7 +33,7 @@ class RadioFeature extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              RouteState.of(context)!.goTo('song/123');
+              RouteState.of(context).goTo('song/123');
             },
             child: const Text('View song 123'),
           ),

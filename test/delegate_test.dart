@@ -209,15 +209,15 @@ void main() {
 
       final parent1RouteState = RouteState.of(parent1Context);
       expect(parent1RouteState, isNotNull);
-      expect(parent1RouteState!.route.path, '/');
+      expect(parent1RouteState.route.path, '/');
 
       final parent2RouteState = RouteState.of(parent2Context);
       expect(parent2RouteState, isNotNull);
-      expect(parent2RouteState!.route.path, 'a');
+      expect(parent2RouteState.route.path, 'a');
 
       final parent3RouteState = RouteState.of(parent3Context);
       expect(parent3RouteState, isNotNull);
-      expect(parent3RouteState!.route.path, 'b');
+      expect(parent3RouteState.route.path, 'b');
     });
   });
 
@@ -416,7 +416,7 @@ class _QueryParamsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final queryParams = RouteState.of(context)!.queryParameters;
+    final queryParams = RouteState.of(context).queryParameters;
     return Column(
       children: [
         ...queryParams.keys.map((key) => Text('$key: ${queryParams[key]}')),

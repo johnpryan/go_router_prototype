@@ -166,9 +166,9 @@ class RouteSelector extends StatelessWidget {
         ...childPaths.map(
           (p) => ListTile(
             onTap: () {
-              RouteState.of(context)!.goTo(p);
+              RouteState.of(context).goTo(p);
             },
-            selected: RouteState.of(context)!.activeChild?.path == p,
+            selected: RouteState.of(context).activeChild?.path == p,
             title: Text(p),
           ),
         ),
