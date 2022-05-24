@@ -1,0 +1,1 @@
+GoRouter API prototype. See the [design doc](https://docs.google.com/document/d/1_mRXinbL_rb0mUt6DAFZ8kj0kh33ZjEMJuUq4PJgwj8/edit?usp=sharing&resourcekey=0-sYbRzE9opneOFZ5F8J3gGw) for more information.
