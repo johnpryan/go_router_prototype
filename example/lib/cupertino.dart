@@ -4,9 +4,8 @@
 
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart' hide Route;
-import 'package:flutter/cupertino.dart' as cupertino show Route;
-import 'package:tree_router/tree_router.dart' hide RouteBase;
+import 'package:flutter/cupertino.dart' ;
+import 'package:tree_router/tree_router.dart';
 
 void main() {
   runApp(const CupertinoTabBarDemo());
@@ -253,7 +252,7 @@ class DetailsScreen extends StatefulWidget {
     return navigator.restorablePush<void>(_routeBuilder, arguments: id);
   }
 
-  static cupertino.Route<void> _routeBuilder(
+  static Route<void> _routeBuilder(
       BuildContext context, Object? arguments) {
     final id = arguments as int?;
     return CupertinoPageRoute(

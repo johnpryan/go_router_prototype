@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/material.dart' hide Route;
+import 'package:flutter/material.dart' ;
 import 'package:flutter_web_plugins/url_strategy.dart';
 
 import 'path_parameters.dart';
