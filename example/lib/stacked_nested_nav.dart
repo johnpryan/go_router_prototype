@@ -61,7 +61,7 @@ class HomeScreen extends StatelessWidget {
             const Text('Home'),
             TextButton(
               onPressed: () {
-                RouteState.of(context)!.goTo('a');
+                RouteState.of(context).goTo('a');
               },
               child: const Text('Go to A'),
             ),
@@ -87,7 +87,7 @@ class AScreen extends StatelessWidget {
             const Text('Screen A'),
             TextButton(
               onPressed: () {
-                RouteState.of(context)!.goTo('b');
+                RouteState.of(context).goTo('b');
               },
               child: const Text('Go to B'),
             ),
@@ -114,7 +114,7 @@ class BScreen extends StatelessWidget {
             const Text('Screen B'),
             TextButton(
               onPressed: () {
-                RouteState.of(context)!.goTo('c');
+                RouteState.of(context).goTo('c');
               },
               child: const Text('Go to C'),
             ),
@@ -140,7 +140,7 @@ class CScreen extends StatelessWidget {
             const Text('Screen B'),
             TextButton(
               onPressed: () {
-                RouteState.of(context)!.goTo('/');
+                RouteState.of(context).goTo('/');
               },
               child: const Text('Go to /'),
             ),

@@ -6,7 +6,7 @@ class SongScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final songId = RouteState.of(context)!.pathParameters['songId'];
+    final songId = RouteState.of(context).pathParameters['songId'];
     return Scaffold(
       appBar: AppBar(),
       body: Center(

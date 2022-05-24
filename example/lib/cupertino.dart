@@ -55,7 +55,7 @@ final _router = GoRouter(
 );
 
 int _selectedIndex(BuildContext context) {
-  final route = RouteState.of(context)!;
+  final route = RouteState.of(context);
   final activeChild = route.activeChild;
   if (activeChild != null) {
     if (activeChild.path == 'home') return 0;
@@ -137,13 +137,13 @@ class AppScaffold extends StatelessWidget {
   void _onItemTapped(int index, BuildContext context) {
     switch (index) {
       case 0:
-        RouteState.of(context)!.goTo('home');
+        RouteState.of(context).goTo('home');
         break;
       case 1:
-        RouteState.of(context)!.goTo('chat');
+        RouteState.of(context).goTo('chat');
         break;
       case 2:
-        RouteState.of(context)!.goTo('profile');
+        RouteState.of(context).goTo('profile');
         break;
     }
   }
@@ -168,7 +168,7 @@ class HomeScreen extends StatelessWidget {
             ),
             CupertinoButton(
               onPressed: () {
-                RouteState.of(context)!.goTo('details/10');
+                RouteState.of(context).goTo('details/10');
               },
               child: const Text('Show a new screen'),
             ),
@@ -198,7 +198,7 @@ class ChatScreen extends StatelessWidget {
             ),
             CupertinoButton(
               onPressed: () {
-                RouteState.of(context)!.goTo('details/42');
+                RouteState.of(context).goTo('details/42');
               },
               child: const Text('Show a new screen'),
             ),
@@ -228,7 +228,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             CupertinoButton(
               onPressed: () {
-                RouteState.of(context)!.goTo('details/100');
+                RouteState.of(context).goTo('details/100');
               },
               child: const Text('Show a new screen'),
             ),
@@ -284,7 +284,7 @@ class _DetailsScreenState extends State<DetailsScreen> with RestorationMixin {
 
   @override
   Widget build(BuildContext context) {
-    final id = int.tryParse(RouteState.of(context)?.pathParameters['id'] ?? '');
+    final id = int.tryParse(RouteState.of(context).pathParameters['id'] ?? '');
     return UnmanagedRestorationScope(
       bucket: bucket,
       child: CupertinoPageScaffold(

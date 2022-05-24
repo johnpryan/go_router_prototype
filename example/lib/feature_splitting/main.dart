@@ -70,7 +70,7 @@ class AppScaffold extends StatelessWidget {
   }
 
   int _selectedIndex(BuildContext context) {
-    final activeChild = RouteState.of(context)!.activeChild;
+    final activeChild = RouteState.of(context).activeChild;
     if (activeChild == null) {
       return 0;
     }
@@ -78,6 +78,6 @@ class AppScaffold extends StatelessWidget {
   }
 
   void _changeIndex(BuildContext context, int index) {
-    RouteState.of(context)!.goTo(features[index].route.path);
+    RouteState.of(context).goTo(features[index].route.path);
   }
 }
