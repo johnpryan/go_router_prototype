@@ -1,5 +1,5 @@
 import 'package:adaptive_navigation/adaptive_navigation.dart';
-import 'package:flutter/material.dart' hide Route;
+import 'package:flutter/material.dart';
 import 'package:tree_router/tree_router.dart';
 
 import 'listen_now.dart';
