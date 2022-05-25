@@ -4,7 +4,7 @@
 
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart' ;
+import 'package:flutter/cupertino.dart';
 import 'package:tree_router/tree_router.dart';
 
 void main() {
@@ -252,8 +252,7 @@ class DetailsScreen extends StatefulWidget {
     return navigator.restorablePush<void>(_routeBuilder, arguments: id);
   }
 
-  static Route<void> _routeBuilder(
-      BuildContext context, Object? arguments) {
+  static Route<void> _routeBuilder(BuildContext context, Object? arguments) {
     final id = arguments as int?;
     return CupertinoPageRoute(
       builder: (context) => DetailsScreen(id: id, restorationId: 'details'),
