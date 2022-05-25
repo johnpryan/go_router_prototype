@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:path/path.dart' as p;
-import 'package:tree_router/src/parameters.dart';
+import 'package:go_router_prototype/src/parameters.dart';
 
 import 'match.dart';
 import 'matching.dart';

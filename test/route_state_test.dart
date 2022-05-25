@@ -4,9 +4,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tree_router/src/delegate.dart';
-import 'package:tree_router/src/parser.dart';
-import 'package:tree_router/tree_router.dart';
+import 'package:go_router_prototype/src/delegate.dart';
+import 'package:go_router_prototype/src/parser.dart';
+import 'package:go_router_prototype/go_router_prototype.dart';
 
 void main() {
   group('RouteState', () {

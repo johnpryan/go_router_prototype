@@ -1,6 +1,6 @@
 import 'package:adaptive_navigation/adaptive_navigation.dart';
 import 'package:flutter/material.dart';
-import 'package:tree_router/tree_router.dart';
+import 'package:go_router_prototype/go_router_prototype.dart';
 
 import 'listen_now.dart';
 import 'radio.dart';

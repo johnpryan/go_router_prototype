@@ -3,9 +3,9 @@
 // found in the LICENSE file.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tree_router/src/match.dart';
-import 'package:tree_router/src/parameters.dart';
-import 'package:tree_router/src/route.dart';
+import 'package:go_router_prototype/src/match.dart';
+import 'package:go_router_prototype/src/parameters.dart';
+import 'package:go_router_prototype/src/route.dart';
 
 import 'helpers.dart';
 

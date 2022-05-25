@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:tree_router/tree_router.dart';
+import 'package:go_router_prototype/go_router_prototype.dart';
 
 void main() {
   runApp(ShellDemo());

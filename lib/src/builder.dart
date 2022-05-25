@@ -3,9 +3,9 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:tree_router/src/inheritance.dart';
-import 'package:tree_router/src/match.dart';
-import 'package:tree_router/src/typedefs.dart';
+import 'package:go_router_prototype/src/inheritance.dart';
+import 'package:go_router_prototype/src/match.dart';
+import 'package:go_router_prototype/src/typedefs.dart';
 
 import 'route.dart' as r;
 import 'state.dart';

@@ -4,12 +4,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tree_router/src/delegate.dart';
-import 'package:tree_router/src/match.dart';
-import 'package:tree_router/src/parameters.dart';
-import 'package:tree_router/src/parser.dart';
-import 'package:tree_router/src/route.dart';
-import 'package:tree_router/src/state.dart';
+import 'package:go_router_prototype/src/delegate.dart';
+import 'package:go_router_prototype/src/match.dart';
+import 'package:go_router_prototype/src/parameters.dart';
+import 'package:go_router_prototype/src/parser.dart';
+import 'package:go_router_prototype/src/route.dart';
+import 'package:go_router_prototype/src/state.dart';
 
 void main() {
   group('buildRoute', () {

@@ -5,7 +5,7 @@
 import 'package:collection/collection.dart';
 import 'package:path/path.dart' as p;
 import 'package:quiver/core.dart';
-import 'package:tree_router/src/matching.dart';
+import 'package:go_router_prototype/src/matching.dart';
 
 import 'parameters.dart';
 import 'route.dart';

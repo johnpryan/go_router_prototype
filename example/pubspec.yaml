@@ -10,7 +10,7 @@ dependencies:
   flutter_web_plugins:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  tree_router:
+  go_router_prototype:
     path: ../
   url_launcher: ^6.0.0
   adaptive_navigation: ^0.0.5

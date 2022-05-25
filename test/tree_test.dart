@@ -4,9 +4,9 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tree_router/src/route.dart';
-import 'package:tree_router/src/state.dart';
-import 'package:tree_router/src/tree.dart';
+import 'package:go_router_prototype/src/route.dart';
+import 'package:go_router_prototype/src/state.dart';
+import 'package:go_router_prototype/src/tree.dart';
 
 import 'helpers.dart';
 
