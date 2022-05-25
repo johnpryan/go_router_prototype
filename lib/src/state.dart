@@ -4,7 +4,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tree_router/src/inheritance.dart';
+import 'package:go_router_prototype/src/inheritance.dart';
 
 import 'match.dart';
 import 'route.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tree_router/tree_router.dart';
+import 'package:go_router_prototype/go_router_prototype.dart';
 
 import 'helpers.dart';
 

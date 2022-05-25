@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tree_router/tree_router.dart';
+import 'package:go_router_prototype/go_router_prototype.dart';
 
 class SongScreen extends StatelessWidget {
   const SongScreen({Key? key}) : super(key: key);

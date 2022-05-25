@@ -3,8 +3,8 @@
 // found in the LICENSE file.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tree_router/src/matching.dart';
-import 'package:tree_router/src/parameters.dart';
+import 'package:go_router_prototype/src/matching.dart';
+import 'package:go_router_prototype/src/parameters.dart';
 
 void main() {
   group('Matching helpers', () {
