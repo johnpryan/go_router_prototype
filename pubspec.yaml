@@ -1,6 +1,6 @@
 name: go_router_prototype
 description: GoRouter API prototype
-version: 0.0.1
+version: 0.1.0
 homepage: https://github.com/johnpryan/go_router_prototype
 
 environment:
