@@ -83,6 +83,7 @@ void main() {
       });
 
       test('getMatchingPrefixIndex', () {
+        expect(match1.getMatchingPrefixIndex(match1), 2);
         expect(match1.getMatchingPrefixIndex(match2), 2);
         expect(match2.getMatchingPrefixIndex(match3), 2);
         expect(match3.getMatchingPrefixIndex(match1), -1);

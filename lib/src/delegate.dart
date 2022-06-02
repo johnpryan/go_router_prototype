@@ -13,14 +13,27 @@ import 'state.dart';
 class GoRouterDelegate extends RouterDelegate<Uri>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<Uri> {
   late final GlobalRouteState _globalRouteState;
+  final Listenable? refreshListenable;
 
-  factory GoRouterDelegate(List<RouteBase> routes) {
+  factory GoRouterDelegate(
+    List<RouteBase> routes, {
+    Listenable? refreshListenable,
+  }) {
     final state = GlobalRouteState(routes);
-    return GoRouterDelegate.withState(state);
+    return GoRouterDelegate.withState(
+      state,
+      refreshListenable: refreshListenable,
+    );
   }
 
-  GoRouterDelegate.withState(this._globalRouteState) {
+  GoRouterDelegate.withState(
+    this._globalRouteState, {
+    this.refreshListenable,
+  }) {
     _globalRouteState.addListener(notifyListeners);
+    refreshListenable?.addListener(() {
+      setNewRoutePath(currentConfiguration);
+    });
   }
 
   @override

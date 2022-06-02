@@ -50,6 +50,11 @@ class RouteMatch {
         return i;
       }
     }
+    // If they are the same length, and no mismatch was found, return the
+    // length so that redirect loops can be avoided.
+    if (routes.length == other.routes.length) {
+      return routes.length;
+    }
     return -1;
   }
 
