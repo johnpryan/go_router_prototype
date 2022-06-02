@@ -4,6 +4,8 @@
 
 library tree_router;
 
+import 'package:flutter/foundation.dart';
+
 import 'src/delegate.dart';
 import 'src/parser.dart';
 import 'src/route.dart';
@@ -18,6 +20,8 @@ class GoRouter {
 
   GoRouter({
     required List<RouteBase> routes,
-  })  : delegate = GoRouterDelegate(routes),
+    Listenable? refreshListenable,
+  })  : delegate =
+            GoRouterDelegate(routes, refreshListenable: refreshListenable),
         parser = GoRouteInformationParser();
 }
