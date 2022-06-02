@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router_prototype/go_router_prototype.dart';
 
 void main() {
-  runApp(BooksApp());
+  runApp(const BooksApp());
 }
 
 class Credentials {
@@ -37,6 +37,8 @@ class Authentication extends ChangeNotifier {
 }
 
 class BooksApp extends StatefulWidget {
+  const BooksApp({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _BooksAppState();
 }
@@ -112,7 +114,7 @@ class _BooksAppState extends State<BooksApp> {
 class HomeScreen extends StatelessWidget {
   final VoidCallback onSignOut;
 
-  const HomeScreen({required this.onSignOut});
+  const HomeScreen({required this.onSignOut, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +141,7 @@ class HomeScreen extends StatelessWidget {
 class SignInScreen extends StatefulWidget {
   final ValueChanged<Credentials> onSignedIn;
 
-  const SignInScreen({required this.onSignedIn});
+  const SignInScreen({required this.onSignedIn, Key? key}) : super(key: key);
 
   @override
   _SignInScreenState createState() => _SignInScreenState();
@@ -178,7 +180,7 @@ class _SignInScreenState extends State<SignInScreen> {
 }
 
 class BooksListScreen extends StatelessWidget {
-  const BooksListScreen();
+  const BooksListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -210,18 +212,18 @@ class ErrorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Page Not Found')),
-    body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(error?.toString() ?? 'page not found'),
-          TextButton(
-            onPressed: () => RouteState.of(context).goTo('/'),
-            child: const Text('Home'),
+        appBar: AppBar(title: const Text('Page Not Found')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(error?.toString() ?? 'page not found'),
+              TextButton(
+                onPressed: () => RouteState.of(context).goTo('/'),
+                child: const Text('Home'),
+              ),
+            ],
           ),
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 }
