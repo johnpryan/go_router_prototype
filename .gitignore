@@ -28,4 +28,3 @@
 .dart_tool/
 .packages
 build/
-example/pubspec.lock
