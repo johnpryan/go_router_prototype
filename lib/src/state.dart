@@ -18,9 +18,8 @@ class GlobalRouteState extends ChangeNotifier {
     _match = _routeTree.get('/');
   }
 
-  Future setMatch(RouteMatch match) async {
-    match = await _handleRedirects(match);
-    _match = match;
+  Future setMatch(final RouteMatch match) async {
+    _match = await _handleRedirects(match);
     notifyListeners();
   }
 
@@ -31,13 +30,19 @@ class GlobalRouteState extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future goTo(String path,
-      {RouteBase? parentRoute, bool isInitial = false}) async {
+  Future goTo(
+    String path, {
+    RouteBase? parentRoute,
+    bool isInitial = false,
+  }) async {
     if (isInitial) {
       await setMatch(_routeTree.get(path));
     } else {
-      await setMatch(_routeTree.get(path,
-          parentRoute: parentRoute, previousMatch: _match));
+      await setMatch(_routeTree.get(
+        path,
+        parentRoute: parentRoute,
+        previousMatch: _match,
+      ));
     }
   }
 
@@ -45,8 +50,10 @@ class GlobalRouteState extends ChangeNotifier {
     return _handleRedirectsRecursive(match);
   }
 
-  Future<RouteMatch> _handleRedirectsRecursive(RouteMatch match,
-      {int endIndex = 0}) async {
+  Future<RouteMatch> _handleRedirectsRecursive(
+    RouteMatch match, {
+    int endIndex = 0,
+  }) async {
     if (endIndex < 0) endIndex = 0;
     for (var i = match.routes.length - 1; i >= endIndex; i--) {
       final route = match.routes[i];
@@ -125,7 +132,7 @@ class RouteState extends ChangeNotifier {
   static RouteState of(BuildContext context) {
     final routeStateScope =
         context.dependOnInheritedWidgetOfExactType<RouteStateScope>();
-    if (routeStateScope == null) throw ('No RouteState in scope!');
+    if (routeStateScope == null) throw Exception('No RouteState in scope!');
     return routeStateScope.state;
   }
 }
